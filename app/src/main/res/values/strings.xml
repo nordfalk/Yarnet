@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Yarnet</string>
+    <string name="search_hint">Søg i Yarnet</string>
 </resources>
