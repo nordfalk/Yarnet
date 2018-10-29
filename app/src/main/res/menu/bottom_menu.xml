@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/discover"
+        android:icon="@drawable/ic_clear_black_24dp"
+        android:title="Udforsk"></item>
+    <item
+        android:id="@+id/collection"
+        android:title="Min Samling"
+        android:icon="@drawable/ic_clear_black_24dp">
+    </item>
+    <item
+        android:id="@+id/create_recipe"
+        android:title="Opret Opskrift"
+        android:icon="@drawable/ic_clear_black_24dp">
+    </item>
+</menu>
