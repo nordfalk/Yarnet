@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
 
-
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorToolbar"
@@ -25,16 +26,17 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
+            app:floatingSearch_dimBackground="false"
+            app:floatingSearch_leftActionMode="showSearch"
             app:floatingSearch_searchHint="@string/search_hint"
             app:floatingSearch_showSearchKey="false"
             app:floatingSearch_suggestionsListAnimDuration="250"
-            app:floatingSearch_dimBackground="false"
-            app:floatingSearch_leftActionMode="showSearch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.design.widget.TabLayout
+            android:id="@+id/top_menu"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
@@ -42,8 +44,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/floating_search_view"
-            app:tabIndicatorColor="@null"
             app:tabBackground="@drawable/tab_color_selector"
+            app:tabIndicatorColor="@null"
             app:tabMode="scrollable">
 
             <android.support.design.widget.TabItem
@@ -83,5 +85,14 @@
         </android.support.design.widget.TabLayout>
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 </android.support.constraint.ConstraintLayout>
