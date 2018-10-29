@@ -12,7 +12,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DiscoverStart.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements DiscoverStart.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -32,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements DiscoverStart.OnF
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DiscoverStart(), "Start");
+        adapter.addFragment(new ListFragment(), "Trøjer");
+        adapter.addFragment(new ListFragment(), "Huer");
+        adapter.addFragment(new ListFragment(), "Handsker");
+        adapter.addFragment(new ListFragment(), "Sokker");
+        adapter.addFragment(new ListFragment(), "w/e");
         viewPager.setAdapter(adapter);
     }
 
