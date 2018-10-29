@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".logIn">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:background="@drawable/opretbruger"
+        android:fontFamily="@font/roboto"
+        android:text="Log på"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="327dp" />
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="332dp"
+        android:layout_height="39dp"
+        android:background="@drawable/indtastfelt"
+        android:ems="10"
+        android:fontFamily="@font/roboto"
+        android:hint="E-mailadresse"
+        android:inputType="textPersonName"
+        android:paddingLeft="6dp"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="230dp" />
+
+    <EditText
+        android:id="@+id/editText10"
+        android:layout_width="332dp"
+        android:layout_height="39dp"
+        android:background="@drawable/indtastfelt"
+        android:ems="10"
+        android:fontFamily="@font/roboto"
+        android:hint="Adgangskode"
+        android:inputType="textPassword"
+        android:paddingLeft="6dp"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="280dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="126dp"
+        android:layout_height="33dp"
+        android:background="@drawable/loginknap"
+        android:fontFamily="@font/roboto"
+        android:text="Opret bruger"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="433dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:clickable="true"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Har du glemt din adgangskode?"
+        android:textColor="#1592E6"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="191dp"
+        tools:layout_editor_absoluteY="333dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Er du ikke medlem? Opret en bruger"
+        android:textColor="#000000	"
+        android:textSize="13sp"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="386dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="helt gratis!"
+        android:textColor="#000000	"
+        android:textSize="13sp"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="404dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="332dp"
+        android:layout_height="42"
+        android:background="@drawable/facebookknap"
+        android:fontFamily="@font/roboto"
+        android:text="Eller login med Facebook"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="481dp" />
+
+</android.support.constraint.ConstraintLayout>
