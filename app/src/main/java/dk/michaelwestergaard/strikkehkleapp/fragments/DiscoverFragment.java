@@ -1,4 +1,4 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscoverFragment extends Fragment implements DiscoverStart.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
+import dk.michaelwestergaard.strikkehkleapp.R;
+
+public class DiscoverFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -37,7 +39,7 @@ public class DiscoverFragment extends Fragment implements DiscoverStart.OnFragme
 
     private void setupViewPager(ViewPager viewPager) {
         TopViewPagerAdapter adapter = new TopViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(new DiscoverStart(), "Start");
+        adapter.addFragment(new DiscoverStartFragment(), "Start");
         adapter.addFragment(new ListFragment(), "Trøjer");
         adapter.addFragment(new ListFragment(), "Huer");
         adapter.addFragment(new ListFragment(), "Handsker");

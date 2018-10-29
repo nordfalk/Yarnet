@@ -1,34 +1,36 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
+import dk.michaelwestergaard.strikkehkleapp.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DiscoverStart.OnFragmentInteractionListener} interface
+ * {@link DiscoverStartFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DiscoverStart#newInstance} factory method to
+ * Use the {@link DiscoverStartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DiscoverStart extends Fragment {
+public class ListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public DiscoverStart() {
-        // Required empty public constructor
+    public ListFragment() {
     }
 
-    public static DiscoverStart newInstance(String param1, String param2) {
-        DiscoverStart fragment = new DiscoverStart();
+    public static ListFragment newInstance(String param1, String param2) {
+        ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -45,13 +47,13 @@ public class DiscoverStart extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.item_list);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
 
         ListAdapter listAdapter = new ListAdapter();
         recyclerView.setAdapter(listAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
         return view;

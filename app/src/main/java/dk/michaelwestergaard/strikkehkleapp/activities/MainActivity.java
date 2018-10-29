@@ -1,23 +1,20 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
+import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
+import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
+import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 
-public class DefaultActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStart.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
@@ -27,7 +24,7 @@ public class DefaultActivity extends AppCompatActivity implements ListFragment.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_default);
+        setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.mainViewPager);
         bottomNavigationView = findViewById(R.id.bottom_menu);
