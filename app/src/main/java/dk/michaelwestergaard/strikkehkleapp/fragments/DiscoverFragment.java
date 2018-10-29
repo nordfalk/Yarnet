@@ -1,4 +1,4 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
@@ -6,32 +6,40 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DiscoverStart.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
+import dk.michaelwestergaard.strikkehkleapp.R;
+
+public class DiscoverFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        return inflater.inflate(R.layout.fragment_discover, container, false);
+    }
 
-        tabLayout = findViewById(R.id.top_menu);
-        viewPager = findViewById(R.id.container);
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        tabLayout = getView().findViewById(R.id.top_menu);
+        viewPager = getView().findViewById(R.id.container);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DiscoverStart(), "Start");
+        TopViewPagerAdapter adapter = new TopViewPagerAdapter(getFragmentManager());
+        adapter.addFragment(new DiscoverStartFragment(), "Start");
         adapter.addFragment(new ListFragment(), "Trøjer");
         adapter.addFragment(new ListFragment(), "Huer");
         adapter.addFragment(new ListFragment(), "Handsker");
@@ -45,11 +53,11 @@ public class MainActivity extends AppCompatActivity implements DiscoverStart.OnF
 
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    class TopViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        public TopViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
