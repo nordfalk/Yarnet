@@ -102,12 +102,14 @@
         android:layout_height="39dp"
         tools:layout_editor_absoluteX="39dp"
         tools:layout_editor_absoluteY="148dp"
-        android:background="@drawable/indtastfelt" />
+        android:background="@drawable/indtastfelt"
+        />
 
     <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="64dp"
         android:layout_height="56dp"
+        app:srcCompat="@drawable/photony"
         android:background="@null"
         tools:layout_editor_absoluteX="307dp"
         tools:layout_editor_absoluteY="301dp" />
@@ -158,6 +160,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
+        tools:layout_editor_absoluteX="173dp"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:srcCompat="@drawable/plus"
         tools:layout_editor_absoluteX="173dp"
         tools:layout_editor_absoluteY="482dp" />
 
