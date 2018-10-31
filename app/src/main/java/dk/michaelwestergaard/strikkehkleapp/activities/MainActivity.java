@@ -8,14 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import dk.michaelwestergaard.strikkehkleapp.MyCollection;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
+import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 
-public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DiscoverFragment(), "Discover");
         adapter.addFragment(new MyCollection(), "Collection");
+        adapter.addFragment(new CreateRecipe(), "Create");
         viewPager.setAdapter(adapter);
 
 
