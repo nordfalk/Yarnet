@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.mainViewPager);
+        viewPager.setOffscreenPageLimit(3);
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
