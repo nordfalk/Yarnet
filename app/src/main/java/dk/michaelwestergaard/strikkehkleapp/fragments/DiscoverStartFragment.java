@@ -50,12 +50,22 @@ public class DiscoverStartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.item_list);
-
         ListAdapter listAdapter = new ListAdapter();
-        recyclerView.setAdapter(listAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+
+        RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
+        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewNew.setAdapter(listAdapter);
+        recyclerViewNew.setLayoutManager(layoutManagerNew);
+
+        RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
+        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewPaid.setAdapter(listAdapter);
+        recyclerViewPaid.setLayoutManager(layoutManagerPaid);
+
+        RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
+        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewFree.setAdapter(listAdapter);
+        recyclerViewFree.setLayoutManager(layoutManagerFree);
 
         return view;
     }
