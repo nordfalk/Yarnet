@@ -45,7 +45,7 @@
                     android:text="Indsæt opskrift navn" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/overskrift2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -60,7 +60,7 @@
                     android:text="Like" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/tilfoej "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="90dp"
