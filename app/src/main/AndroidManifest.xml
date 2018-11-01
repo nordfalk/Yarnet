@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".signUp" />
+        <activity android:name=".Opskrift" />
         <activity android:name=".createWalkthrough"></activity>
         <activity android:name=".Profile"></activity>
         <meta-data

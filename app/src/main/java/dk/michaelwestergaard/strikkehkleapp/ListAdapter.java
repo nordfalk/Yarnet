@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 public class ListAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_listing_item, parent, false);
+
         return new ListViewHolder(view);
     }
 
@@ -36,6 +36,7 @@ public class ListAdapter extends RecyclerView.Adapter {
             super(itemView);
             textView = itemView.findViewById(R.id.item_title);
             imageView = itemView.findViewById(R.id.item_image);
+            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
@@ -46,6 +47,9 @@ public class ListAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View view) {
             System.out.println("Clicked " + textView.getText().toString());
+            Intent intent = new Intent (view.getContext(), Opskrift.class);
+            intent.putExtra("Title", textView.getText().toString());
+            view.getContext().startActivity(intent);
         }
     }
 }
