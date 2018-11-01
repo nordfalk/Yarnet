@@ -3,12 +3,12 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
 
 import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.R;
@@ -17,22 +17,41 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DiscoverStartFragment.OnFragmentInteractionListener} interface
+ * {@link MyCollection.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DiscoverStartFragment#newInstance} factory method to
+ * Use the {@link MyCollection#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DiscoverStartFragment extends Fragment {
+public class MyCollection extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public DiscoverStartFragment() {
+    public MyCollection() {
         // Required empty public constructor
     }
 
-    public static DiscoverStartFragment newInstance(String param1, String param2) {
-        DiscoverStartFragment fragment = new DiscoverStartFragment();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment MyCollection.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MyCollection newInstance(String param1, String param2) {
+        MyCollection fragment = new MyCollection();
         Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,31 +60,31 @@ public class DiscoverStartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_collection, container, false);
 
         ListAdapter listAdapter = new ListAdapter();
 
-        RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
+        RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
         RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewNew.setAdapter(listAdapter);
-        recyclerViewNew.setLayoutManager(layoutManagerNew);
+        recyclerViewSaved.setAdapter(listAdapter);
+        recyclerViewSaved.setLayoutManager(layoutManagerNew);
 
-        RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
+        RecyclerView recyclerViewBought = view.findViewById(R.id.BoughtPatternsView);
         RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewPaid.setAdapter(listAdapter);
-        recyclerViewPaid.setLayoutManager(layoutManagerPaid);
+        recyclerViewBought.setAdapter(listAdapter);
+        recyclerViewBought.setLayoutManager(layoutManagerPaid);
 
-        RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
+        RecyclerView recyclerViewMy = view.findViewById(R.id.MyPatternsView);
         RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewFree.setAdapter(listAdapter);
-        recyclerViewFree.setLayoutManager(layoutManagerFree);
+        recyclerViewMy.setAdapter(listAdapter);
+        recyclerViewMy.setLayoutManager(layoutManagerFree);
 
         return view;
     }
@@ -94,6 +113,16 @@ public class DiscoverStartFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

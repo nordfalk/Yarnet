@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import dk.michaelwestergaard.strikkehkleapp.FavoritterFragment;
 import dk.michaelwestergaard.strikkehkleapp.IndstillingerFragment;
 import dk.michaelwestergaard.strikkehkleapp.OpretOpskriftFragment;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
+import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
 import dk.michaelwestergaard.strikkehkleapp.VisKontoFragment;
@@ -25,6 +27,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
 
     private DrawerLayout drawer;
     private ViewPager viewPager;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         toggle.syncState();
 
         viewPager = findViewById(R.id.mainViewPager);
+        viewPager.setOffscreenPageLimit(3);
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -110,7 +114,11 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DiscoverFragment(), "Discover");
+        adapter.addFragment(new MyCollection(), "Collection");
+        adapter.addFragment(new CreateRecipe(), "Create");
         viewPager.setAdapter(adapter);
+
+
     }
 
     @Override

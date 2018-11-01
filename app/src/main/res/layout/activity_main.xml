@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorToolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
@@ -24,7 +32,9 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
