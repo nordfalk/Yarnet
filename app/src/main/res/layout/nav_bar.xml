@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:layout_height="60dp"
+    android:background="#43B05C"
+    android:minHeight="0dp"
+    tools:context=".Profile">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android.background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize">
-
-        <RelativeLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#43B05C">
-
-            <ImageButton
-                android:id="@+id/Avatar"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/yarn" />
-
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="0dp"
-                android:background="@drawable/yarn" />
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
         android:text="Yarnet"
-        android:textSize="25dp" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/profileBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avatar" />
+
+</android.support.constraint.ConstraintLayout>

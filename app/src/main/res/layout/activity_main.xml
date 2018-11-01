@@ -6,13 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout6"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorToolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:layout_height="60dp"
+        android:background="#43B05C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:clickable="true"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yarnet"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profileBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:clickable="true"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/avatar" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"
@@ -32,7 +69,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
 
 
