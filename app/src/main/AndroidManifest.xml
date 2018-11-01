@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".fragments.DiscoverFragment"/>
         <activity android:name=".activities.MainActivity"/>
+            android:theme="@style/AppTheme.NoActionbar">
         <activity android:name=".logIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
