@@ -1,12 +1,12 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,7 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        TopViewPagerAdapter adapter = new TopViewPagerAdapter(getFragmentManager());
+        TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new DiscoverStartFragment(), "Start");
         adapter.addFragment(new ListFragment(), "Trøjer");
         adapter.addFragment(new ListFragment(), "Huer");
