@@ -26,8 +26,8 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
-        NavigationView.OnNavigationItemSelectedListener {
-public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
+
 
     private DrawerLayout drawer;
     private ViewPager viewPager;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -56,23 +56,23 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         viewPager.setOffscreenPageLimit(3);
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setOnNavigationItemSelectedListener(
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.discover:
-                        viewPager.setCurrentItem(0);
-                        return true;
-                    case R.id.collection:
-                        viewPager.setCurrentItem(1);
-                        return true;
-                    case R.id.create_recipe:
-                        viewPager.setCurrentItem(2);
-                        return true;
-                }
-                return false;
-            }
-        });
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.discover:
+                                viewPager.setCurrentItem(0);
+                                return true;
+                            case R.id.collection:
+                                viewPager.setCurrentItem(1);
+                                return true;
+                            case R.id.create_recipe:
+                                viewPager.setCurrentItem(2);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -84,9 +84,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
             public void onPageSelected(int position) {
                 if (prevMenuItem != null) {
                     prevMenuItem.setChecked(false);
-                }
-                else
-                {
+                } else {
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
@@ -102,16 +100,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
 
         setupViewPager(viewPager);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-        super.onBackPressed();
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager (ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DiscoverFragment(), "Discover");
         adapter.addFragment(new MyCollection(), "Collection");
@@ -121,15 +110,25 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
 
     }
 
+    /* @Override
+     public void onFragmentInteraction (Uri uri){
+
+    } */
+
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
 
     }
-}
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.nav_visKonto:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new VisKontoFragment()).commit();
@@ -157,3 +156,4 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
     public void onFragmentInteraction(Uri uri) {
 
     }
+}

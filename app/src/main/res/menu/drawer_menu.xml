@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_visKonto"
+            android:icon="@drawable/avatar"
+            android:title="Vis konto" />
+
+        <item
+            android:id="@+id/nav_indstillinger"
+            android:icon="@drawable/settings"
+            android:title="Indstillinger" />
+
+        <item
+            android:id="@+id/nav_favoritter"
+            android:icon="@drawable/yarn"
+            android:title="Favoritter" />
+
+        <item
+            android:id="@+id/nav_opretOpskrift"
+            android:icon="@drawable/yarnblaa"
+            android:title="Opret opskrift" />
+    </group>
+
+
+</menu>
