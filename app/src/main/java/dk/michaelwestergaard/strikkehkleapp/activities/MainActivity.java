@@ -1,38 +1,35 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
-import dk.michaelwestergaard.strikkehkleapp.FavoritterFragment;
-import dk.michaelwestergaard.strikkehkleapp.IndstillingerFragment;
-import dk.michaelwestergaard.strikkehkleapp.OpretOpskriftFragment;
-import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
-import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
+import dk.michaelwestergaard.strikkehkleapp.Profile;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
-import dk.michaelwestergaard.strikkehkleapp.VisKontoFragment;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
+import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
-        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
+        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, View.OnClickListener {
 
     // NavigationView.OnNavigationItemSelectedListener,
 
     private DrawerLayout drawer;
     private ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
+    ImageView profileImg;
 
     MenuItem prevMenuItem;
 
@@ -53,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         drawer.addDrawerListener(toggle);
         toggle.syncState();*/
 
+
+        profileImg = findViewById(R.id.profileBtn);
         viewPager = findViewById(R.id.mainViewPager);
         viewPager.setOffscreenPageLimit(3);
         bottomNavigationView = findViewById(R.id.bottom_menu);
@@ -74,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
                         return false;
                     }
                 });
+
+        profileImg.setOnClickListener(this);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -118,13 +119,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-
+        super.onBackPressed();
     }
 
    /* @Override
@@ -156,5 +151,17 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.profileBtn:
+                Intent i = new Intent(this, Profile.class);
+                startActivity(i);
+                break;
+            default:
+                break;
+        }
     }
 }
