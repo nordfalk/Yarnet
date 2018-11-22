@@ -7,9 +7,9 @@
     tools:context=".logIn">
 
     <EditText
-        android:id="@+id/editText5"
-        android:layout_width="332dp"
-        android:layout_height="39dp"
+        android:id="@+id/input_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
@@ -18,7 +18,7 @@
         android:fontFamily="@font/roboto"
         android:hint="E-mailadresse"
         android:inputType="textPersonName"
-        android:paddingLeft="6dp"
+        android:padding="10dp"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,9 +27,9 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
     <EditText
-        android:id="@+id/editText10"
-        android:layout_width="332dp"
-        android:layout_height="39dp"
+        android:id="@+id/input_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -38,16 +38,16 @@
         android:fontFamily="@font/roboto"
         android:hint="Adgangskode"
         android:inputType="textPassword"
-        android:paddingLeft="6dp"
+        android:padding="10dp"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/input_email" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/signup_btn"
         android:layout_width="241dp"
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
@@ -105,7 +105,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_btn" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout5"
@@ -116,7 +116,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText10">
+        app:layout_constraintTop_toBottomOf="@+id/input_password">
 
         <TextView
             android:id="@+id/textView"
@@ -135,7 +135,7 @@
         <Button
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="72dp"
             android:background="@drawable/opretbruger"
             android:fontFamily="@font/roboto"
