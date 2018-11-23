@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,7 +31,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    System.out.println("tester");
                     startActivity(new Intent(Profile.this, logIn.class));
                     finish();
                 }
@@ -44,6 +44,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         if(view == logout){
             auth.signOut();
+            LoginManager.getInstance().logOut();
         }
     }
 }

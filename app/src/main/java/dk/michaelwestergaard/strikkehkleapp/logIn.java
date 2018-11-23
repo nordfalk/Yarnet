@@ -73,13 +73,12 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onError(FacebookException error) {
                 System.out.println(error);
-                System.out.println("ererer");
             }
         });
 
         //Loading dialog
         builder = new AlertDialog.Builder(logIn.this);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setCancelable(false);
         builder.setView(R.layout.loading_dialog);
         progressDialog = builder.create();
 
@@ -88,8 +87,6 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -128,10 +125,11 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
                                 // tjek fejlen
+                                Toast.makeText(logIn.this, "Kunne ikke logge ind, prøv igen", Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
                             } else {
                                 Intent i = new Intent(logIn.this, MainActivity.class);
                                 startActivity(i);
-
                                 progressDialog.dismiss();
                                 finish();
                             }
@@ -156,4 +154,5 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
     private boolean isEmpty(EditText editText){
         return editText.getText().toString().equals("");
     }
+    
 }
