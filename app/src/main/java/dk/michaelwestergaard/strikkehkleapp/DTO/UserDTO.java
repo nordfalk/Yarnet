@@ -5,16 +5,18 @@ public class UserDTO {
     String userID;
     String email;
     String first_name;
-    String first_last;
+    String last_name;
     String avatar;
     // Måske også role
     int status;
 
-    public UserDTO(String userID, String email, String first_name, String first_last, String avatar, int status) {
+    public UserDTO(){}
+
+    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, int status) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
-        this.first_last = first_last;
+        this.last_name = last_name;
         this.avatar = avatar;
         this.status = status;
     }
@@ -43,12 +45,12 @@ public class UserDTO {
         this.first_name = first_name;
     }
 
-    public String getFirst_last() {
-        return first_last;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setFirst_last(String first_last) {
-        this.first_last = first_last;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     public String getAvatar() {
@@ -73,7 +75,7 @@ public class UserDTO {
                 "userID=" + userID +
                 ", email='" + email + '\'' +
                 ", first_name='" + first_name + '\'' +
-                ", first_last='" + first_last + '\'' +
+                ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", status=" + status +
                 '}';

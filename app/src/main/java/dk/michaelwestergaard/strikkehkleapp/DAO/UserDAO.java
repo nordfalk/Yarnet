@@ -26,8 +26,9 @@ public class UserDAO implements DAO<UserDTO> {
     }
 
     @Override
-    public boolean update(UserDTO object) throws NotImplementedException {
-        throw new NotImplementedException("Denne metode er ikke lavet");
+    public boolean update(UserDTO user) {
+        databaseReference.child(user.getUserID()).setValue(user);
+        return true;
     }
 
     @Override
@@ -43,7 +44,9 @@ public class UserDAO implements DAO<UserDTO> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     if(snapshot.getKey().equals(userID)){
+                        System.out.println("User found! " + snapshot.getKey());
                         userDTO[0] = snapshot.getValue(UserDTO.class);
+                        System.out.println(userDTO[0]);
                     }
                 }
             }

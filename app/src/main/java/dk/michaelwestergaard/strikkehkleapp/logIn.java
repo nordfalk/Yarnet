@@ -108,7 +108,9 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
                         boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
                         if(newUser){
                             String[] name = user.getDisplayName().split(" ");
-                            UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], user.getPhotoUrl().toString(), 1);
+                            String avatar = user.getPhotoUrl().toString();
+                            avatar = avatar + "?height=500";
+                            UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], avatar, 1);
                             createUser(userDTO);
                         }
                         System.out.println("UserID: " + user.getUid());
