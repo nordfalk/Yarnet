@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+
 public class signUp extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
 
     private FirebaseAuth auth;
@@ -23,6 +26,8 @@ public class signUp extends AppCompatActivity implements View.OnClickListener, O
 
     AlertDialog.Builder builder;
     AlertDialog progressDialog;
+
+    UserDAO userDAO = new UserDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,9 @@ public class signUp extends AppCompatActivity implements View.OnClickListener, O
         if (!task.isSuccessful()) {
             Toast.makeText(signUp.this, "Kunne ikke oprette, prøv igen.", Toast.LENGTH_SHORT).show();
         } else {
+
+            UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(), inputEmail.getText().toString(), inputFirstName.getText().toString(), inputLastName.getText().toString(), "https://www.bitgab.com/uploads/profile/files/default.png", 1);
+            userDAO.insert(userDTO);
             finish();
         }
     }

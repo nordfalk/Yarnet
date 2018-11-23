@@ -2,7 +2,7 @@ package dk.michaelwestergaard.strikkehkleapp.DTO;
 
 public class UserDTO {
 
-    int userID;
+    String userID;
     String email;
     String first_name;
     String first_last;
@@ -10,7 +10,7 @@ public class UserDTO {
     // Måske også role
     int status;
 
-    public UserDTO(int userID, String email, String first_name, String first_last, String avatar, int status) {
+    public UserDTO(String userID, String email, String first_name, String first_last, String avatar, int status) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
@@ -19,11 +19,11 @@ public class UserDTO {
         this.status = status;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

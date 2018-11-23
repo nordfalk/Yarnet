@@ -6,7 +6,7 @@ public interface DAO<T> {
     boolean insert(T object) throws NotImplementedException;
     boolean update(T object) throws NotImplementedException;
     boolean delete(T object) throws NotImplementedException;
-    T get(int id) throws NotImplementedException;
+    T get(String id) throws NotImplementedException;
     List<T> getAll() throws NotImplementedException;
 
     class NotImplementedException extends Exception {

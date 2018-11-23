@@ -24,6 +24,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
 
 public class logIn extends AppCompatActivity implements View.OnClickListener {
@@ -35,6 +37,8 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
     AlertDialog.Builder builder;
     AlertDialog progressDialog;
     private CallbackManager mCallbackManager;
+
+    UserDAO userDAO = new UserDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,13 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
                     System.out.println(task.getException());
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
+                        boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                        if(newUser){
+                            String[] name = user.getDisplayName().split(" ");
+                            UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], user.getPhotoUrl().toString(), 1);
+                            createUser(userDTO);
+                        }
+                        System.out.println("UserID: " + user.getUid());
                         Intent i = new Intent(logIn.this, MainActivity.class);
                         startActivity(i);
                     } else {
@@ -151,8 +162,19 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    private void createUser(UserDTO user){
+        if(userDAO.insert(user)){
+            //YAY
+            System.out.println("created");
+        } else {
+            //gg
+
+            System.out.println("createdn't");
+        }
+    }
+
     private boolean isEmpty(EditText editText){
         return editText.getText().toString().equals("");
     }
-    
+
 }
