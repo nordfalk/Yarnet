@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "760241849884",
+    "firebase_url": "https://yarnet-97349.firebaseio.com",
+    "project_id": "yarnet-97349",
+    "storage_bucket": "yarnet-97349.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760241849884:android:951b1b4d2d977934",
+        "android_client_info": {
+          "package_name": "dk.michaelwestergaard.strikkehkleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760241849884-pggq4b858etnirhufdusdjq4rbdt1n7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.michaelwestergaard.strikkehkleapp",
+            "certificate_hash": "88caa669c0ec8ae82dbe2864bf25e4ceab51aae1"
+          }
+        },
+        {
+          "client_id": "760241849884-4hrqv4j0b4ubmhfn5527eo6t095ms0hv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgRl8nDple9iaCRW4LGCZHsgeN52J4RwE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760241849884-4hrqv4j0b4ubmhfn5527eo6t095ms0hv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
