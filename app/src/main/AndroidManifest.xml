@@ -9,23 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragments.DiscoverFragment"/>
-        <activity android:name=".activities.MainActivity"/>
+        <activity android:name=".fragments.DiscoverFragment" />
+        <activity android:name=".activities.MainActivity" />
+        <![CDATA[
             android:theme="@style/AppTheme.NoActionbar">
-        <activity android:name=".logIn">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        ]]>
         <activity android:name=".signUp" />
         <activity android:name=".Opskrift" />
-        <activity android:name=".createWalkthrough"></activity>
-        <activity android:name=".Profile"></activity>
+        <activity android:name=".createWalkthrough" />
+        <activity android:name=".Profile" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
