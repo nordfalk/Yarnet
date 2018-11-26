@@ -3,16 +3,16 @@
     <item
         android:id="@+id/discover"
         android:title="Udforsk"
-        android:icon="@drawable/yarn_discover">
+        android:icon="@drawable/navbar_udforsk">
     </item>
     <item
         android:id="@+id/collection"
         android:title="Min Samling"
-        android:icon="@drawable/yarn_heart">
+        android:icon="@drawable/navbar_opretopskrift">
     </item>
     <item
         android:id="@+id/create_recipe"
         android:title="Opret Opskrift"
-        android:icon="@drawable/yarn">
+        android:icon="@drawable/navbar_minsamling">
     </item>
 </menu>

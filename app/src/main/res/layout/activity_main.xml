@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         app:elevation="24dp"
+        app:itemTextColor="@drawable/bottom_nav_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
