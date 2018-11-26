@@ -7,18 +7,18 @@
     tools:context=".logIn">
 
     <EditText
-        android:id="@+id/input_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:id="@+id/editText5"
+        android:layout_width="332dp"
+        android:layout_height="39dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/indtastfelt"
         android:ems="10"
         android:fontFamily="@font/roboto"
         android:hint="E-mailadresse"
         android:inputType="textPersonName"
-        android:padding="10dp"
+        android:paddingLeft="6dp"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,35 +27,34 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
     <EditText
-        android:id="@+id/input_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:id="@+id/editText10"
+        android:layout_width="332dp"
+        android:layout_height="39dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/indtastfelt"
         android:ems="10"
         android:fontFamily="@font/roboto"
         android:hint="Adgangskode"
         android:inputType="textPassword"
-        android:padding="10dp"
+        android:paddingLeft="6dp"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email" />
+        app:layout_constraintTop_toBottomOf="@+id/editText5" />
 
     <Button
-        android:id="@+id/signup_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:layout_width="241dp"
+        android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/loginknap"
         android:fontFamily="@font/roboto_bold"
-        android:padding="15dp"
         android:text="Opret bruger"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
@@ -91,32 +90,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/buttonFacebookLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="241dp"
+        android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp"
+        android:background="@drawable/facebookknap"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Eller login med Facebook"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout5"
-        android:layout_width="0dp"
+        android:layout_width="332dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_password">
+        app:layout_constraintTop_toBottomOf="@+id/editText10">
 
         <TextView
             android:id="@+id/textView"
@@ -130,13 +130,12 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginEnd="72dp"
             android:background="@drawable/opretbruger"
             android:fontFamily="@font/roboto"
@@ -145,7 +144,6 @@
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

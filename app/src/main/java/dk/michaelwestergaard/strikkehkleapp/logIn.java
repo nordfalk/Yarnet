@@ -1,59 +1,21 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.content.Intent;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
-import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
 
 public class logIn extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth auth;
 
-    private EditText inputEmail, inputPassword;
-
-    AlertDialog.Builder builder;
-    AlertDialog progressDialog;
-    private CallbackManager mCallbackManager;
-
-    UserDAO userDAO = new UserDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
-        auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
-        inputEmail = findViewById(R.id.input_email);
-        inputPassword = findViewById(R.id.input_password);
 
         Button loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(this);
@@ -128,56 +90,11 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.login_btn:
-                progressDialog.show();
-
-                String email = inputEmail.getText().toString();
-                String password = inputPassword.getText().toString();
-
-                if(!isEmpty(inputEmail) && !isEmpty(inputPassword)) {
-                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(logIn.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                // tjek fejlen
-                                Toast.makeText(logIn.this, "Kunne ikke logge ind, prøv igen", Toast.LENGTH_LONG).show();
-                                progressDialog.dismiss();
-                            } else {
-                                Intent i = new Intent(logIn.this, MainActivity.class);
-                                startActivity(i);
-                                progressDialog.dismiss();
-                                finish();
-                            }
-                        }
-
-                    });
-                } else {
-                    Toast.makeText(this, "Indtast venligst email og adgangskode", Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-                }
-                break;
-
-            case R.id.signup_btn:
-                Intent signupIntent = new Intent(this, signUp.class);
-                startActivity(signupIntent);
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
                 break;
             default:
                 break;
         }
     }
-
-    private void createUser(UserDTO user){
-        if(userDAO.insert(user)){
-            //YAY
-            System.out.println("created");
-        } else {
-            //gg
-
-            System.out.println("createdn't");
-        }
-    }
-
-    private boolean isEmpty(EditText editText){
-        return editText.getText().toString().equals("");
-    }
-
 }

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnFr
         viewPager = findViewById(R.id.mainViewPager);
         viewPager.setOffscreenPageLimit(3);
         bottomNavigationView = findViewById(R.id.bottom_menu);
+        bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
