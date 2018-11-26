@@ -67,6 +67,7 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -76,7 +77,7 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onError(FacebookException error) {
-                System.out.println(error);
+                System.out.println("FB Error: " + error);
             }
         });
 
