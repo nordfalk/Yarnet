@@ -82,4 +82,8 @@ public class RecipeDAO implements DAO<RecipeDTO> {
         return recipes;
 
     }
+
+    public DatabaseReference getDatabaseReference() {
+        return databaseReference;
+    }
 }

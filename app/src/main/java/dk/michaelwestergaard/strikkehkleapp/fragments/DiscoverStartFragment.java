@@ -1,30 +1,41 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
+import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DiscoverStartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DiscoverStartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DiscoverStartFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+
+    private RecipeDAO recipeDAO = new RecipeDAO();
+
+    List<RecipeDTO> newestRecipes = new ArrayList<RecipeDTO>();
 
     public DiscoverStartFragment() {
         // Required empty public constructor
@@ -50,6 +61,39 @@ public class DiscoverStartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
 
+        Query query = FirebaseDatabase.getInstance().getReference().child("recipes");
+        FirebaseRecyclerOptions<RecipeDTO> options = new FirebaseRecyclerOptions.Builder<RecipeDTO>()
+                .setQuery(query, RecipeDTO.class)
+                .build();
+
+        FirebaseRecyclerAdapter recyclerAdapter = new FirebaseRecyclerAdapter<RecipeDTO, RecipeViewHolder>(options) {
+
+            @Override
+            public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_listing_item, parent, false);
+                Log.d("test", "bindiengienrgienrgierngierngeirgn");
+                return new RecipeViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(RecipeViewHolder holder, int position, RecipeDTO recipe) {
+                Log.d("test",recipe.toString());
+                holder.recipeID = recipe.getRecipeID();
+                holder.title.setText(recipe.getTitle());
+            }
+
+
+            @Override
+            public void onError(DatabaseError e) {
+                // Called when there is an error getting data. You may want to update
+                // your UI to display an error message to the user.
+                // ...
+                Log.d("ERROR", e.getMessage());
+            }
+        };
+
+        //TODO: Skal fixes, det virker ikke...
+
         ListAdapter listAdapter = new ListAdapter();
 
         RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
@@ -69,6 +113,8 @@ public class DiscoverStartFragment extends Fragment {
 
         return view;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -98,4 +144,27 @@ public class DiscoverStartFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    class RecipeViewHolder extends RecyclerView.ViewHolder {
+
+        String recipeID;
+        private TextView title;
+        private ImageView image;
+
+        public RecipeViewHolder(View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.item_title);
+            image = itemView.findViewById(R.id.item_image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    System.out.println("Clicked " + recipeID);
+                    Intent intent = new Intent (view.getContext(), Opskrift.class);
+                    intent.putExtra("RecipeID", recipeID);
+                    view.getContext().startActivity(intent);
+                }
+            });
+        }
+    }
+
 }
