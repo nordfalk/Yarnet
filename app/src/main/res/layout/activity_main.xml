@@ -6,51 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout6"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#43B05C"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        >
+    </FrameLayout>
 
-        <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+    <android.support.v4.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_layout"
+        android:fitsSystemWindows="true"
+        tools:context="dk.michaelwestergaard.strikkehkleapp.activities.MainActivity"
+        tools:openDrawer="end">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/oveview_coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/nav_bar" />
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/mainViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
             android:clickable="true"
-            android:padding="20dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+            android:layout_gravity="end"
+            app:headerLayout="@layout/drawer_header"
+            app:menu="@menu/drawer_menu">
+        </android.support.design.widget.NavigationView>
 
-        <TextView
-            android:id="@+id/titleTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yarnet"
-            android:textAlignment="center"
-            android:textColor="#000"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/profileBtn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:clickable="true"
-            android:padding="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/avatar" />
-    </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.DrawerLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"
@@ -63,20 +67,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/mainViewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
-
-
-
-
-
 
 </android.support.constraint.ConstraintLayout>
 
