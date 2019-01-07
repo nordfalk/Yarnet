@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
 
-      //  profileImg.setOnClickListener(this);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -158,18 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onClick(View view) {
 
+        drawer.openDrawer(GravityCompat.END);
+
     }
-/*
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.profileBtn:
-                Intent i = new Intent(this, Profile.class);
-                startActivity(i);
-                break;
-            default:
-                break;
-        }
-    }
-    */
 }
