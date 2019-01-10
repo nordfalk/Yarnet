@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
 import java.util.Date;
+import java.util.List;
 
 public class RecipeDTO {
 
@@ -11,25 +12,19 @@ public class RecipeDTO {
     double price;
     Date createdTimestamp;
     Date updatedTimestamp;
+    List<RecipeInstructionDTO> instructionList;
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String userID, String title, double price, Date createdTimestamp, Date updatedTimestamp) {
+    public RecipeDTO(String recipeID, String categoryID, String userID, String title, double price, List<RecipeInstructionDTO> instructionList, Date createdTimestamp, Date updatedTimestamp) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.userID = userID;
         this.title = title;
         this.price = price;
+        this.instructionList = instructionList;
         this.createdTimestamp = createdTimestamp;
         this.updatedTimestamp = updatedTimestamp;
-    }
-
-    public RecipeDTO(String recipeID, String categoryID, String userID, String title, double price) {
-        this.recipeID = recipeID;
-        this.categoryID = categoryID;
-        this.userID = userID;
-        this.title = title;
-        this.price = price;
     }
 
     public String getRecipeID() {
@@ -87,4 +82,13 @@ public class RecipeDTO {
     public void setUpdatedTimestamp(Date updatedTimestamp) {
         this.updatedTimestamp = updatedTimestamp;
     }
+
+    public List<RecipeInstructionDTO> getInstructionList() {
+        return instructionList;
+    }
+
+    public void setInstructionList(List<RecipeInstructionDTO> instructionList) {
+        this.instructionList = instructionList;
+    }
+
 }
