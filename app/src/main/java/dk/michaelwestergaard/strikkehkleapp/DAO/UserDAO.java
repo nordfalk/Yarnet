@@ -36,7 +36,6 @@ public class UserDAO implements DAO<UserDTO> {
         throw new NotImplementedException("Denne metode er ikke lavet");
     }
 
-    @Override
     public UserDTO get(final String userID) {
         final UserDTO[] userDTO = new UserDTO[1];
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -59,7 +58,6 @@ public class UserDAO implements DAO<UserDTO> {
         return userDTO[0];
     }
 
-    @Override
     public List<UserDTO> getAll() throws NotImplementedException {
         throw new NotImplementedException("Denne metode er ikke lavet");
     }

@@ -38,7 +38,6 @@ public class RecipeDAO implements DAO<RecipeDTO> {
         throw new NotImplementedException("Denne metode er ikke lavet");
     }
 
-    @Override
     public RecipeDTO get(final String recipeID) {
         final RecipeDTO[] recipeDTO = new RecipeDTO[1];
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -61,7 +60,6 @@ public class RecipeDAO implements DAO<RecipeDTO> {
         return recipeDTO[0];
     }
 
-    @Override
     public List<RecipeDTO> getAll() {
         final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 

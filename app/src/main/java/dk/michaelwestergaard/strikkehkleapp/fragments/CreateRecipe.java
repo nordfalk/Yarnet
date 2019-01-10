@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
-import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 
@@ -114,13 +112,15 @@ public class CreateRecipe extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view == createRecipe){
-            //RecipeDTO newRecipe = new RecipeDTO("", "", auth.getCurrentUser().getUid(), "Handsker", 0.0, new Date(), new Date());
+            /*
+            RecipeDTO newRecipe = new RecipeDTO("", "", auth.getCurrentUser().getUid(), "Handsker", 0.0, new Date(), new Date());
             RecipeDTO newRecipe = new RecipeDTO("", "", auth.getCurrentUser().getUid(), "Handsker", 0.0);
             if(recipeDAO.insert(newRecipe)){
                 Log.d("Recipe","Tilføjet");
             } else {
                 Log.d("Recipe","Der skete en fejl");
             }
+            */
         }
     }
 
