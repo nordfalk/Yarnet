@@ -19,9 +19,5 @@
             android:icon="@drawable/hrtt"
             android:title="Favoritter" />
 
-        <item
-            android:id="@+id/nav_opretOpskrift"
-            android:icon="@drawable/yarnblaa"
-            android:title="Opret opskrift" />
     </group>
 </menu>

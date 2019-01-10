@@ -1,6 +1,5 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,60 +8,41 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-import dk.michaelwestergaard.strikkehkleapp.FavoritterFragment;
-import dk.michaelwestergaard.strikkehkleapp.IndstillingerFragment;
-import dk.michaelwestergaard.strikkehkleapp.OpretOpskriftFragment;
-import dk.michaelwestergaard.strikkehkleapp.Profile;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
-import dk.michaelwestergaard.strikkehkleapp.VisKontoFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
-        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, View.OnClickListener {
+public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
+        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
 
-    private DrawerLayout drawer;
     private ViewPager viewPager;
-    BottomNavigationView bottomNavigationView;
-    NavigationView navigationView;
-    ImageButton drawerBtn;
-    Toolbar toolbar;
+    BottomNavigationView bottomNavigationView;;
     MenuItem prevMenuItem;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         drawerBtn = findViewById(R.id.drawerBtn);
         drawerBtn.setOnClickListener(this);
 
+
         viewPager = findViewById(R.id.mainViewPager);
         viewPager.setOffscreenPageLimit(3);
+        viewPager.setVisibility(View.VISIBLE);
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -110,28 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupViewPager(viewPager);
     }
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_visKonto:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new VisKontoFragment()).commit();
-                break;
-            case R.id.nav_indstillinger:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new IndstillingerFragment()).commit();
-                break;
-            case R.id.nav_favoritter:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new FavoritterFragment()).commit();
-                break;
-            case R.id.nav_opretOpskrift:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new OpretOpskriftFragment()).commit();
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.END);
-        return true;
-    }
 
     private void setupViewPager (ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -152,11 +110,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-    @Override
-    public void onClick(View view) {
+    public void onClick (View view){
 
         drawer.openDrawer(GravityCompat.END);
-
     }
 }

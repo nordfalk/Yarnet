@@ -1,4 +1,4 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import dk.michaelwestergaard.strikkehkleapp.activities.LogInActivity;
+import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class Profile extends AppCompatActivity implements View.OnClickListener {
+public class Profile extends Drawer implements View.OnClickListener {
 
     Button logout;
     private FirebaseAuth.AuthStateListener authListener;
