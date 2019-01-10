@@ -7,7 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 
@@ -19,7 +23,7 @@ import dk.michaelwestergaard.strikkehkleapp.R;
  * Use the {@link CreateRecipe#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateRecipe extends Fragment {
+public class CreateRecipe extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,6 +32,11 @@ public class CreateRecipe extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Button createRecipe;
+
+    RecipeDAO recipeDAO = new RecipeDAO();
+    private FirebaseAuth auth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,7 +75,14 @@ public class CreateRecipe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_recipe, container, false);
+        auth = FirebaseAuth.getInstance();
+
+        createRecipe = view.findViewById(R.id.create_recipe);
+
+        createRecipe.setOnClickListener(this);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -93,16 +109,21 @@ public class CreateRecipe extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onClick(View view) {
+        if(view == createRecipe){
+            /*
+            RecipeDTO newRecipe = new RecipeDTO("", "", auth.getCurrentUser().getUid(), "Handsker", 0.0, new Date(), new Date());
+            RecipeDTO newRecipe = new RecipeDTO("", "", auth.getCurrentUser().getUid(), "Handsker", 0.0);
+            if(recipeDAO.insert(newRecipe)){
+                Log.d("Recipe","Tilføjet");
+            } else {
+                Log.d("Recipe","Der skete en fejl");
+            }
+            */
+        }
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

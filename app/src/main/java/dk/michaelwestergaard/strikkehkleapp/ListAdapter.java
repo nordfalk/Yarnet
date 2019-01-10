@@ -37,6 +37,7 @@ public class ListAdapter extends RecyclerView.Adapter {
             textView = itemView.findViewById(R.id.item_title);
             imageView = itemView.findViewById(R.id.item_image);
             itemView.setOnClickListener(this);
+
         }
 
         public void bindView(int position){
