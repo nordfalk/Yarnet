@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import dk.michaelwestergaard.strikkehkleapp.R;
 
@@ -21,6 +22,7 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
         ImageButton drawerBtn;
         Toolbar toolbar;
         ImageButton backBtn;
+        TextView editProfileBtn2;
 
         @Override
         protected void onCreate (Bundle savedInstanceState){
@@ -44,6 +46,10 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
 
             backBtn = findViewById(R.id.backButton);
             backBtn.setOnClickListener(this);
+
+          //  editProfileBtn2 = findViewById(R.id.editProfileBtn2);
+           // editProfileBtn2.setOnClickListener(this);
+
         }
 
         public boolean onNavigationItemSelected (MenuItem item){
@@ -61,6 +67,11 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
                 case R.id.nav_indstillinger:
                     Intent intent3 = new Intent(this, Settings.class);
                     startActivity(intent3);
+                    break;
+
+                case R.id.editProfileBtn2:
+                    Intent intent4 = new Intent(this, EditPage.class);
+                    startActivity(intent4);
                     break;
 
          /*   case R.id.nav_favoritter:

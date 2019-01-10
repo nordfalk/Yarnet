@@ -56,7 +56,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.Favourites" />
-        <activity android:name=".activities.Settings"></activity>
+        <activity android:name=".activities.Settings" />
+        <activity android:name=".activities.EditPage"></activity>
     </application>
 
 </manifest>
