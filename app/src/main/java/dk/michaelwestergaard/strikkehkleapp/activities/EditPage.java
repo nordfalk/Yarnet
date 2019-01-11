@@ -1,11 +1,14 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
 
 import dk.michaelwestergaard.strikkehkleapp.R;
 
@@ -32,19 +35,10 @@ public class EditPage extends Drawer {
         gentagKode = findViewById(R.id.gentagKode);
         gemEdits = findViewById(R.id.gemEdits);
 
-        gemEdits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "TEST2", Toast.LENGTH_LONG).show();
-            }
-        });
 
-        billedeKnap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "TEST2", Toast.LENGTH_LONG).show();
-            }
-        });
+/*        gemEdits.setOnClickListener(this);
+        billedeKnap.setOnClickListener(this);*/
+
 
         backBtn.setVisibility(View.VISIBLE);
     }
@@ -55,5 +49,11 @@ public class EditPage extends Drawer {
                 finish();
                 break;
         }
+
+/*        if(view == gemEdits){
+            Toast.makeText(getApplicationContext(), "TEST1", Toast.LENGTH_LONG).show();
+        } else if (view == billedeKnap) {
+            Toast.makeText(getApplicationContext(), "TEST2", Toast.LENGTH_LONG).show();
+        }*/
     }
-    }
+}

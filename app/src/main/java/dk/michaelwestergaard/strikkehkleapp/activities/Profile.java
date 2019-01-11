@@ -23,11 +23,17 @@ public class Profile extends Drawer implements View.OnClickListener {
 
     ImageView avatar;
     TextView name;
+    Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        btn = findViewById(R.id.editProfileBtn);
+        btn.setOnClickListener(this);
+
+
         auth = FirebaseAuth.getInstance();
 
         avatar = findViewById(R.id.avatar);
@@ -59,6 +65,9 @@ public class Profile extends Drawer implements View.OnClickListener {
         if(view == logout){
             auth.signOut();
             LoginManager.getInstance().logOut();
+        } else if (view == btn) {
+            Intent intent = new Intent(Profile.this, EditPage.class);
+            startActivity(intent);
         }
     }
 }
