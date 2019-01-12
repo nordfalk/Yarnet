@@ -5,8 +5,8 @@ import java.util.List;
 
 public class RecipeInstructionDTO {
 
-    String title;
-    List<String> instructions;
+    private String title;
+    private List<String> instructions;
 
     public RecipeInstructionDTO(String title, List<String> instructions) {
         this.title = title;

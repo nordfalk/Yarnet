@@ -4,13 +4,13 @@ import java.util.List;
 
 public class CategoryDTO {
 
-    String id;
-    String name;
-    int position;
-    boolean showInTopMenu;
-    boolean showSubcategories;
-    boolean showOnDiscover;
-    List<SubcategoryDTO> subcategoryList;
+    private String id;
+    private String name;
+    private int position;
+    private boolean showInTopMenu;
+    private boolean showSubcategories;
+    private boolean showOnDiscover;
+    private List<SubcategoryDTO> subcategoryList;
 
     public CategoryDTO(String id, String name, int position, boolean showInTopMenu, boolean showSubcategories, boolean showOnDiscover, List<SubcategoryDTO> subcategoryList) {
         this.id = id;

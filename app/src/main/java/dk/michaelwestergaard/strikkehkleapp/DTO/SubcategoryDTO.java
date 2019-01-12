@@ -2,8 +2,8 @@ package dk.michaelwestergaard.strikkehkleapp.DTO;
 
 public class SubcategoryDTO {
 
-    String id;
-    String name;
+    private String id;
+    private String name;
 
     public SubcategoryDTO(String id, String name) {
         this.id = id;
