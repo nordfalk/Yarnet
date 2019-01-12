@@ -1,11 +1,9 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class InstructionUnderAdapter extends RecyclerView.Adapter{
@@ -14,7 +12,7 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_recipe_instruction_bottom_element, parent, false);
-
+        System.out.println("gergergeg");
         return new InstructionBottomViewHolder(view);
     }
 

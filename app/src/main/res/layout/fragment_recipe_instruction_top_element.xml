@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/instructionPoint"
@@ -12,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="26dp"
+        android:elevation="3dp"
         android:background="@drawable/rounded_corner"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
@@ -24,7 +23,7 @@
         android:id="@+id/headlineElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:text="Overskrift - indsæt start elementet"
         android:textSize="18sp"
@@ -34,13 +33,11 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/underlineCycleView"
-        android:layout_width="300dp"
-        android:layout_height="516dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="359dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.818"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/headlineElement"
         app:layout_constraintTop_toBottomOf="@+id/headlineElement" />
 </android.support.constraint.ConstraintLayout>

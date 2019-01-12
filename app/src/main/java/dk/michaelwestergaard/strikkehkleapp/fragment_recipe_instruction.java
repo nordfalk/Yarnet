@@ -9,10 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 
 /**
@@ -80,7 +77,7 @@ public class fragment_recipe_instruction extends Fragment {
 
             InstructionAdapter ToplistAdapter = new InstructionAdapter();
             instructionRecycleView.setAdapter(ToplistAdapter);
-            instructionRecycleView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            instructionRecycleView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.VERTICAL, false));
             System.out.println("Kommer du onkel?");
         }
 
