@@ -12,6 +12,8 @@ public class CategoryDTO {
     private boolean showOnDiscover;
     private List<SubcategoryDTO> subcategoryList;
 
+    public CategoryDTO(){}
+
     public CategoryDTO(String id, String name, int position, boolean showInTopMenu, boolean showSubcategories, boolean showOnDiscover, List<SubcategoryDTO> subcategoryList) {
         this.id = id;
         this.name = name;

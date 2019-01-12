@@ -86,12 +86,11 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
     @Override
     public void onError(VerificationError verificationError) {
-        Toast.makeText(getActivity(), "onError! -> " + verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onStepSelected(int newStepPosition) {
-        Toast.makeText(getActivity(), "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onReturn() {

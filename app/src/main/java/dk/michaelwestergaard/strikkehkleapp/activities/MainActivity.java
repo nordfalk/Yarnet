@@ -43,7 +43,6 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         drawerBtn = findViewById(R.id.drawerBtn);
         drawerBtn.setOnClickListener(this);
 
-
         viewPager = findViewById(R.id.mainViewPager);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setVisibility(View.VISIBLE);
@@ -102,13 +101,6 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         adapter.addFragment(new CreateRecipe(), "Create");
         viewPager.setAdapter(adapter);
     }
-/*
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
- */
 
     @Override
     public void onFragmentInteraction(Uri uri) {

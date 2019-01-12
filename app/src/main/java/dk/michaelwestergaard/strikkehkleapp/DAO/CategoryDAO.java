@@ -7,8 +7,8 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 
 public class CategoryDAO implements DAO<CategoryDTO> {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference("categories");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = database.getReference("categories");
 
     @Override
     public boolean insert(CategoryDTO category) {
@@ -27,6 +27,11 @@ public class CategoryDAO implements DAO<CategoryDTO> {
     @Override
     public boolean delete(CategoryDTO object) throws NotImplementedException {
         throw new NotImplementedException("Denne metode er ikke lavet");
+    }
+
+    @Override
+    public DatabaseReference getReference() {
+        return databaseReference;
     }
 
 }

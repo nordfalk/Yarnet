@@ -10,17 +10,30 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.SubcategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.OnCheckedChangeListener {
+
+    CategoryDAO categoryDAO = new CategoryDAO();
 
     EditText title, description, price;
     Spinner type, category, subcategory;
@@ -28,8 +41,6 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     RadioButton radioFree, radioNotFree;
 
     CardView priceContainer;
-
-    private OnFragmentInteractionListener mListener;
 
     public CreateRecipeStepOne() {
         // Required empty public constructor
@@ -47,7 +58,9 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_recipe_step_one, container, false);
+        final View view = inflater.inflate(R.layout.fragment_create_recipe_step_one, container, false);
+
+        final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 
         title = view.findViewById(R.id.create_recipe_title);
         description = view.findViewById(R.id.create_recipe_description);
@@ -67,36 +80,82 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
 
         priceContainer.setVisibility(View.GONE);
 
-        return view;
-    }
+        categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    CategoryDTO categoryDTO = snapshot.getValue(CategoryDTO.class);
+                    categories.add(categoryDTO);
+                }
+
+                List<String> categoryNames = new ArrayList<String>();
+
+                for(CategoryDTO categoryDTO : categories){
+                    categoryNames.add(categoryDTO.getName());
+                }
+
+                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, categoryNames);
+                category.setAdapter(categoryAdapter);
+                category.setPrompt("Vælg Kategori");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, final View view, int i, long l) {
+                List<SubcategoryDTO> subcategories = categories.get(i).getSubcategoryList();
+                List<String> subcategoryNames = new ArrayList<String>();
+                for(SubcategoryDTO subcategoryDTO : subcategories){
+                    subcategoryNames.add(subcategoryDTO.getName());
+                }
+
+                ArrayAdapter<String> subategoryAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, subcategoryNames);
+                subcategory.setAdapter(subategoryAdapter);
+                subcategory.setPrompt("Vælg Underkategori");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Nullable
     @Override
     public VerificationError verifyStep() {
-        return null;
+        if(!title.getText().toString().matches("")){
+            if(!description.getText().toString().matches("")){
+                if(radioGroup.getCheckedRadioButtonId() != radioNotFree.getId()){
+                    return null;
+                } else {
+                    if(!price.getText().toString().matches("")){
+                        return null;
+                    }
+                }
+            }
+        }
+        return new VerificationError("Udfyld venligst alle felter!");
     }
 
     @Override
