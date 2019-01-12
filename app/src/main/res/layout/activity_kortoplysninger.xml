@@ -116,7 +116,7 @@
         android:hint="År"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/editText12"
-        app:layout_constraintStart_toEndOf="@+id/signup_btn"
+        app:layout_constraintStart_toEndOf="@+id/kortTilbageKnap"
         app:layout_constraintTop_toBottomOf="@+id/editText12" />
 
     <TextView
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/signup_btn"
+        android:id="@+id/kortTilbageKnap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
@@ -150,7 +150,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/godkendKnap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="17dp"
