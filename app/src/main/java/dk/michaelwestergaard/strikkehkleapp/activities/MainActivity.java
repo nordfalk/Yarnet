@@ -10,19 +10,23 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
+
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
 import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipeStepOne;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipeStepThree;
+import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipeStepTwo;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 
 public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
-        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener {
+        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener, CreateRecipeStepTwo.OnFragmentInteractionListener, CreateRecipeStepThree.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
-    BottomNavigationView bottomNavigationView;;
+    BottomNavigationView bottomNavigationView;
     MenuItem prevMenuItem;
     DrawerLayout drawer;
 
@@ -34,7 +38,7 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
         drawerBtn = findViewById(R.id.drawerBtn);
         drawerBtn.setOnClickListener(this);
