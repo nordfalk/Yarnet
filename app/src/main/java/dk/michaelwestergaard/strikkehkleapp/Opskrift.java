@@ -27,7 +27,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener,
     public boolean bought;
     ImageView backgroundPicture;
     CardView købContainer;
-    int price = 1;
+    int price = 0;
 
 
     @Override

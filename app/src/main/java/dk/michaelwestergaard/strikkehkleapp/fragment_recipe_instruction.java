@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class fragment_recipe_instruction extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    RecyclerView recipeInformationList, guideTop;
+    RecyclerView instructionRecycleView;
     TextView headlineElement,underlineElement,instructionPoint;
 
     // TODO: Rename and change types of parameters
@@ -75,11 +76,12 @@ public class fragment_recipe_instruction extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe_instruction, container, false);
 
         if(opskrift.bought = true){
-            recipeInformationList = view.findViewById(R.id.recipeInformationList);
+            instructionRecycleView = view.findViewById(R.id.recipeInstructionList);
 
             InstructionAdapter ToplistAdapter = new InstructionAdapter();
-            //recipeInformationList.setAdapter(ToplistAdapter);
-          //  guideTop.setAdapter(ToplistAdapter);
+            instructionRecycleView.setAdapter(ToplistAdapter);
+            instructionRecycleView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            System.out.println("Kommer du onkel?");
         }
 
         return view;
@@ -123,41 +125,5 @@ public class fragment_recipe_instruction extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-    public class InstructionAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = getLayoutInflater().inflate(R.layout.fragment_recipe_instruction_top_element,null);
-            TextView instructionPoint,headlineElement;
-            RecyclerView ToplineRC;
-
-            ToplineRC = view.findViewById(R.id.underlineCycleView);
-            instructionPoint= view.findViewById(R.id.instructionPoint);
-            headlineElement = view.findViewById(R.id.headlineElement);
-
-            ToplineRC.setAdapter();
-
-
-            return null;
-        }
-    }
-
-
 }
 
