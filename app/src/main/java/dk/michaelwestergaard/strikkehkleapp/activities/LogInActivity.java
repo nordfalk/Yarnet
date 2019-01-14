@@ -165,7 +165,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createUser(UserDTO user){
-        if(userDAO.insert(user)){
+        if(!userDAO.insert(user).matches("")){
             //YAY
             System.out.println("created");
         } else {

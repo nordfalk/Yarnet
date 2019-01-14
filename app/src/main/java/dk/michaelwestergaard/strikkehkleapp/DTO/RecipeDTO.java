@@ -5,12 +5,17 @@ import java.util.List;
 
 public class RecipeDTO {
 
+    public enum RecipeType {
+        CROCHETING, KNITTING
+    }
+
     private String recipeID;
     private String categoryID;
     private String subcategoryID;
     private String userID;
     private String title;
     private double price;
+    private RecipeType recipeType;
     private Date createdTimestamp;
     private Date updatedTimestamp;
 
@@ -19,13 +24,14 @@ public class RecipeDTO {
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> instructionList) {
+    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> instructionList) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.subcategoryID = subcategoryID;
         this.userID = userID;
         this.title = title;
         this.price = price;
+        this.recipeType = recipeType;
         this.createdTimestamp = createdTimestamp;
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
@@ -80,6 +86,14 @@ public class RecipeDTO {
         this.price = price;
     }
 
+    public RecipeType getRecipeType() {
+        return recipeType;
+    }
+
+    public void setRecipeType(RecipeType recipeType) {
+        this.recipeType = recipeType;
+    }
+
     public Date getCreatedTimestamp() {
         return createdTimestamp;
     }
@@ -121,6 +135,7 @@ public class RecipeDTO {
                 ", userID='" + userID + '\'' +
                 ", title='" + title + '\'' +
                 ", price=" + price +
+                ", recipeType=" + recipeType +
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
                 ", recipeInformationDTO=" + recipeInformationDTO +

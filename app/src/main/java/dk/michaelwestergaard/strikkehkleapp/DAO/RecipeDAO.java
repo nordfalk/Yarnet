@@ -20,11 +20,11 @@ public class RecipeDAO implements DAO<RecipeDTO> {
     private DatabaseReference databaseReference = database.getReference("recipes");
 
     @Override
-    public boolean insert(RecipeDTO recipe) {
+    public String insert(RecipeDTO recipe) {
         String recipeID = databaseReference.push().getKey();
         recipe.setRecipeID(recipeID);
         databaseReference.child(recipeID).setValue(recipe);
-        return true;
+        return recipeID;
     }
 
     @Override
