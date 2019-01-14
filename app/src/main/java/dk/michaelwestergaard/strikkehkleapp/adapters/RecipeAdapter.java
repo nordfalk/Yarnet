@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.activities.Profile;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<RecipeDTO> recipes;
+    private RecipeDTO recipe;
 
     public RecipeAdapter(List<RecipeDTO> recipes) {
         this.recipes = recipes;
@@ -34,17 +38,26 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(RecipeAdapter.ViewHolder holder, int position) {
-        RecipeDTO recipe = recipes.get(position);
+        recipe = recipes.get(position);
 
         TextView titleView = holder.titleView;
         titleView.setText(recipe.getTitle());
         ImageView imageView = holder.imageView;
         //TODO: Set image source
+
+        holder.itemView.setOnClickListener(this);
     }
 
     @Override
     public int getItemCount() {
         return recipes.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(v.getContext(), Opskrift.class);
+        intent.putExtra("RecipeID", recipe.getRecipeID());
+        v.getContext().startActivity(intent);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
