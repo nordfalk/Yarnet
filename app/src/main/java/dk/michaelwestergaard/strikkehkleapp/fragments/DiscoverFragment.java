@@ -60,7 +60,13 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                 adapter.addFragment(new DiscoverStartFragment(), "Start");
 
                 for(CategoryDTO category : categories) {
-                    adapter.addFragment(new ListFragment(), category.getName());
+                    Bundle arguments = new Bundle();
+                    arguments.putString("categoryID", category.getId());
+
+                    ListFragment newFragment = new ListFragment();
+                    newFragment.setArguments(arguments);
+
+                    adapter.addFragment(newFragment, category.getName());
                 }
 
                 viewPager.setAdapter(adapter);
