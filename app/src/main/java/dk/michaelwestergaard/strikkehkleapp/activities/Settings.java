@@ -13,10 +13,10 @@ public class Settings extends Drawer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_settings);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         backBtn.setVisibility(View.VISIBLE);
     }

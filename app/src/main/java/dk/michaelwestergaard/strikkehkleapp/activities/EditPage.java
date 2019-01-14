@@ -27,8 +27,8 @@ public class EditPage extends Drawer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_edit_page);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_page);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 

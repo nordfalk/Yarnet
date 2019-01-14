@@ -13,10 +13,11 @@ public class Favourites extends Drawer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_favourites);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_favourites);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         backBtn.setVisibility(View.VISIBLE);
     }
