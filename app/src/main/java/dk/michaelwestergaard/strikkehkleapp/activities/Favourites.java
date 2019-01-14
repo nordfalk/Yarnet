@@ -16,8 +16,7 @@ public class Favourites extends Drawer {
         setContentView(R.layout.activity_favourites);
         super.onCreate(savedInstanceState);
 
-        drawerBtn = findViewById(R.id.drawerBtn);
-        drawerBtn.setOnClickListener(this);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         backBtn.setVisibility(View.VISIBLE);
     }
@@ -30,7 +29,7 @@ public class Favourites extends Drawer {
 
         }
 
-      //  drawer.openDrawer(GravityCompat.END);
+        drawer.openDrawer(GravityCompat.END);
 
         }
     }

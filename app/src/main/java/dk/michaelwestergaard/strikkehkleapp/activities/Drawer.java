@@ -26,13 +26,15 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
 
         @Override
         protected void onCreate (Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
             setContentView(R.layout.drawer);
+            super.onCreate(savedInstanceState);
+
 
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setItemIconTintList(null);
             navigationView.setNavigationItemSelectedListener(this);
+            View headerView = navigationView.getHeaderView(0);
 
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -47,8 +49,16 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
             backBtn = findViewById(R.id.backButton);
             backBtn.setOnClickListener(this);
 
-          //  editProfileBtn2 = findViewById(R.id.editProfileBtn2);
-           // editProfileBtn2.setOnClickListener(this);
+
+            editProfileBtn2 = (TextView)headerView.findViewById(R.id.editProfileBtn2);
+            editProfileBtn2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                            Intent intent = new Intent(Drawer.this, EditPage.class);
+                            startActivity(intent);
+                    }
+            });
+
 
         }
 
@@ -69,11 +79,6 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
                     startActivity(intent3);
                     break;
 
-                case R.id.editProfileBtn2:
-                    Intent intent4 = new Intent(this, EditPage.class);
-                    startActivity(intent4);
-                    break;
-
          /*   case R.id.nav_favoritter:
                 Intent intent3 = new Intent(this, IndstillingerFragment.class);
                 startActivity(intent3);
@@ -89,5 +94,6 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
         public void onClick (View view){
 
             drawer.openDrawer(GravityCompat.END);
+
         }
     }

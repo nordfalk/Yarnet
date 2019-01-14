@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.EditPage">
 
-    <include
-        android:id="@+id/drawer_layout"
-        layout="@layout/drawer" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -28,6 +25,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/constraintLayout7"
@@ -181,6 +179,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
