@@ -60,6 +60,8 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         return fragment;
     }
 
+
+
     public RecipeDTO getData(RecipeDTO recipeDTO){
 
         if(type.getSelectedItemPosition() == 0){
