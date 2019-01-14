@@ -125,12 +125,9 @@ public class DiscoverStartFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
         Log.d("Recipes", recipes.toString());
-
-
 
         return view;
     }
