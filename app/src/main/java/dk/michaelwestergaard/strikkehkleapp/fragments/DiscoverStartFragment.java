@@ -59,9 +59,9 @@ public class DiscoverStartFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
+        final View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
 
         Query query = FirebaseDatabase.getInstance().getReference().child("recipes");
         FirebaseRecyclerOptions<RecipeDTO> options = new FirebaseRecyclerOptions.Builder<RecipeDTO>()
@@ -104,6 +104,23 @@ public class DiscoverStartFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
+
+                RecipeAdapter adapter = new RecipeAdapter(recipes);
+
+                RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
+                RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewNew.setAdapter(adapter);
+                recyclerViewNew.setLayoutManager(layoutManagerNew);
+
+                RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
+                RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewPaid.setAdapter(adapter);
+                recyclerViewPaid.setLayoutManager(layoutManagerPaid);
+
+                RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
+                RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewFree.setAdapter(adapter);
+                recyclerViewFree.setLayoutManager(layoutManagerFree);
             }
 
             @Override
@@ -113,22 +130,7 @@ public class DiscoverStartFragment extends Fragment {
         });
         Log.d("Recipes", recipes.toString());
 
-        RecipeAdapter adapter = new RecipeAdapter(recipes);
 
-        RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
-        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewNew.setAdapter(adapter);
-        recyclerViewNew.setLayoutManager(layoutManagerNew);
-
-        RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
-        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewPaid.setAdapter(adapter);
-        recyclerViewPaid.setLayoutManager(layoutManagerPaid);
-
-        RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
-        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewFree.setAdapter(adapter);
-        recyclerViewFree.setLayoutManager(layoutManagerFree);
 
         return view;
     }
