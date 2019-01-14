@@ -37,7 +37,10 @@ public class InstructionAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return recipeInstructionDTO.size();
+        if(recipeInstructionDTO != null)
+            return recipeInstructionDTO.size();
+
+        return 0;
     }
 
     private class InstructionViewHolder extends RecyclerView.ViewHolder{
