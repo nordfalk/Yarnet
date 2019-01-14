@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickListener {
@@ -23,6 +27,29 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
     Button newMaterialBtn, newToolBtn;
 
     public CreateRecipeStepTwo() {}
+
+    public RecipeDTO getData(RecipeDTO recipeDTO){
+
+        List<String> materials = new ArrayList<String>();
+        List<String> tools = new ArrayList<String>();
+
+        for(int i = 0; i < materialLinearLayout.getChildCount(); i++){
+            View view = materialLinearLayout.getChildAt(i);
+            EditText materialTxt = view.findViewById(R.id.create_recipe_instruction_title);
+            materials.add(materialTxt.getText().toString());
+        }
+
+        for(int i = 0; i < toolLinearLayout.getChildCount(); i++){
+            View view = toolLinearLayout.getChildAt(i);
+            EditText material = view.findViewById(R.id.create_recipe_instruction_title);
+            tools.add(material.getText().toString());
+        }
+
+        recipeDTO.getRecipeInformationDTO().setMaterials(materials);
+        recipeDTO.getRecipeInformationDTO().setTools(tools);
+
+        return recipeDTO;
+    }
 
     public static CreateRecipeStepTwo newInstance(String param1, String param2) {
         CreateRecipeStepTwo fragment = new CreateRecipeStepTwo();

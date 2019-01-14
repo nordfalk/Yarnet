@@ -28,6 +28,8 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInformationDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.SubcategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
@@ -40,15 +42,45 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     RadioGroup radioGroup;
     RadioButton radioFree, radioNotFree;
 
+    final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
+    List<SubcategoryDTO> subcategories;
+
     CardView priceContainer;
 
     public CreateRecipeStepOne() {
         // Required empty public constructor
     }
 
+    public CreateRecipeStepOne newInstance(){
+        return new CreateRecipeStepOne();
+    }
+
     public static CreateRecipeStepOne newInstance(String param1, String param2) {
         CreateRecipeStepOne fragment = new CreateRecipeStepOne();
         return fragment;
+    }
+
+    public RecipeDTO getData(RecipeDTO recipeDTO){
+        recipeDTO.setTitle(title.getText().toString());
+
+        RecipeInformationDTO recipeInformationDTO = new RecipeInformationDTO();
+        recipeInformationDTO.setDescription(description.getText().toString());
+        recipeDTO.setRecipeInformationDTO(recipeInformationDTO);
+
+        if(radioGroup.getCheckedRadioButtonId() == radioNotFree.getId()){
+            if(!price.getText().toString().matches("")){
+                recipeDTO.setPrice(Double.parseDouble(price.getText().toString()));
+            } else {
+                recipeDTO.setPrice(0.00);
+            }
+        } else {
+            recipeDTO.setPrice(0.00);
+        }
+
+        recipeDTO.setCategoryID(categories.get(category.getSelectedItemPosition()).getId());
+        recipeDTO.setSubcategoryID(subcategories.get(subcategory.getSelectedItemPosition()).getId());
+
+        return recipeDTO;
     }
 
     @Override
@@ -59,8 +91,6 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_create_recipe_step_one, container, false);
-
-        final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 
         title = view.findViewById(R.id.create_recipe_title);
         description = view.findViewById(R.id.create_recipe_description);
@@ -110,7 +140,7 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, final View view, int i, long l) {
-                List<SubcategoryDTO> subcategories = categories.get(i).getSubcategoryList();
+                subcategories = categories.get(i).getSubcategoryList();
                 List<String> subcategoryNames = new ArrayList<String>();
                 for(SubcategoryDTO subcategoryDTO : subcategories){
                     subcategoryNames.add(subcategoryDTO.getName());

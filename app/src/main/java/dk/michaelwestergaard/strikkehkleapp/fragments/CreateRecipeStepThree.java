@@ -15,6 +15,11 @@ import android.widget.TextView;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInstructionDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class CreateRecipeStepThree extends Fragment implements Step, View.OnClickListener {
@@ -28,6 +33,31 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
     public static CreateRecipeStepThree newInstance(String param1, String param2) {
         CreateRecipeStepThree fragment = new CreateRecipeStepThree();
         return fragment;
+    }
+
+    public RecipeDTO getData(RecipeDTO recipeDTO){
+
+        List<RecipeInstructionDTO> instructionList = new ArrayList<RecipeInstructionDTO>();
+
+        for(int i = 0; i < instructionLinearLayout.getChildCount(); i++){
+            View view = instructionLinearLayout.getChildAt(i);
+            EditText title = view.findViewById(R.id.create_recipe_instruction_title);
+            LinearLayout underLinearLayout = view.findViewById(R.id.create_recipe_sub_instruction);
+
+            List<String> underInstructionList = new ArrayList<String>();
+
+            for(int n = 0; n < underLinearLayout.getChildCount(); n++){
+                View viewUnder = instructionLinearLayout.getChildAt(i);
+                EditText underInstructionTxt = viewUnder.findViewById(R.id.create_recipe_sub_instruction_text);
+                underInstructionList.add(underInstructionTxt.getText().toString());
+            }
+            RecipeInstructionDTO recipeInstructionDTO = new RecipeInstructionDTO(title.getText().toString(), underInstructionList);
+            instructionList.add(recipeInstructionDTO);
+        }
+
+        recipeDTO.setInstructionList(instructionList);
+
+        return recipeDTO;
     }
 
     @Override

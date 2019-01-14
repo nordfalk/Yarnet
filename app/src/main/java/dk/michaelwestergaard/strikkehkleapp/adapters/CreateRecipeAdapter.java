@@ -21,6 +21,8 @@ public class CreateRecipeAdapter extends AbstractFragmentStepAdapter {
 
     @Override
     public Step createStep(int position) {
+
+
         return (Step) stepFragments.get(position);
     }
 
