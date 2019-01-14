@@ -1,6 +1,5 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -29,7 +28,7 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
             super.onCreate(savedInstanceState);
             setContentView(R.layout.drawer);
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             navigationView.setItemIconTintList(null);
             navigationView.setNavigationItemSelectedListener(this);

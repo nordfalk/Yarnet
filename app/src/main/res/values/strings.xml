@@ -9,4 +9,20 @@
     <string name="facebook_app_id">333212644140047</string>
     <string name="fb_login_protocol_scheme">fb333212644140047</string>
 
+    <string-array name="RecipeTypes">
+        <item>Alle</item>
+        <item>Hækle</item>
+        <item>Strikke</item>
+    </string-array>
+    <string-array name="Difficulty">
+        <item>Alle</item>
+        <item>Nybegynder</item>
+        <item>Øvet</item>
+        <item>Erfaren</item>
+    </string-array>
+
+    <string-array name="create_recipe_types">
+        <item>Strikke Opskrift</item>
+        <item>Hækle Opskrift</item>
+    </string-array>
 </resources>
