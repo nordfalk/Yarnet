@@ -64,8 +64,13 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
     @Override
     public void onClick(View view) {
         TextView instructionNumber;
-        EditText inputField, subInputField;
+        EditText inputField;
         Button removeInstructionBtn;
+        Button addSubInstructionBtn;
+
+        final EditText[] subInputField = new EditText[1];
+        final Button[] removeSubInstructionBtn = new Button[1];
+        final LinearLayout linearLayout;
 
         if(view.equals(newInstructionBtn)){
             View listElement = inflater.inflate(R.layout.create_recipe_instruction_element, null);
@@ -73,7 +78,10 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
             instructionNumber = listElement.findViewById(R.id.create_recipe_instruction_number);
             inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
 
+            linearLayout = listElement.findViewById(R.id.create_recipe_sub_instruction);
+
             removeInstructionBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+            addSubInstructionBtn = listElement.findViewById(R.id.create_recipe_add_sub_instruction);
 
             instructionNumber.setText(""+(instructionLinearLayout.getChildCount()+1));
 
@@ -85,6 +93,27 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
                     instructionLinearLayout.removeView((View) view.getParent());
                 }
             });
+
+            addSubInstructionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    View subElement = inflater.inflate(R.layout.create_recipe_instruction_sub_element, null);
+
+                    subInputField[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_text);
+                    removeSubInstructionBtn[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_remove_btn);
+
+                    removeSubInstructionBtn[0].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            linearLayout.removeView((View) view.getParent());
+                        }
+                    });
+
+                    linearLayout.addView(subElement, linearLayout.getChildCount());
+                }
+            });
+
+
 
             instructionLinearLayout.addView(listElement, instructionLinearLayout.getChildCount());
 
