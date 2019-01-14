@@ -20,11 +20,11 @@ public class RecipeDTO {
     private Date updatedTimestamp;
 
     private RecipeInformationDTO recipeInformationDTO;
-    private List<RecipeInstructionDTO> instructionList;
+    private List<RecipeInstructionDTO> recipeInstructionDTO;
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> instructionList) {
+    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.subcategoryID = subcategoryID;
@@ -35,7 +35,7 @@ public class RecipeDTO {
         this.createdTimestamp = createdTimestamp;
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
-        this.instructionList = instructionList;
+        this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
     public String getRecipeID() {
@@ -118,12 +118,12 @@ public class RecipeDTO {
         this.recipeInformationDTO = recipeInformationDTO;
     }
 
-    public List<RecipeInstructionDTO> getInstructionList() {
-        return instructionList;
+    public List<RecipeInstructionDTO> getRecipeInstructionDTO() {
+        return recipeInstructionDTO;
     }
 
-    public void setInstructionList(List<RecipeInstructionDTO> instructionList) {
-        this.instructionList = instructionList;
+    public void setRecipeInstructionDTO(List<RecipeInstructionDTO> recipeInstructionDTO) {
+        this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
     @Override
@@ -139,7 +139,7 @@ public class RecipeDTO {
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
                 ", recipeInformationDTO=" + recipeInformationDTO +
-                ", instructionList=" + instructionList +
+                ", recipeInstructionDTO=" + recipeInstructionDTO +
                 '}';
     }
 }
