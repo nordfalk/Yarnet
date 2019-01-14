@@ -28,7 +28,6 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
@@ -101,6 +100,7 @@ public class DiscoverStartFragment extends Fragment {
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipes.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
@@ -127,7 +127,6 @@ public class DiscoverStartFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Log.d("Recipes", recipes.toString());
 
         return view;
     }

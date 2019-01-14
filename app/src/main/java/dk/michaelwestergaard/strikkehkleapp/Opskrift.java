@@ -31,9 +31,9 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class Opskrift extends AppCompatActivity implements View.OnClickListener {
 
-    private RecipeDTO recipe;
+    private RecipeDTO recipe = null;
     private RecipeDAO recipeDAO = new RecipeDAO();
-    private String recipeID;
+    private String recipeID = "";
 
     private UserDTO user;
     private UserDAO userDAO = new UserDAO();
@@ -91,6 +91,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void insertRecipe(){
+
+
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
