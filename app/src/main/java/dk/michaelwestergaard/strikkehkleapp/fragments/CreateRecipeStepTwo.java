@@ -86,8 +86,8 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
         if(view.equals(newMaterialBtn)){
             listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
-            inputField = listElement.findViewById(R.id.create_recipe_new_field);
-            removeBtn = listElement.findViewById(R.id.create_recipe_remove_btn);
+            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
 
             inputField.setHint("Nyt Materiale");
             removeBtn.setOnClickListener(this);
@@ -96,14 +96,14 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
         } else if(view.equals(newToolBtn)){
             listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
-            inputField = listElement.findViewById(R.id.create_recipe_new_field);
-            removeBtn = listElement.findViewById(R.id.create_recipe_remove_btn);
+            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
 
             inputField.setHint("Nyt Redskab");
             removeBtn.setOnClickListener(this);
 
             toolLinearLayout.addView(listElement, toolLinearLayout.getChildCount());
-        } else if(view.getId() == R.id.create_recipe_remove_btn){
+        } else if(view.getId() == R.id.create_recipe_instruction_remove_btn){
             materialLinearLayout.removeView((View) view.getParent());
             toolLinearLayout.removeView((View) view.getParent());
             //TODO: Find ud fra hvordan man kan finde hvilket id den er inde i.
