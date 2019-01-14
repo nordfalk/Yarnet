@@ -16,8 +16,8 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 
 public class RecipeDAO implements DAO<RecipeDTO> {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference("recipes");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = database.getReference("recipes");
 
     @Override
     public boolean insert(RecipeDTO recipe) {
@@ -38,6 +38,7 @@ public class RecipeDAO implements DAO<RecipeDTO> {
         throw new NotImplementedException("Denne metode er ikke lavet");
     }
 
+    //Skal fjernes
     public RecipeDTO get(final String recipeID) {
         final RecipeDTO[] recipeDTO = new RecipeDTO[1];
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -81,7 +82,8 @@ public class RecipeDAO implements DAO<RecipeDTO> {
 
     }
 
-    public DatabaseReference getDatabaseReference() {
+    @Override
+    public DatabaseReference getReference() {
         return databaseReference;
     }
 }
