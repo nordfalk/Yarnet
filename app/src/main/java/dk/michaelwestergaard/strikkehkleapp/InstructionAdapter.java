@@ -8,9 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInstructionDTO;
+
 public class InstructionAdapter extends RecyclerView.Adapter {
 
+    List<RecipeInstructionDTO> recipeInstructionDTO;
     Context context;
+
+    public InstructionAdapter(List<RecipeInstructionDTO> recipeInstructionDTO) {
+        this.recipeInstructionDTO = recipeInstructionDTO;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,12 +33,11 @@ public class InstructionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((InstructionViewHolder) holder).bindView(position);
-        System.out.println("Onkel3");
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return recipeInstructionDTO.size();
     }
 
     private class InstructionViewHolder extends RecyclerView.ViewHolder{
@@ -41,15 +49,13 @@ public class InstructionAdapter extends RecyclerView.Adapter {
             headlineElement = view.findViewById(R.id.headlineElement);
             instructionpoint = view.findViewById(R.id.instructionPoint);
             underlineCycleview = view.findViewById(R.id.underlineCycleView);
-            System.out.println("Onkel2");
         }
 
         public void bindView(int position){
-            headlineElement.setText("test");
+            headlineElement.setText(recipeInstructionDTO.get(position).getTitle());
             instructionpoint.setText(position+1+"");
-            underlineCycleview.setAdapter(new InstructionUnderAdapter());
+            underlineCycleview.setAdapter(new InstructionUnderAdapter(recipeInstructionDTO.get(position).getInstructions()));
             underlineCycleview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-            System.out.println("Onkel1");
         }
 
     }

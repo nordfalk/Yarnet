@@ -6,13 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class InstructionUnderAdapter extends RecyclerView.Adapter{
     TextView instructionPoint,underlineElement;
+
+    List<String> instruction;
+
+    public InstructionUnderAdapter(List<String> instructions) {
+        this.instruction = instructions;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_recipe_instruction_bottom_element, parent, false);
-        System.out.println("gergergeg");
         return new InstructionBottomViewHolder(view);
     }
 
@@ -23,7 +30,7 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return 3;
+        return instruction.size();
     }
 
     private class InstructionBottomViewHolder extends RecyclerView.ViewHolder{
@@ -36,7 +43,7 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
         }
 
         public void bindView(int position){
-            textView.setText("test");
+            textView.setText(instruction.get(position));
         }
 
     }

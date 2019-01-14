@@ -55,7 +55,7 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
             instructionList.add(recipeInstructionDTO);
         }
 
-        recipeDTO.setInstructionList(instructionList);
+        recipeDTO.setRecipeInstructionDTO(instructionList);
 
         return recipeDTO;
     }
