@@ -21,58 +21,79 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.501">
 
-        <Button
-            android:id="@+id/Forsæt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fortsæt"
-            android:layout_marginTop="270dp"
-            android:layout_marginLeft="275dp"
-            />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vælg betalingsmetode:"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            />
-
-        <Button
-            android:id="@+id/Annulere"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Annulere"
-            android:layout_marginTop="270dp"
-            />
-
-        <RadioGroup
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="171dp"
-            android:layout_marginTop="50dp">
+            android:layout_height="match_parent">
 
-            <RadioButton
-                android:id="@+id/Kreditkort"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Kreditkort" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:text="Vælg betalingsmetode:"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <RadioButton
-                android:id="@+id/Mobilepay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mobilepay" />
+            <Button
+                android:id="@+id/AnnulereKnap"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="58dp"
+                android:layout_marginEnd="8dp"
+                android:text="Annulere"
+                app:layout_constraintEnd_toStartOf="@+id/FortsætKnap"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-            <RadioButton
-                android:id="@+id/Paypal"
+            <Button
+                android:id="@+id/FortsætKnap"
+                android:layout_width="107dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="126dp"
+                android:layout_marginTop="58dp"
+                android:layout_marginEnd="8dp"
+                android:text="Fortsæt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/AnnulereKnap"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Paypal" />
-        </RadioGroup>
+                android:layout_height="171dp"
+                android:layout_marginTop="21dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+                <RadioButton
+                    android:id="@+id/Kreditkort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Kreditkort" />
+
+                <RadioButton
+                    android:id="@+id/Mobilepay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Mobilepay" />
+
+                <RadioButton
+                    android:id="@+id/Paypal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Paypal" />
+            </RadioGroup>
+
+        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.v7.widget.CardView>

@@ -7,4 +7,5 @@
     <color name="colorToolbar">#43b05c</color>
     <color name="white">#fff</color>
     <color name="transparent">#00000000</color>
+    <color name="gray">#DCDCDC</color>
 </resources>
