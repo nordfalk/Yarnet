@@ -2,24 +2,33 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class DiscoverFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private CategoryDAO categoryDAO = new CategoryDAO();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -37,15 +46,32 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new DiscoverStartFragment(), "Start");
-        adapter.addFragment(new ListFragment(), "Trøjer");
-        adapter.addFragment(new ListFragment(), "Huer");
-        adapter.addFragment(new ListFragment(), "Handsker");
-        adapter.addFragment(new ListFragment(), "Sokker");
-        adapter.addFragment(new ListFragment(), "w/e");
-        viewPager.setAdapter(adapter);
+    private void setupViewPager(final ViewPager viewPager) {
+        final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
+
+        categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    categories.add(snapshot.getValue(CategoryDTO.class));
+                }
+
+                TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
+                adapter.addFragment(new DiscoverStartFragment(), "Start");
+
+                for(CategoryDTO category : categories) {
+                    adapter.addFragment(new ListFragment(), category.getName());
+                }
+
+                viewPager.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Log.d("Recipes", categories.toString());
     }
 
     @Override
