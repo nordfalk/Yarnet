@@ -32,7 +32,7 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
     private OnFragmentInteractionListener mListener;
     private StepperLayout stepperLayout;
 
-    List<Fragment> fragments;
+    List<CreateRecipeAdapterStepperInfo> fragments;
 
     public CreateRecipe() {
 
@@ -50,13 +50,15 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         stepperLayout = view.findViewById(R.id.stepperLayout);
 
-        fragments = new ArrayList<Fragment>();
-        fragments.add(new CreateRecipeStepOne());
-        fragments.add(new CreateRecipeStepTwo());
-        fragments.add(new CreateRecipeStepThree());
+        fragments = new ArrayList<CreateRecipeAdapterStepperInfo>();
+        fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepOne(), "Oplysninger"));
+        fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepTwo(), "Materialer"));
+        fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepThree(), "Vejledning"));
 
         stepperLayout.setAdapter(new CreateRecipeAdapter(getFragmentManager(), getActivity(), fragments));
         stepperLayout.setListener(this);
+
+
 
         return view;
     }
@@ -91,9 +93,9 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         Toast.makeText(getActivity(), "onCompleted!", Toast.LENGTH_SHORT).show();
-        ((CreateRecipeStepOne) fragments.get(0)).getData(recipe);
-        ((CreateRecipeStepTwo) fragments.get(1)).getData(recipe);
-        ((CreateRecipeStepThree) fragments.get(2)).getData(recipe);
+        ((CreateRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
+        ((CreateRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
+        ((CreateRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
 
         recipe.setCreatedTimestamp(new Date());
 
@@ -188,5 +190,31 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    public class CreateRecipeAdapterStepperInfo {
+        private Fragment fragment;
+        private String title;
+
+        public CreateRecipeAdapterStepperInfo(Fragment fragment, String title) {
+            this.fragment = fragment;
+            this.title = title;
+        }
+
+        public Fragment getFragment() {
+            return fragment;
+        }
+
+        public void setFragment(Fragment fragment) {
+            this.fragment = fragment;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
     }
 }
