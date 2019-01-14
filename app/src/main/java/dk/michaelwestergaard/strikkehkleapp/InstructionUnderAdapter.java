@@ -30,7 +30,10 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return instruction.size();
+        if(instruction != null)
+            return instruction.size();
+
+        return 0;
     }
 
     private class InstructionBottomViewHolder extends RecyclerView.ViewHolder{
