@@ -14,13 +14,13 @@ public class UserDAO implements DAO<UserDTO> {
     private DatabaseReference databaseReference = database.getReference("users");
 
     @Override
-    public boolean insert(UserDTO user) {
+    public String insert(UserDTO user) {
         if(get(user.getUserID()) == null){
             databaseReference.child(user.getUserID()).setValue(user);
         } else {
-            return false;
+            return "";
         }
-        return true;
+        return user.getUserID();
     }
 
     @Override

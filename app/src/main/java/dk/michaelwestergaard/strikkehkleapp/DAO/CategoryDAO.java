@@ -11,11 +11,11 @@ public class CategoryDAO implements DAO<CategoryDTO> {
     private DatabaseReference databaseReference = database.getReference("categories");
 
     @Override
-    public boolean insert(CategoryDTO category) {
+    public String insert(CategoryDTO category) {
         String categoryID = databaseReference.push().getKey();
         category.setId(categoryID);
         databaseReference.child(categoryID).setValue(category);
-        return true;
+        return categoryID;
     }
 
     @Override

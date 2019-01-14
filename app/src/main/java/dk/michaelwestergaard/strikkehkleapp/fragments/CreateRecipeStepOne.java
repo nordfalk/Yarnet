@@ -61,6 +61,13 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     }
 
     public RecipeDTO getData(RecipeDTO recipeDTO){
+
+        if(type.getSelectedItemPosition() == 0){
+            recipeDTO.setRecipeType(RecipeDTO.RecipeType.KNITTING);
+        } else if(type.getSelectedItemPosition() == 1){
+            recipeDTO.setRecipeType(RecipeDTO.RecipeType.CROCHETING);
+        }
+
         recipeDTO.setTitle(title.getText().toString());
 
         RecipeInformationDTO recipeInformationDTO = new RecipeInformationDTO();

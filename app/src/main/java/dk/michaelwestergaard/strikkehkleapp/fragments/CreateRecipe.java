@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.CreateRecipeAdapter;
 
@@ -101,8 +103,11 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         RecipeDAO recipeDAO = new RecipeDAO();
 
-        recipeDAO.insert(recipe);
+        String recipeID = recipeDAO.insert(recipe);
 
+        Intent intent = new Intent (getContext(), Opskrift.class);
+        intent.putExtra("RecipeID", recipeID);
+        getContext().startActivity(intent);
 
     }
 
