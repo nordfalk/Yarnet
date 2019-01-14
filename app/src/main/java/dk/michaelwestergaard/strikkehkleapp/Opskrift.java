@@ -37,7 +37,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
     private UserDTO user;
     private UserDAO userDAO = new UserDAO();
-    private String userID;
 
     private TextView title, creator;
     private TabLayout tabLayout;
@@ -55,7 +54,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_opskrift);
 
         recipeID = getIntent().getStringExtra("RecipeID");
-        userID = getIntent().getStringExtra("UserID");
 
         String test = getIntent().getStringExtra("TEST");
 
@@ -93,31 +91,27 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void insertRecipe(){
-        userDAO.getReference().child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("User found! " + dataSnapshot.getKey());
-                user = dataSnapshot.getValue(UserDTO.class);
-
-                creator.setText(user.getFirst_name() + " " + user.getLast_name());
-
-                setupViewPager(viewPager);
-                tabLayout.setupWithViewPager(viewPager);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("Recipe found! " + dataSnapshot.getKey());
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
-
                 title.setText(recipe.getTitle());
+
+                userDAO.getReference().child(recipe.getUserID()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println("User found! " + dataSnapshot.getKey());
+                        user = dataSnapshot.getValue(UserDTO.class);
+
+                        creator.setText(user.getFirst_name() + " " + user.getLast_name());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(viewPager);
