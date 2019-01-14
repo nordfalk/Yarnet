@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile">
+    tools:context=".activities.Profile">
+
+    <include
+        android:id="@+id/drawer_layout"
+        layout="@layout/drawer" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"

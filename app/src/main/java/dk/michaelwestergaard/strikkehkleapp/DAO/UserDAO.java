@@ -6,14 +6,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
-
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class UserDAO implements DAO<UserDTO> {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference("users");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = database.getReference("users");
 
     @Override
     public boolean insert(UserDTO user) {
@@ -36,7 +34,6 @@ public class UserDAO implements DAO<UserDTO> {
         throw new NotImplementedException("Denne metode er ikke lavet");
     }
 
-    @Override
     public UserDTO get(final String userID) {
         final UserDTO[] userDTO = new UserDTO[1];
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -60,7 +57,7 @@ public class UserDAO implements DAO<UserDTO> {
     }
 
     @Override
-    public List<UserDTO> getAll() throws NotImplementedException {
-        throw new NotImplementedException("Denne metode er ikke lavet");
+    public DatabaseReference getReference() {
+        return databaseReference;
     }
 }

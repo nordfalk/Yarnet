@@ -1,4 +1,4 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -16,8 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class signUp extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
 
     private FirebaseAuth auth;
 
@@ -46,7 +47,7 @@ public class signUp extends AppCompatActivity implements View.OnClickListener, O
         btnSignup.setOnClickListener(this);
 
         //Loading dialog
-        builder = new AlertDialog.Builder(signUp.this);
+        builder = new AlertDialog.Builder(SignUpActivity.this);
         builder.setCancelable(false); // if you want user to wait for some process to finish,
         builder.setView(R.layout.loading_dialog);
         progressDialog = builder.create();
@@ -82,10 +83,10 @@ public class signUp extends AppCompatActivity implements View.OnClickListener, O
 
         progressDialog.dismiss();
 
-        Toast.makeText(signUp.this, "Du er hermed oprettet som bruger!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SignUpActivity.this, "Du er hermed oprettet som bruger!", Toast.LENGTH_SHORT).show();
 
         if (!task.isSuccessful()) {
-            Toast.makeText(signUp.this, "Kunne ikke oprette, prøv igen.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, "Kunne ikke oprette, prøv igen.", Toast.LENGTH_SHORT).show();
         } else {
 
             UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(), inputEmail.getText().toString(), inputFirstName.getText().toString(), inputLastName.getText().toString(), "https://www.bitgab.com/uploads/profile/files/default.png", 1);

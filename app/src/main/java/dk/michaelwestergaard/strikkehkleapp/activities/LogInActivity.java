@@ -1,4 +1,4 @@
-package dk.michaelwestergaard.strikkehkleapp;
+package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -26,9 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
-import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
+import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class logIn extends AppCompatActivity implements View.OnClickListener {
+public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth auth;
 
@@ -81,7 +81,7 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
         });
 
         //Loading dialog
-        builder = new AlertDialog.Builder(logIn.this);
+        builder = new AlertDialog.Builder(LogInActivity.this);
         builder.setCancelable(false);
         builder.setView(R.layout.loading_dialog);
         progressDialog = builder.create();
@@ -98,29 +98,29 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
         //TODO: Hvis en email er oprettet og man logger ind med fb virker det ikke. Skal linkes under profil indstillinger eller noget
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    System.out.println(task.getException());
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
-                        if(newUser){
-                            String[] name = user.getDisplayName().split(" ");
-                            String avatar = user.getPhotoUrl().toString();
-                            avatar = avatar + "?height=500";
-                            UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], avatar, 1);
-                            createUser(userDTO);
+                        System.out.println(task.getException());
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                            if(newUser){
+                                String[] name = user.getDisplayName().split(" ");
+                                String avatar = user.getPhotoUrl().toString();
+                                avatar = avatar + "?height=500";
+                                UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], avatar, 1);
+                                createUser(userDTO);
+                            }
+                            System.out.println("UserID: " + user.getUid());
+                            Intent i = new Intent(LogInActivity.this, MainActivity.class);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(LogInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
-                        System.out.println("UserID: " + user.getUid());
-                        Intent i = new Intent(logIn.this, MainActivity.class);
-                        startActivity(i);
-                    } else {
-                        Toast.makeText(logIn.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
+                });
     }
 
     @Override
@@ -133,15 +133,15 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
                 String password = inputPassword.getText().toString();
 
                 if(!isEmpty(inputEmail) && !isEmpty(inputPassword)) {
-                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(logIn.this, new OnCompleteListener<AuthResult>() {
+                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LogInActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
                                 // tjek fejlen
-                                Toast.makeText(logIn.this, "Kunne ikke logge ind, prøv igen", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LogInActivity.this, "Kunne ikke logge ind, prøv igen", Toast.LENGTH_LONG).show();
                                 progressDialog.dismiss();
                             } else {
-                                Intent i = new Intent(logIn.this, MainActivity.class);
+                                Intent i = new Intent(LogInActivity.this, MainActivity.class);
                                 startActivity(i);
                                 progressDialog.dismiss();
                                 finish();
@@ -156,7 +156,7 @@ public class logIn extends AppCompatActivity implements View.OnClickListener {
                 break;
 
             case R.id.signup_btn:
-                Intent signupIntent = new Intent(this, signUp.class);
+                Intent signupIntent = new Intent(this, SignUpActivity.class);
                 startActivity(signupIntent);
                 break;
             default:
