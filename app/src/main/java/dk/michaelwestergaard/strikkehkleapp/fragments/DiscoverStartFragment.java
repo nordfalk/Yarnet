@@ -37,6 +37,7 @@ public class DiscoverStartFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+
     private RecipeDAO recipeDAO = new RecipeDAO();
 
     public DiscoverStartFragment() {

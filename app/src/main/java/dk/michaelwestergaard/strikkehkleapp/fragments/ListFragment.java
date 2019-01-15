@@ -39,6 +39,7 @@ public class ListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String categoryID;
+    private String subCategoryID;
 
     public ListFragment() {
     }
@@ -56,6 +57,8 @@ public class ListFragment extends Fragment {
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             categoryID = arguments.getString("categoryID");
+            subCategoryID = arguments.getString("subCategoryID");
+
         }
     }
 

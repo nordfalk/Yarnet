@@ -22,11 +22,13 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.SubcategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class DiscoverFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
+    private TabLayout tabLayout2;
     private ViewPager viewPager;
     private CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -40,10 +42,12 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
         super.onStart();
 
         tabLayout = getView().findViewById(R.id.top_menu);
+        tabLayout2 = getView().findViewById(R.id.top_undermenu);
         viewPager = getView().findViewById(R.id.container);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout2.setupWithViewPager(viewPager);
     }
 
     private void setupViewPager(final ViewPager viewPager) {
@@ -59,6 +63,8 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                 TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
                 adapter.addFragment(new DiscoverStartFragment(), "Start");
 
+                TopViewPagerAdapter subadapter = new TopViewPagerAdapter(getChildFragmentManager());
+
                 for(CategoryDTO category : categories) {
                     Bundle arguments = new Bundle();
                     arguments.putString("categoryID", category.getId());
@@ -67,6 +73,15 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                     newFragment.setArguments(arguments);
 
                     adapter.addFragment(newFragment, category.getName());
+                    List <SubcategoryDTO> subcategories = category.getSubcategoryList();
+                    for(SubcategoryDTO subcategory : subcategories) {
+                        Bundle subarguments = new Bundle();
+                        subarguments.putString("subCategoryID", subcategory.getId());
+
+                        ListFragment newSubFragment = new ListFragment();
+                        newSubFragment.setArguments(subarguments);
+                        subadapter.addFragment(newSubFragment, subcategory.getName());
+                    }
                 }
 
                 viewPager.setAdapter(adapter);
