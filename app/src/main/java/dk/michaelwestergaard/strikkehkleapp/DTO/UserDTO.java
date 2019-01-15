@@ -87,8 +87,8 @@ public class UserDTO {
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", status=" + status + '\'' +
-                ", type='" + type +
+                ", type='" + type + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

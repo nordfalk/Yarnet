@@ -176,7 +176,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             int radioId = radioGroup.getCheckedRadioButtonId();
             radioButton = findViewById(radioId);
 
-            UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(), inputEmail.getText().toString(), inputFirstName.getText().toString(), inputLastName.getText().toString(), "https://www.bitgab.com/uploads/profile/files/default.png", 1, radioButton.getText().toString());
+            UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
+                    inputEmail.getText().toString(), inputFirstName.getText().toString(),
+                    inputLastName.getText().toString(), "https://www.bitgab.com/uploads/profile/files/default.png",
+                    1, radioButton.getText().toString());
             userDAO.insert(userDTO);
             finish();
         }
