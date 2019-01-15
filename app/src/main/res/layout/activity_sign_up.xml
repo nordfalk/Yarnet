@@ -7,6 +7,7 @@
     tools:context=".activities.SignUpActivity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -28,19 +29,21 @@
                     android:id="@+id/btn_signup"
                     android:layout_width="293dp"
                     android:layout_height="46dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="50dp"
                     android:background="@drawable/loginknap"
                     android:fontFamily="@font/roboto"
                     android:text="Opret"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.518"
+                    app:layout_constraintHorizontal_bias="0.506"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioJegEr" />
+                    app:layout_constraintTop_toBottomOf="@+id/delImage" />
 
                 <EditText
                     android:id="@+id/input_first_last"
@@ -81,9 +84,9 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="41dp"
+                    android:layout_marginStart="40dp"
                     android:layout_marginTop="2dp"
-                    android:text="-Indeholde mindst ét stort bogstav."
+                    android:text="- Ét tal."
                     android:textColor="#464242"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -113,7 +116,7 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Din adgangskode skal:"
+                    android:text="Din adgangskode skal indeholde mindst:"
                     android:textAlignment="viewStart"
                     android:textColor="#464242"
                     app:layout_constraintStart_toStartOf="parent"
@@ -145,6 +148,39 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayout8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="- Ét stort bogstav."
+                        android:textColor="#464242"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="9dp"
+                        android:text="- Ét lille bogstav."
+                        android:textColor="#464242"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
                 <EditText
                     android:id="@+id/input_password"
                     android:layout_width="0dp"
@@ -167,9 +203,9 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="41dp"
+                    android:layout_marginStart="40dp"
                     android:layout_marginTop="7dp"
-                    android:text="-Indeholde mindst 8 tegn."
+                    android:text="- 8-16 tegn."
                     android:textAlignment="textStart"
                     android:textColor="#464242"
                     app:layout_constraintStart_toStartOf="parent"
@@ -198,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="22dp"
                     android:text="Jeg er:"
                     android:textColor="#464242"
                     android:textStyle="bold"
@@ -236,12 +272,61 @@
                         android:id="@+id/radioBegge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:layout_marginStart="33dp"
                         android:buttonTint="@color/colorToolbar"
+                        android:checked="true"
                         android:text="@string/radio_begge" />
 
                 </RadioGroup>
+
+                <ImageView
+                    android:id="@+id/pictureHolder"
+                    android:layout_width="233dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="30dp"
+                    app:layout_constraintBottom_toTopOf="@+id/delImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addProfilePic" />
+
+                <Button
+                    android:id="@+id/addProfilePic"
+                    android:layout_width="138dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/addpicsignup"
+                    android:fontFamily="@font/roboto"
+                    android:text="+Tilføj et profilbillede"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioJegEr" />
+
+                <Button
+                    android:id="@+id/delImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/delimagebcg"
+                    android:fontFamily="@font/roboto"
+                    android:text="Slet billede"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pictureHolder" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
