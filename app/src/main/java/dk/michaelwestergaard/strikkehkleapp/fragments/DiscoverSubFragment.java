@@ -25,26 +25,33 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.SubcategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class DiscoverFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
+public class DiscoverSubFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     private CategoryDAO categoryDAO = new CategoryDAO();
+    String categoryID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        return inflater.inflate(R.layout.fragment_sub_discover, container, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        tabLayout = getView().findViewById(R.id.top_menu);
+        tabLayout = getView().findViewById(R.id.top_undermenu);
         viewPager = getView().findViewById(R.id.container);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (getArguments() != null) {
+            Bundle arguments = getArguments();
+            categoryID = arguments.getString("categoryID");
+        }
     }
 
     private void setupViewPager(final ViewPager viewPager) {
@@ -57,20 +64,38 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                     categories.add(snapshot.getValue(CategoryDTO.class));
                 }
 
-                TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
-                adapter.addFragment(new DiscoverStartFragment(), "Start");
+                List<SubcategoryDTO> subCategories = new ArrayList<>();
 
                 for(CategoryDTO category : categories) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString("categoryID", category.getId());
+                    if(category.getId().equals(categoryID)) {
+                        subCategories = category.getSubcategoryList();
+                        break;
+                    }
+                }
 
-                    DiscoverSubFragment newFragment = new DiscoverSubFragment();
+                TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
+
+                Bundle startArguments = new Bundle();
+                startArguments.putString("categoryID", categoryID);
+
+                ListFragment startFragment = new ListFragment();
+                startFragment.setArguments(startArguments);
+
+                adapter.addFragment(startFragment, "Alle");
+
+                for(SubcategoryDTO subCategory : subCategories) {
+                    Bundle arguments = new Bundle();
+                    arguments.putString("categoryID", categoryID);
+                    arguments.putString("subCategoryID", subCategory.getId());
+
+                    ListFragment newFragment = new ListFragment();
                     newFragment.setArguments(arguments);
 
-                    adapter.addFragment(newFragment, category.getName());
+                    adapter.addFragment(newFragment, subCategory.getName());
                 }
 
                 viewPager.setAdapter(adapter);
+
             }
 
             @Override
