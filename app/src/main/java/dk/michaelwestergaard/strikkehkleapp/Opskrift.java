@@ -1,7 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -23,8 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
@@ -37,15 +38,15 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
     private UserDTO user;
     private UserDAO userDAO = new UserDAO();
+    private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    ImageView backgroundPicture;
+    ImageView backgroundPicture, favoriteBtn;
     CardView købContainer;
-    int price = 0;
 
 
     @Override
@@ -61,6 +62,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         creator = findViewById(R.id.recipe_creator);
 
         backgroundPicture = findViewById(R.id.baggrundsBillede);
+        favoriteBtn = findViewById(R.id.recipe_favorite_btn);
 
         købContainer = findViewById(R.id.købContainer);
 
@@ -68,6 +70,14 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         viewPager = findViewById(R.id.indholdscontainer);
         købKnap = findViewById(R.id.købKnap);
 
+        categoriTextView = findViewById(R.id.categoriTextView);
+        priceTextView = findViewById(R.id.priceTextView);
+
+        favoriteCount = findViewById(R.id.recipe_rating);
+        stepsCount = findViewById(R.id.recipe_steps);
+        difficulty = findViewById(R.id.recipe_difficulty);
+
+        favoriteBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
 
         if(test == "1"){
@@ -75,37 +85,34 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         }
 
         showRecipe();
-
     }
 
-    public void showRecipe(){
-        if(bought){
-            købContainer.setVisibility(View.GONE);
-            insertRecipe();
-        }else{
-            if(price == 0){
-                købContainer.setVisibility(View.GONE);
-                insertRecipe();
-            }
-        }
-    }
-
-    private void insertRecipe(){
-
-
+    private void showRecipe(){
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("Recipe found! " + dataSnapshot.getKey());
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 title.setText(recipe.getTitle());
 
-                userDAO.getReference().child(recipe.getUserID()).addValueEventListener(new ValueEventListener() {
+                if(recipe.getRecipeInstructionDTO() != null)
+                    stepsCount.setText(recipe.getRecipeInstructionDTO().size() + " trin");
+
+                categoryDAO.getReference().child(recipe.getCategoryID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        System.out.println("User found! " + dataSnapshot.getKey());
-                        user = dataSnapshot.getValue(UserDTO.class);
+                        categoriTextView.setText("Kategori: " + dataSnapshot.getValue(CategoryDTO.class).getName());
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                userDAO.getReference().child(recipe.getUserID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        user = dataSnapshot.getValue(UserDTO.class);
                         creator.setText(user.getFirst_name() + " " + user.getLast_name());
                     }
 
@@ -114,6 +121,14 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
                     }
                 });
+
+                if(recipe.getPrice() == 0){
+                    købContainer.setVisibility(View.GONE);
+                    priceTextView.setVisibility(View.GONE);
+                } else {
+                    priceTextView.setText("Pris: " + recipe.getPrice() + " DKK");
+                    købContainer.setVisibility(View.VISIBLE);
+                }
 
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(viewPager);
@@ -138,21 +153,17 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if(v==købKnap){
-        Intent koeb = new Intent(this, OpskriftKoeb.class);
-        startActivity(koeb);
-
-     }
+            Intent koeb = new Intent(this, OpskriftKoeb.class);
+            startActivity(koeb);
+        } else if(v.equals(favoriteBtn)){
+            favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
     }
-
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
 
     class RecipeViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

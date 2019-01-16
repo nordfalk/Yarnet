@@ -2,6 +2,7 @@ package dk.michaelwestergaard.strikkehkleapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInformationDTO;
@@ -21,6 +21,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
     ListView materialList, toolsList;
     List<String> materials;
     List<String> tools;
+    String description = "";
 
 
     public static fragment_recipe_information newInstance(RecipeInformationDTO informationDTO) {
@@ -28,6 +29,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
         fragment.materials = informationDTO.getMaterials();
         fragment.tools = informationDTO.getTools();
         fragment.informationDTO = informationDTO;
+        fragment.description = informationDTO.getDescription();
         return fragment;
     }
 
@@ -44,9 +46,18 @@ public class fragment_recipe_information extends Fragment implements AdapterView
 
         View view = inflater.inflate(R.layout.fragment_recipe_information, container, false);
 
-        if(opskrift.bought == true){
+        if(true){
             materialList = view.findViewById(R.id.materialList);
             toolsList = view.findViewById(R.id.toolsList);
+
+            TextView descriptionTextView = view.findViewById(R.id.description);
+            CardView descriptionCardView = view.findViewById(R.id.description_cardview);
+
+            if(!description.isEmpty()){
+                descriptionTextView.setText(description);
+            } else {
+                descriptionCardView.setVisibility(View.GONE);
+            }
 
             BaseAdapter materialAdapter = new BaseAdapter() {
                 @Override
@@ -70,7 +81,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
 
                     TextView materialElement = view.findViewById(R.id.materialListElement);
                     materialElement.setText("Test"+ materials.get(position));
-                    System.out.println("Materialer: " +materials.get(position));
+
                     return view;
                 }
             };
