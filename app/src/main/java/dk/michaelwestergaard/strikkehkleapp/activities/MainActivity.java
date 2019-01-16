@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
@@ -27,6 +29,7 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenuItem;
     DrawerLayout drawer;
+    TextView editProfileBtn2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,17 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
-        drawer = findViewById(R.id.drawer_layout);
+        View headerView = navigationView.getHeaderView(0);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        editProfileBtn2 = (TextView)headerView.findViewById(R.id.editProfileBtn2);
+        editProfileBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EditPage.class);
+                startActivity(intent);
+            }
+        });
 
         drawerBtn = findViewById(R.id.drawerBtn);
         drawerBtn.setOnClickListener(this);
