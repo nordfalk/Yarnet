@@ -34,6 +34,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText inputEmail, inputPassword;
 
+
     AlertDialog.Builder builder;
     AlertDialog progressDialog;
     private CallbackManager mCallbackManager;
