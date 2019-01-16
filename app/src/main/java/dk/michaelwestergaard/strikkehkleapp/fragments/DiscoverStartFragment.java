@@ -1,14 +1,11 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +31,6 @@ import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class DiscoverStartFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
     private RecipeDAO recipeDAO = new RecipeDAO();
 
     public DiscoverStartFragment() {
@@ -52,9 +47,6 @@ public class DiscoverStartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -72,13 +64,11 @@ public class DiscoverStartFragment extends Fragment {
             @Override
             public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_listing_item, parent, false);
-                Log.d("test", "bindiengienrgienrgierngierngeirgn");
                 return new RecipeViewHolder(view);
             }
 
             @Override
             protected void onBindViewHolder(RecipeViewHolder holder, int position, RecipeDTO recipe) {
-                Log.d("test",recipe.toString());
                 holder.recipeID = recipe.getRecipeID();
                 holder.title.setText(recipe.getTitle());
             }
@@ -86,14 +76,8 @@ public class DiscoverStartFragment extends Fragment {
 
             @Override
             public void onError(DatabaseError e) {
-                // Called when there is an error getting data. You may want to update
-                // your UI to display an error message to the user.
-                // ...
-                Log.d("ERROR", e.getMessage());
             }
         };
-
-        //TODO: Skal fixes, det virker ikke...
 
         final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
@@ -127,39 +111,8 @@ public class DiscoverStartFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
+      
         return view;
-    }
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -175,7 +128,6 @@ public class DiscoverStartFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Clicked " + recipeID);
                     Intent intent = new Intent (view.getContext(), Opskrift.class);
                     intent.putExtra("RecipeID", recipeID);
                     view.getContext().startActivity(intent);

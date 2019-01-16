@@ -11,77 +11,51 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorToolbar"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.arlib.floatingsearchview.FloatingSearchView
-            android:id="@+id/floating_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:floatingSearch_close_search_on_keyboard_dismiss="true"
-            app:floatingSearch_dimBackground="false"
-            app:floatingSearch_leftActionMode="showSearch"
-            app:floatingSearch_searchHint="@string/search_hint"
-            app:floatingSearch_showSearchKey="false"
-            app:floatingSearch_suggestionsListAnimDuration="250"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="2dp"
+        android:clipToPadding="false">
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/top_menu"
+            android:id="@+id/top_undermenu"
             android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/floating_search_view"
-            app:tabBackground="@drawable/tab_color_selector"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabBackground="@drawable/sub_tab_color_selector"
             app:tabIndicatorColor="@null"
             app:tabMode="scrollable">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tab_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trøjer" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Handsker" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Børnetøj" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sokker" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItem3"
+                android:id="@+id/utab1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Huer" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/utab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tæpper" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/utab3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Veste" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/utab4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bukser" />
 
         </android.support.design.widget.TabLayout>
 

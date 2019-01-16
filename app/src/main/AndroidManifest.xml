@@ -13,11 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity" />
-        <![CDATA[
-
-            android:theme="@style/AppTheme.NoActionbar">
-
-        ]]>
         <activity android:name=".Opskrift" />
         <activity android:name=".createWalkthrough" />
         <activity android:name=".activities.Profile" />

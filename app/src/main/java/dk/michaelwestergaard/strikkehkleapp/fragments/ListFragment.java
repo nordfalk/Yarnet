@@ -38,6 +38,7 @@ public class ListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String categoryID;
+    private String subCategoryID;
 
     public ListFragment() {
     }
@@ -55,6 +56,7 @@ public class ListFragment extends Fragment {
         if (getArguments() != null) {
             Bundle arguments = getArguments();
             categoryID = arguments.getString("categoryID");
+            subCategoryID = arguments.getString("subCategoryID");
         }
     }
 
@@ -78,6 +80,17 @@ public class ListFragment extends Fragment {
                         i = i - 1;
                     }
                 }
+
+                if(subCategoryID != null) {
+                    for(int i = 0; i < recipes.size(); i++) {
+                        if(!(recipes.get(i).getSubcategoryID().equals(subCategoryID))) {
+                            recipes.remove(i);
+                            i = i - 1;
+                        }
+                    }
+                }
+
+
 
                 RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
 
