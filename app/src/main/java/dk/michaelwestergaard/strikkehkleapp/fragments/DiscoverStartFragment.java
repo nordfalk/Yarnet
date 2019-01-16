@@ -84,6 +84,7 @@ public class DiscoverStartFragment extends Fragment {
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipes.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
@@ -110,6 +111,7 @@ public class DiscoverStartFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+      
         return view;
     }
 

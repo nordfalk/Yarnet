@@ -7,17 +7,19 @@ public class UserDTO {
     String first_name;
     String last_name;
     String avatar;
+    String type;
     // Måske også role
     int status;
 
     public UserDTO(){}
 
-    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, int status) {
+    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
         this.avatar = avatar;
+        this.type = type;
         this.status = status;
     }
 
@@ -61,6 +63,14 @@ public class UserDTO {
         this.avatar = avatar;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -68,6 +78,7 @@ public class UserDTO {
     public void setStatus(int status) {
         this.status = status;
     }
+
 
     @Override
     public String toString() {
@@ -77,6 +88,7 @@ public class UserDTO {
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", type='" + type + '\'' +
                 ", status=" + status +
                 '}';
     }

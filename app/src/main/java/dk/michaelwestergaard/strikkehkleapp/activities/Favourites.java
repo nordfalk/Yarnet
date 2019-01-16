@@ -1,35 +1,31 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class Favourites extends Drawer {
+public class Favourites extends AppCompatActivity {
 
-    private DrawerLayout drawer;
+    ImageView backBtn;
+    ImageView drawerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_favourites);
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_favourites);
         drawerBtn = findViewById(R.id.drawerBtn);
-        drawerBtn.setOnClickListener(this);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } ));
 
         backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
     }
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.backButton:
-                finish();
-                break;
-
-        }
-
-      //  drawer.openDrawer(GravityCompat.END);
-
-        }
-    }
+}

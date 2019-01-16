@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "760241849884-10fhnvbs4jopj5d9dchcj08ht1brthrb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.michaelwestergaard.strikkehkleapp",
+            "certificate_hash": "d13d97e05f4a0cf1ffb19172d7ffe506fb238f87"
+          }
+        },
+        {
           "client_id": "760241849884-4hrqv4j0b4ubmhfn5527eo6t095ms0hv.apps.googleusercontent.com",
           "client_type": 3
         }

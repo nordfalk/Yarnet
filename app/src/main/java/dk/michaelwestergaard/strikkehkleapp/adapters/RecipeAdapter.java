@@ -14,9 +14,8 @@ import java.util.List;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
-import dk.michaelwestergaard.strikkehkleapp.activities.Profile;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> implements View.OnClickListener {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private List<RecipeDTO> recipes;
     private RecipeDTO recipe;
@@ -38,14 +37,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(RecipeAdapter.ViewHolder holder, int position) {
-        recipe = recipes.get(position);
-
-        TextView titleView = holder.titleView;
-        titleView.setText(recipe.getTitle());
-        ImageView imageView = holder.imageView;
-        //TODO: Set image source
-
-        holder.itemView.setOnClickListener(this);
+        holder.bindView(position);
+        System.out.println("binding " + position);
     }
 
     @Override
@@ -53,23 +46,32 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         return recipes.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(v.getContext(), Opskrift.class);
-        intent.putExtra("RecipeID", recipe.getRecipeID());
-        v.getContext().startActivity(intent);
-    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private RecipeDTO recipe;
         public TextView titleView;
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            titleView = itemView.findViewById(R.id.item_title);
+            imageView = itemView.findViewById(R.id.item_image);
+            itemView.setOnClickListener(this);
+        }
 
-            titleView = (TextView) itemView.findViewById(R.id.item_title);
-            imageView = (ImageView) itemView.findViewById(R.id.item_image);
+        public void bindView(int position){
+            recipe = recipes.get(position);
+            titleView.setText(recipe.getTitle());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(v.getContext(), Opskrift.class);
+            System.out.println("clicking on " + recipe.getRecipeID());
+            System.out.println("clicking on " + titleView.getText().toString());
+            intent.putExtra("RecipeID", recipe.getRecipeID());
+            v.getContext().startActivity(intent);
         }
     }
 }

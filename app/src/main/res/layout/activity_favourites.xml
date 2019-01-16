@@ -6,7 +6,7 @@
     tools:context=".activities.Favourites">
 
     <include
-        android:id="@+id/drawer_layout"
-        layout="@layout/drawer" />
+        android:id="@+id/toolbarFav"
+        layout="@layout/nav_bar" />
 
 </android.support.constraint.ConstraintLayout>

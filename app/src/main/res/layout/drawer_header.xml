@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:text="Rediger profil"
         android:textColor="#2297E6"
-        android:textSize="13dp"/>
+        android:textSize="13dp"
+        />
 </LinearLayout>
 
