@@ -28,7 +28,7 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 public class DiscoverSubFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    public ViewPager viewPager;
 
     private CategoryDAO categoryDAO = new CategoryDAO();
     String categoryID;

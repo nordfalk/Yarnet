@@ -57,7 +57,7 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                     categories.add(snapshot.getValue(CategoryDTO.class));
                 }
 
-                TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
+                final TopViewPagerAdapter adapter = new TopViewPagerAdapter(getChildFragmentManager());
                 adapter.addFragment(new DiscoverStartFragment(), "Start");
 
                 for(CategoryDTO category : categories) {
@@ -71,6 +71,22 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
                 }
 
                 viewPager.setAdapter(adapter);
+                viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        ((DiscoverSubFragment)((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)).viewPager.setCurrentItem(0);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
             }
 
             @Override
@@ -92,6 +108,10 @@ public class DiscoverFragment extends Fragment implements DiscoverStartFragment.
 
         public TopViewPagerAdapter(FragmentManager manager) {
             super(manager);
+        }
+
+        public List<Fragment> getmFragmentList() {
+            return mFragmentList;
         }
 
         @Override
