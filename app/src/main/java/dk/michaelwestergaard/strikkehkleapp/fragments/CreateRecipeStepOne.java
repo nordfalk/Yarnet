@@ -122,7 +122,7 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                categories.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     CategoryDTO categoryDTO = snapshot.getValue(CategoryDTO.class);
                     categories.add(categoryDTO);
@@ -184,17 +184,19 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     @Override
     public VerificationError verifyStep() {
         if(!title.getText().toString().matches("")){
-            if(!description.getText().toString().matches("")){
-                if(radioGroup.getCheckedRadioButtonId() != radioNotFree.getId()){
+            if(radioGroup.getCheckedRadioButtonId() != radioNotFree.getId()){
+                return null;
+            } else {
+                if(!price.getText().toString().matches("")){
                     return null;
                 } else {
-                    if(!price.getText().toString().matches("")){
-                        return null;
-                    }
+                    price.setError("Indtast venligst en pris!");
                 }
             }
+        } else {
+            title.setError("Opskriften skal have en overskrift!");
         }
-        return new VerificationError("Udfyld venligst alle felter!");
+        return new VerificationError("Udfyld venligst overstående felter!");
     }
 
     @Override

@@ -81,7 +81,7 @@
                 android:ems="10"
                 android:fontFamily="@font/roboto"
                 android:hint="Overskrift"
-                android:inputType="textAutoCorrect"
+                android:inputType="textCapSentences|textAutoCorrect"
                 android:padding="10dp"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"

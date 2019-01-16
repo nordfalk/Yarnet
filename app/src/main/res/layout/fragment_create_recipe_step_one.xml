@@ -8,14 +8,10 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView4"
-        android:layout_width="0dp"
+        android:layout_width="395dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -76,15 +72,10 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView3"
-        android:layout_width="0dp"
+        android:layout_width="395dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="141dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -141,14 +132,11 @@
             <RelativeLayout
                 android:id="@+id/relativeLayoutCategory"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/input_field_new"
                 android:elevation="4dp"
-                app:layout_constraintBottom_toTopOf="@+id/create_recipe_price_selection"
                 app:layout_constraintEnd_toStartOf="@+id/relativeLayoutSubcategory"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -159,9 +147,11 @@
                     style="@style/Widget.AppCompat.DropDownItem.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginEnd="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:dropDownWidth="match_parent"
                     android:fontFamily="@font/roboto"
                     android:spinnerMode="dialog"
@@ -204,6 +194,38 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/difficultyContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/input_field_new"
+                android:elevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayoutCategory">
+
+                <Spinner
+                    android:id="@+id/create_recipe_spinner_difficulty"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:dropDownWidth="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:hint="Vælg Opskriftstype"
+                    android:spinnerMode="dialog"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </RelativeLayout>
+
             <RadioGroup
                 android:id="@+id/create_recipe_price_selection"
                 android:layout_width="0dp"
@@ -222,7 +244,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSubcategory">
+                app:layout_constraintTop_toBottomOf="@+id/difficultyContainer">
 
                 <RadioButton
                     android:id="@+id/create_recipe_radio_free"
@@ -254,13 +276,9 @@
         android:id="@+id/create_recipe_price_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+        tools:layout_editor_absoluteX="206dp"
+        tools:layout_editor_absoluteY="414dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
