@@ -1,6 +1,8 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,10 +20,18 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
@@ -49,11 +60,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView pictureholder;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
+    private Uri selImage;
 
     AlertDialog.Builder builder;
     AlertDialog progressDialog;
 
     UserDAO userDAO = new UserDAO();
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +103,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         delImage.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
     }
 
     @Override
@@ -105,6 +122,30 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             pictureholder.setVisibility(View.GONE);
             addProfilePic.setVisibility(View.VISIBLE);
             delImage.setVisibility(view.GONE);
+        }
+    }
+
+    private boolean firstNameReq() {
+        String firstNameInput = inputFirstName.getText().toString().trim();
+
+        if (firstNameInput.isEmpty()) {
+            inputFirstName.setError("Fletet må ikke være tomt");
+            return false;
+        } else {
+            inputFirstName.setError(null);
+            return true;
+        }
+    }
+
+    private boolean lastNameReq() {
+        String lastNameInput = inputLastName.getText().toString().trim();
+
+        if (lastNameInput.isEmpty()) {
+            inputLastName.setError("Fletet må ikke være tomt");
+            return false;
+        } else {
+            inputLastName.setError(null);
+            return true;
         }
     }
 
@@ -138,10 +179,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private boolean passReqTwo() {
+        String passAgainInput = inputPasswordAgain.getText().toString().trim();
+
+        if (passAgainInput.isEmpty()) {
+            inputPasswordAgain.setError("Fletet må ikke være tomt");
+            return false;
+        } else {
+            inputPasswordAgain.setError(null);
+            return true;
+        }
+    }
+
     private boolean validateInputs(){
 
-        if(!isEmpty(inputFirstName) && !isEmpty(inputLastName) && !isEmpty(inputEmail) && !isEmpty(inputPassword) && !isEmpty(inputPasswordAgain)){
-            if(inputPassword.getText().toString().equals(inputPasswordAgain.getText().toString()) && passReq() && mailReq()){
+        if(passReqTwo() && passReq() && mailReq() && firstNameReq() && lastNameReq()){
+            if(inputPassword.getText().toString().equals(inputPasswordAgain.getText().toString()) && passReq() && mailReq() && firstNameReq() && lastNameReq()){
                 // TODO: Gem brugeroplysningerne sammen med det userid der bliver lavet
                 auth.createUserWithEmailAndPassword(inputEmail.getText().toString(), inputPassword.getText().toString()).addOnCompleteListener(this);
             } else {
@@ -152,18 +205,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         } else {
-            Toast.makeText(SignUpActivity.this, "Alle felterne skal udfyldes.", Toast.LENGTH_SHORT).show();
+            firstNameReq();
+            lastNameReq();
+            passReq();
+            passReqTwo();
+            mailReq();
         }
         progressDialog.dismiss();
         return false;
     }
 
-    private boolean isEmpty(EditText editText){
-        return editText.getText().toString().equals("");
-    }
 
     @Override
-    public void onComplete(@NonNull Task<AuthResult> task) {
+    public void onComplete(@NonNull final Task<AuthResult> task) {
 
         progressDialog.dismiss();
 
@@ -173,15 +227,41 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(SignUpActivity.this, "Kunne ikke oprette, prøv igen.", Toast.LENGTH_SHORT).show();
         } else {
 
-            /*int radioId = radioGroup.getCheckedRadioButtonId();
-            radioButton = findViewById(radioId);*/
+            String type = "";
+            int radioId = radioGroup.getCheckedRadioButtonId();
+            radioButton = findViewById(radioId);
 
-            UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
-                    inputEmail.getText().toString(), inputFirstName.getText().toString(),
-                    inputLastName.getText().toString(), "https://www.bitgab.com/uploads/profile/files/default.png",
-                    1/*, radioButton.getText().toString()*/);
-            userDAO.insert(userDTO);
-            finish();
+            if (radioGroup.getCheckedRadioButtonId() == R.id.radioS) {
+                type = "KNITTING";
+            } else if (radioGroup.getCheckedRadioButtonId() == R.id.radioH) {
+                type = "CROCHETING";
+            } else if (radioGroup.getCheckedRadioButtonId() == R.id.radioBegge) {
+                type = "BOTH";
+            }
+
+            if (selImage != null) {
+
+                UUID picRandomID = UUID.randomUUID();
+
+                StorageReference ref = storageReference.child("users/" + picRandomID);
+                ref.putFile(selImage);
+
+                UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
+                        inputEmail.getText().toString(), inputFirstName.getText().toString(),
+                        inputLastName.getText().toString(), picRandomID.toString(),
+                        type, 1);
+                userDAO.insert(userDTO);
+                finish();
+
+            } else {
+
+                UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
+                        inputEmail.getText().toString(), inputFirstName.getText().toString(),
+                        inputLastName.getText().toString(), "defaultPic112233445566",
+                        type, 1);
+                userDAO.insert(userDTO);
+                finish();
+            }
         }
     }
 
@@ -193,7 +273,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             addProfilePic.setVisibility(View.GONE);
             pictureholder.setVisibility(View.VISIBLE);
-            Uri selImage = data.getData();
+            selImage = data.getData();
             pictureholder.setImageURI(selImage);
 
             delImage.setVisibility(View.VISIBLE);

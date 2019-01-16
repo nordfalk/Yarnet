@@ -110,7 +110,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                                 String[] name = user.getDisplayName().split(" ");
                                 String avatar = user.getPhotoUrl().toString();
                                 avatar = avatar + "?height=500";
-                                UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], avatar, 1);
+                                UserDTO userDTO = new UserDTO(user.getUid(), user.getEmail(), name[0], name[1], avatar, "Begge", 1);
                                 createUser(userDTO);
                             }
                             System.out.println("UserID: " + user.getUid());
