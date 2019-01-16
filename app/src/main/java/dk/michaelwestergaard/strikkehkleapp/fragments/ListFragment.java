@@ -3,15 +3,26 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 
 /**
@@ -25,6 +36,8 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 public class ListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private RecipeDAO recipeDAO = new RecipeDAO();
+    private String categoryID;
 
     public ListFragment() {
     }
@@ -40,21 +53,47 @@ public class ListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            Bundle arguments = getArguments();
+            categoryID = arguments.getString("categoryID");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
+        final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
-        ListAdapter listAdapter = new ListAdapter();
-        recyclerView.setAdapter(listAdapter);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(layoutManager);
+        recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipes.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                }
+
+                for(int i = 0; i < recipes.size(); i++) {
+                    if(!(recipes.get(i).getCategoryID().equals(categoryID))) {
+                        recipes.remove(i);
+                        i = i - 1;
+                    }
+                }
+
+                RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
+
+                RecipeAdapter adapter = new RecipeAdapter(recipes);
+                recyclerView.setAdapter(adapter);
+
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+                recyclerView.setLayoutManager(layoutManager);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Log.d("Recipes", recipes.toString());
 
         return view;
     }

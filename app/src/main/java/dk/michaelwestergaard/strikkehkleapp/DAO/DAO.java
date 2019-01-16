@@ -1,9 +1,12 @@
 package dk.michaelwestergaard.strikkehkleapp.DAO;
 
+import com.google.firebase.database.DatabaseReference;
+
 public interface DAO<T> {
-    boolean insert(T object) throws NotImplementedException;
+    String insert(T object) throws NotImplementedException;
     boolean update(T object) throws NotImplementedException;
     boolean delete(T object) throws NotImplementedException;
+    DatabaseReference getReference() throws NotImplementedException;
 
     class NotImplementedException extends Exception {
 

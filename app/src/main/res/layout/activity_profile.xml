@@ -7,11 +7,12 @@
     tools:context=".activities.Profile">
 
     <include
-        android:id="@+id/drawer_layout"
-        layout="@layout/drawer" />
+        android:id="@+id/toolbarPro"
+        layout="@layout/nav_bar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorToolbar"

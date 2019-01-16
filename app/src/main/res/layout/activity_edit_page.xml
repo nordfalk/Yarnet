@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activities.EditPage">
 
+    <include
+        android:id="@+id/toolbaredi"
+        layout="@layout/nav_bar" />
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_marginBottom="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,17 +29,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/constraintLayout7"
                     android:layout_width="272dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView7">
 
                     <EditText
-                        android:id="@+id/editText5"
+                        android:id="@+id/efternavn"
                         android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="9dp"
@@ -49,11 +55,11 @@
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editText13"
+                        app:layout_constraintStart_toEndOf="@+id/navn"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/editText13"
+                        android:id="@+id/navn"
                         android:layout_width="133dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/indtastfelt"
@@ -68,11 +74,11 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/gemEdits"
                     android:layout_width="167dp"
                     android:layout_height="43dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="29dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/loginknap"
                     android:fontFamily="@font/roboto_bold"
@@ -81,12 +87,11 @@
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.502"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText8" />
+                    app:layout_constraintTop_toBottomOf="@+id/gentagKode" />
 
                 <EditText
-                    android:id="@+id/editText8"
+                    android:id="@+id/gentagKode"
                     android:layout_width="272dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -101,10 +106,10 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText7" />
+                    app:layout_constraintTop_toBottomOf="@+id/kode" />
 
                 <TextView
-                    android:id="@+id/editProfileBtn2"
+                    android:id="@+id/billedeKnap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -119,11 +124,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
                 <EditText
-                    android:id="@+id/editText7"
+                    android:id="@+id/kode"
                     android:layout_width="272dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="13dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/indtastfelt"
                     android:ems="10"
@@ -134,10 +139,10 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText6" />
+                    app:layout_constraintTop_toBottomOf="@+id/mail" />
 
                 <EditText
-                    android:id="@+id/editText6"
+                    android:id="@+id/mail"
                     android:layout_width="272dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -158,14 +163,11 @@
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="59dp"
                     android:layout_marginTop="19dp"
-                    android:layout_marginEnd="8dp"
                     android:text="Udfyld de felter som du gerne vil ændre"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.39"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editProfileBtn2" />
+                    app:layout_constraintTop_toBottomOf="@+id/billedeKnap" />
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -178,6 +180,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>

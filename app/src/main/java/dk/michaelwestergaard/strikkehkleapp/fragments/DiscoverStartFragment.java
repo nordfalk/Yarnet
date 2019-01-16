@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,26 +17,26 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class DiscoverStartFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private RecipeDAO recipeDAO = new RecipeDAO();
-
-    List<RecipeDTO> newestRecipes = new ArrayList<RecipeDTO>();
 
     public DiscoverStartFragment() {
         // Required empty public constructor
@@ -57,9 +58,9 @@ public class DiscoverStartFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
+        final View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
 
         Query query = FirebaseDatabase.getInstance().getReference().child("recipes");
         FirebaseRecyclerOptions<RecipeDTO> options = new FirebaseRecyclerOptions.Builder<RecipeDTO>()
@@ -94,22 +95,38 @@ public class DiscoverStartFragment extends Fragment {
 
         //TODO: Skal fixes, det virker ikke...
 
-        ListAdapter listAdapter = new ListAdapter();
+        final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
-        RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
-        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewNew.setAdapter(listAdapter);
-        recyclerViewNew.setLayoutManager(layoutManagerNew);
+        recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipes.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                }
 
-        RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
-        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewPaid.setAdapter(listAdapter);
-        recyclerViewPaid.setLayoutManager(layoutManagerPaid);
+                RecipeAdapter adapter = new RecipeAdapter(recipes);
 
-        RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
-        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewFree.setAdapter(listAdapter);
-        recyclerViewFree.setLayoutManager(layoutManagerFree);
+                RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
+                RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewNew.setAdapter(adapter);
+                recyclerViewNew.setLayoutManager(layoutManagerNew);
+
+                RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
+                RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewPaid.setAdapter(adapter);
+                recyclerViewPaid.setLayoutManager(layoutManagerPaid);
+
+                RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
+                RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewFree.setAdapter(adapter);
+                recyclerViewFree.setLayoutManager(layoutManagerFree);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
         return view;
     }

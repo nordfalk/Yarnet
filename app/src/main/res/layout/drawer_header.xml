@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="176dp"
     android:background="#43B05C"
@@ -32,6 +31,7 @@
         android:layout_height="wrap_content"
         android:text="Rediger profil"
         android:textColor="#2297E6"
-        android:textSize="13dp"/>
+        android:textSize="13dp"
+        />
 </LinearLayout>
 

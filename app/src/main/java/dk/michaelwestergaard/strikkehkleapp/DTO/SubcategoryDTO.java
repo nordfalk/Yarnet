@@ -5,6 +5,8 @@ public class SubcategoryDTO {
     private String id;
     private String name;
 
+    public SubcategoryDTO(){}
+
     public SubcategoryDTO(String id, String name) {
         this.id = id;
         this.name = name;

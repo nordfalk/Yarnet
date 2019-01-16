@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <include
-                    android:id="@+id/toolbar"
+                    android:id="@+id/toolbar1"
                     layout="@layout/nav_bar" />
 
             </android.support.design.widget.AppBarLayout>
@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
+                android:layout_above="@+id/bottom_menu"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </android.support.design.widget.CoordinatorLayout>

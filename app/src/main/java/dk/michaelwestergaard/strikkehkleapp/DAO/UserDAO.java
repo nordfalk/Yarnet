@@ -8,8 +8,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
-
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class UserDAO implements DAO<UserDTO> {
@@ -19,13 +17,13 @@ public class UserDAO implements DAO<UserDTO> {
     StorageReference storageRef = FirebaseStorage.getInstance().getReference("users");
 
     @Override
-    public boolean insert(UserDTO user) {
+    public String insert(UserDTO user) {
         if(get(user.getUserID()) == null){
             databaseReference.child(user.getUserID()).setValue(user);
         } else {
-            return false;
+            return "";
         }
-        return true;
+        return user.getUserID();
     }
 
     @Override
@@ -61,7 +59,8 @@ public class UserDAO implements DAO<UserDTO> {
         return userDTO[0];
     }
 
-    public List<UserDTO> getAll() throws NotImplementedException {
-        throw new NotImplementedException("Denne metode er ikke lavet");
+    @Override
+    public DatabaseReference getReference() {
+        return databaseReference;
     }
 }

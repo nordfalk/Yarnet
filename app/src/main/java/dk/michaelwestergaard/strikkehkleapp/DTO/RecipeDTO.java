@@ -5,31 +5,37 @@ import java.util.List;
 
 public class RecipeDTO {
 
+    public enum RecipeType {
+        CROCHETING, KNITTING
+    }
+
     private String recipeID;
     private String categoryID;
     private String subcategoryID;
     private String userID;
     private String title;
     private double price;
+    private RecipeType recipeType;
     private Date createdTimestamp;
     private Date updatedTimestamp;
 
     private RecipeInformationDTO recipeInformationDTO;
-    private List<RecipeInstructionDTO> instructionList;
+    private List<RecipeInstructionDTO> recipeInstructionDTO;
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> instructionList) {
+    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.subcategoryID = subcategoryID;
         this.userID = userID;
         this.title = title;
         this.price = price;
+        this.recipeType = recipeType;
         this.createdTimestamp = createdTimestamp;
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
-        this.instructionList = instructionList;
+        this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
     public String getRecipeID() {
@@ -80,6 +86,14 @@ public class RecipeDTO {
         this.price = price;
     }
 
+    public RecipeType getRecipeType() {
+        return recipeType;
+    }
+
+    public void setRecipeType(RecipeType recipeType) {
+        this.recipeType = recipeType;
+    }
+
     public Date getCreatedTimestamp() {
         return createdTimestamp;
     }
@@ -104,12 +118,12 @@ public class RecipeDTO {
         this.recipeInformationDTO = recipeInformationDTO;
     }
 
-    public List<RecipeInstructionDTO> getInstructionList() {
-        return instructionList;
+    public List<RecipeInstructionDTO> getRecipeInstructionDTO() {
+        return recipeInstructionDTO;
     }
 
-    public void setInstructionList(List<RecipeInstructionDTO> instructionList) {
-        this.instructionList = instructionList;
+    public void setRecipeInstructionDTO(List<RecipeInstructionDTO> recipeInstructionDTO) {
+        this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
     @Override
@@ -121,10 +135,11 @@ public class RecipeDTO {
                 ", userID='" + userID + '\'' +
                 ", title='" + title + '\'' +
                 ", price=" + price +
+                ", recipeType=" + recipeType +
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
                 ", recipeInformationDTO=" + recipeInformationDTO +
-                ", instructionList=" + instructionList +
+                ", recipeInstructionDTO=" + recipeInstructionDTO +
                 '}';
     }
 }

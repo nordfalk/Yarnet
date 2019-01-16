@@ -1,14 +1,16 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import java.util.List;
+
 public class RecipeInformationDTO {
 
     private String description;
-    private String materials;
-    private String tools;
+    private List<String> materials;
+    private List<String> tools;
 
     public RecipeInformationDTO() {}
 
-    public RecipeInformationDTO(String description, String materials, String tools) {
+    public RecipeInformationDTO(String description, List<String> materials, List<String> tools) {
         this.description = description;
         this.materials = materials;
         this.tools = tools;
@@ -22,19 +24,19 @@ public class RecipeInformationDTO {
         this.description = description;
     }
 
-    public String getMaterials() {
+    public List<String> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(String materials) {
+    public void setMaterials(List<String> materials) {
         this.materials = materials;
     }
 
-    public String getTools() {
+    public List<String> getTools() {
         return tools;
     }
 
-    public void setTools(String tools) {
+    public void setTools(List<String> tools) {
         this.tools = tools;
     }
 
@@ -42,8 +44,8 @@ public class RecipeInformationDTO {
     public String toString() {
         return "RecipeInformationDTO{" +
                 "description='" + description + '\'' +
-                ", materials='" + materials + '\'' +
-                ", tools='" + tools + '\'' +
+                ", materials=" + materials +
+                ", tools=" + tools +
                 '}';
     }
 }
