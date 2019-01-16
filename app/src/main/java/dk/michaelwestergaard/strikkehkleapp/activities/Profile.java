@@ -17,9 +17,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class Profile extends Drawer implements View.OnClickListener {
+public class Profile extends AppCompatActivity implements View.OnClickListener {
 
-    private DrawerLayout drawer;
     Button logout;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -27,11 +26,25 @@ public class Profile extends Drawer implements View.OnClickListener {
     ImageView avatar;
     TextView name;
     Button btn;
+    ImageView backBtn;
+    ImageView drawerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        drawerBtn = findViewById(R.id.drawerBtn);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } ));
+
+        backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
 
        // drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //Der skal ændres på constraintlayoutet i den her aktivitet ellers får vi ikke draweren til at virke.
@@ -75,6 +88,5 @@ public class Profile extends Drawer implements View.OnClickListener {
             Intent intent = new Intent(Profile.this, EditPage.class);
             startActivity(intent);
         }
-        drawer.openDrawer(GravityCompat.END);
     }
 }

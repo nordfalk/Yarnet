@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.EditPage">
 
+    <include
+        android:id="@+id/toolbaredi"
+        layout="@layout/nav_bar" />
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
