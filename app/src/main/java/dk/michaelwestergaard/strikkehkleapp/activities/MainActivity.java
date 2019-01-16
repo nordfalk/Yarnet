@@ -16,12 +16,10 @@ import dk.michaelwestergaard.strikkehkleapp.ViewPagerAdapter;
 import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipe;
 import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipeStepOne;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
-import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverStartFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 
-public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, DiscoverStartFragment.OnFragmentInteractionListener,
-        MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener {
+public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
     BottomNavigationView bottomNavigationView;

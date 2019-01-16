@@ -25,7 +25,7 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.SubcategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class DiscoverSubFragment extends Fragment implements DiscoverStartFragment.OnFragmentInteractionListener, ListFragment.OnFragmentInteractionListener {
+public class DiscoverSubFragment extends Fragment implements ListFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     public ViewPager viewPager;

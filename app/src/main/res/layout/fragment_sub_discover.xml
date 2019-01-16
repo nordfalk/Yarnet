@@ -12,21 +12,24 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorToolbar"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="2dp"
+        android:clipToPadding="false">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/top_undermenu"
             android:layout_width="0dp"
-            android:layout_height="25dp"
+            android:layout_height="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabBackground="@drawable/tab_color_selector"
+            app:tabBackground="@drawable/sub_tab_color_selector"
             app:tabIndicatorColor="@null"
             app:tabMode="scrollable">
 
