@@ -39,7 +39,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String recipeID = "";
 
-    private UserDTO user;
+    private UserDTO userBrowsing;
+    private UserDTO createdByUser;
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -109,8 +110,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 userDAO.getReference().child(recipe.getUserID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        user = dataSnapshot.getValue(UserDTO.class);
-                        creator.setText(user.getFirst_name() + " " + user.getLast_name());
+                        createdByUser = dataSnapshot.getValue(UserDTO.class);
+                        creator.setText(createdByUser.getFirst_name() + " " + createdByUser.getLast_name());
                     }
 
                     @Override
@@ -127,14 +128,24 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     købContainer.setVisibility(View.VISIBLE);
                 }
 
-                if(recipe.getSavedList() != null){
-                    if(recipe.getSavedList().contains(auth.getCurrentUser().getUid())){
-                        favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+                userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        userBrowsing = dataSnapshot.getValue(UserDTO.class);
+                        if(userBrowsing.getSavedRecipes() != null){
+                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+                            }
+                        }
                     }
-                    favoriteCount.setText(String.valueOf(recipe.getSavedList().size()));
-                } else {
-                    favoriteCount.setText("0");
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
 
                 String[] difficulties = getResources().getStringArray(R.array.NewRecipeDifficulty);
 
@@ -177,28 +188,31 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(adapter);
     }
 
-
-
     @Override
     public void onClick(View v) {
         if(v==købKnap){
             Intent koeb = new Intent(this, OpskriftKoeb.class);
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
-            if(recipe.getSavedList() == null){
-                List<String> savedList = new ArrayList<String>();
-                savedList.add(auth.getCurrentUser().getUid());
-                recipe.setSavedList(savedList);
+            if(userBrowsing.getSavedRecipes() == null){
+                List<String> savedRecipes = new ArrayList<String>();
+                savedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setSavedRecipes(savedRecipes);
+                recipe.increaseSavedAmount();
+                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
             } else {
-                if (recipe.getSavedList().contains(auth.getCurrentUser().getUid())) {
+                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
-                    recipe.getSavedList().remove(auth.getCurrentUser().getUid());
+                    recipe.decreaseSavedAmount();
+                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
                 } else {
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                    recipe.getSavedList().add(auth.getCurrentUser().getUid());
+                    recipe.increaseSavedAmount();
+                    userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }
             }
             recipeDAO.update(recipe);
+            userDAO.update(userBrowsing);
         }
     }
 
