@@ -1,5 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import java.util.List;
+
 public class UserDTO {
 
     String userID;
@@ -10,6 +12,8 @@ public class UserDTO {
     String type;
     // Måske også role
     int status;
+    private List<String> savedRecipes;
+    private List<String> boughtRecipes;
 
     public UserDTO(){}
 
@@ -21,6 +25,8 @@ public class UserDTO {
         this.avatar = avatar;
         this.type = type;
         this.status = status;
+        savedRecipes = null;
+        boughtRecipes = null;
     }
 
     public String getUserID() {
@@ -79,17 +85,34 @@ public class UserDTO {
         this.status = status;
     }
 
+    public List<String> getSavedRecipes() {
+        return savedRecipes;
+    }
+
+    public void setSavedRecipes(List<String> savedRecipes) {
+        this.savedRecipes = savedRecipes;
+    }
+
+    public List<String> getBoughtRecipes() {
+        return boughtRecipes;
+    }
+
+    public void setBoughtRecipes(List<String> boughtRecipes) {
+        this.boughtRecipes = boughtRecipes;
+    }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userID=" + userID +
+                "userID='" + userID + '\'' +
                 ", email='" + email + '\'' +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", type='" + type + '\'' +
                 ", status=" + status +
+                ", savedRecipes=" + savedRecipes +
+                ", boughtRecipes=" + boughtRecipes +
                 '}';
     }
 }

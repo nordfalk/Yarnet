@@ -23,10 +23,10 @@ public class RecipeDTO {
     private RecipeDifficulty recipeDifficulty;
     private Date createdTimestamp;
     private Date updatedTimestamp;
+    private int savedAmount;
 
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
-    private List<String> savedList;
 
     public RecipeDTO(){}
 
@@ -43,7 +43,7 @@ public class RecipeDTO {
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
         this.recipeInstructionDTO = recipeInstructionDTO;
-        savedList = null;
+        savedAmount = 0;
     }
 
     public String getRecipeID() {
@@ -142,12 +142,34 @@ public class RecipeDTO {
         this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
-    public List<String> getSavedList() {
-        return savedList;
+    public int getSavedAmount() {
+        return savedAmount;
     }
 
-    public void setSavedList(List<String> savedList) {
-        this.savedList = savedList;
+    public void increaseSavedAmount() {
+        this.savedAmount++;
     }
 
+    public void decreaseSavedAmount() {
+        this.savedAmount--;
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeDTO{" +
+                "recipeID='" + recipeID + '\'' +
+                ", categoryID='" + categoryID + '\'' +
+                ", subcategoryID='" + subcategoryID + '\'' +
+                ", userID='" + userID + '\'' +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", recipeType=" + recipeType +
+                ", recipeDifficulty=" + recipeDifficulty +
+                ", createdTimestamp=" + createdTimestamp +
+                ", updatedTimestamp=" + updatedTimestamp +
+                ", savedAmount=" + savedAmount +
+                ", recipeInformationDTO=" + recipeInformationDTO +
+                ", recipeInstructionDTO=" + recipeInstructionDTO +
+                '}';
+    }
 }
