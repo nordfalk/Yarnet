@@ -4,16 +4,16 @@ import java.util.List;
 
 public class UserDTO {
 
-    String userID;
-    String email;
-    String first_name;
-    String last_name;
-    String avatar;
-    String type;
-    // Måske også role
-    int status;
+    private String userID;
+    private String email;
+    private String first_name;
+    private String last_name;
+    private String avatar;
+    private String type;
     private List<String> savedRecipes;
     private List<String> boughtRecipes;
+    // Måske også role
+    int status;
 
     public UserDTO(){}
 
