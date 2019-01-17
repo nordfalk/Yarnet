@@ -1,13 +1,18 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDTO {
 
-    String userID;
-    String email;
-    String first_name;
-    String last_name;
-    String avatar;
-    String type;
+    private String userID;
+    private String email;
+    private String first_name;
+    private String last_name;
+    private String avatar;
+    private String type;
+    private List<String> savedRecipes = new ArrayList<>();
+    private List<String> boughtRecipes = new ArrayList<>();
     // Måske også role
     int status;
 
@@ -79,6 +84,21 @@ public class UserDTO {
         this.status = status;
     }
 
+    public List<String> getSavedRecipes() {
+        return savedRecipes;
+    }
+
+    public void setSavedRecipes(List<String> savedRecipes) {
+        this.savedRecipes = savedRecipes;
+    }
+
+    public List<String> getBoughtRecipes() {
+        return boughtRecipes;
+    }
+
+    public void setBoughtRecipes(List<String> boughtRecipes) {
+        this.boughtRecipes = boughtRecipes;
+    }
 
     @Override
     public String toString() {
