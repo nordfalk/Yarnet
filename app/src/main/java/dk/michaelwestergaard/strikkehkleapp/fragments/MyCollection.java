@@ -96,29 +96,52 @@ public class MyCollection extends Fragment {
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
 
-                List<RecipeDTO> savedRecipes = sortRecipes("saved", recipes);
-                List<RecipeDTO> boughtRecipes = sortRecipes("bought", recipes);
-                List<RecipeDTO> myRecipes = sortRecipes("my", recipes);
+                final FirebaseAuth auth = FirebaseAuth.getInstance();
+                final List<UserDTO> users = new ArrayList<>();
 
-                RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes);
-                RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes);
-                RecipeAdapter adapterMy = new RecipeAdapter(myRecipes);
+                userDAO.getReference().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        users.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            users.add(snapshot.getValue(UserDTO.class));
+                        }
 
-                RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
-                RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewSaved.setAdapter(adapterSaved);
-                recyclerViewSaved.setLayoutManager(layoutManagerNew);
+                        UserDTO actualUser = new UserDTO();
+                        for(UserDTO user : users) {
+                            if(user.getUserID().equals(auth.getCurrentUser().getUid())) {
+                                actualUser = user;
+                            }
+                        }
 
-                RecyclerView recyclerViewBought = view.findViewById(R.id.BoughtPatternsView);
-                RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewBought.setAdapter(adapterBought);
-                recyclerViewBought.setLayoutManager(layoutManagerPaid);
+                        List<RecipeDTO> savedRecipes = sortRecipes("saved", recipes, actualUser);
+                        List<RecipeDTO> boughtRecipes = sortRecipes("bought", recipes, actualUser);
+                        List<RecipeDTO> myRecipes = sortRecipes("my", recipes, actualUser);
 
-                RecyclerView recyclerViewMy = view.findViewById(R.id.MyPatternsView);
-                RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewMy.setAdapter(adapterMy);
-                recyclerViewMy.setLayoutManager(layoutManagerFree);
+                        RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes);
+                        RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes);
+                        RecipeAdapter adapterMy = new RecipeAdapter(myRecipes);
 
+                        RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
+                        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewSaved.setAdapter(adapterSaved);
+                        recyclerViewSaved.setLayoutManager(layoutManagerNew);
+
+                        RecyclerView recyclerViewBought = view.findViewById(R.id.BoughtPatternsView);
+                        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewBought.setAdapter(adapterBought);
+                        recyclerViewBought.setLayoutManager(layoutManagerPaid);
+
+                        RecyclerView recyclerViewMy = view.findViewById(R.id.MyPatternsView);
+                        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewMy.setAdapter(adapterMy);
+                        recyclerViewMy.setLayoutManager(layoutManagerFree);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
             }
 
             @Override
@@ -129,100 +152,79 @@ public class MyCollection extends Fragment {
         return view;
     }
 
-    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipeSource) {
-        final String sortCase = sortStyle;
-        final List<RecipeDTO> recipes = recipeSource;
+    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipeSource, UserDTO user) {
+        List<RecipeDTO> recipes = new ArrayList<>();
 
-        final FirebaseAuth auth = FirebaseAuth.getInstance();
-        final List<UserDTO> users = new ArrayList<>();
+        for(RecipeDTO recipe : recipeSource) {
+            recipes.add(recipe);
+        }
 
-        userDAO.getReference().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                users.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    users.add(snapshot.getValue(UserDTO.class));
-                }
+        switch(sortStyle) {
+            case "saved":
+                if(user != null) {
+                    List<String> savedRecipeIDs = user.getSavedRecipes();
 
-                UserDTO actualUser = new UserDTO();
-                for(UserDTO user : users) {
-                    if(user.getUserID().equals(auth.getCurrentUser().getUid())) {
-                        actualUser = user;
+                    for (int i = 0; i < recipes.size(); i++) {
+                        boolean keepRecipe = false;
+
+                        for(String savedRecipeID : savedRecipeIDs) {
+                            if(recipes.get(i).getRecipeID().equals(savedRecipeID)) {
+                                keepRecipe = true;
+                                break;
+                            }
+                        }
+
+                        if(!keepRecipe) {
+                            recipes.remove(i);
+                            i = i - 1;
+                        }
                     }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
                 }
+                break;
 
-                switch(sortCase) {
-                    case "saved":
-                        if(actualUser != null) {
-                            List<String> savedRecipeIDs = actualUser.getSavedRecipes();
+            case "bought":
+                if(user != null) {
+                    List<String> boughtRecipeIDs = user.getBoughtRecipes();
 
-                            for (int i = 0; i < recipes.size(); i++) {
-                                boolean keepRecipe = false;
+                    for (int i = 0; i < recipes.size(); i++) {
+                        boolean keepRecipe = false;
 
-                                for(String savedRecipeID : savedRecipeIDs) {
-                                    if(recipes.get(i).getRecipeID().equals(savedRecipeID)) {
-                                        keepRecipe = true;
-                                        break;
-                                    }
-                                }
-
-                                if(!keepRecipe) {
-                                    recipes.remove(i);
-                                    i = i - 1;
-                                }
+                        for(String boughtRecipeID : boughtRecipeIDs) {
+                            if(recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
+                                keepRecipe = true;
+                                break;
                             }
-                        } else {
-                            System.out.println("Error sorting recipes: User not found!");
                         }
-                        break;
 
-                    case "bought":
-                        if(actualUser != null) {
-                            List<String> boughtRecipeIDs = actualUser.getBoughtRecipes();
-
-                            for (int i = 0; i < recipes.size(); i++) {
-                                boolean keepRecipe = false;
-
-                                for(String boughtRecipeID : boughtRecipeIDs) {
-                                    if(recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
-                                        keepRecipe = true;
-                                        break;
-                                    }
-                                }
-
-                                if(!keepRecipe) {
-                                    recipes.remove(i);
-                                    i = i - 1;
-                                }
-                            }
-                        } else {
-                            System.out.println("Error sorting recipes: User not found!");
+                        if(!keepRecipe) {
+                            recipes.remove(i);
+                            i = i - 1;
                         }
-                        break;
-
-                    case "My":
-                        if(actualUser != null) {
-                            for (int i = 0; i < recipes.size(); i++) {
-                                if(!recipes.get(i).getUserID().equals(actualUser.getUserID())) {
-                                    recipes.remove(i);
-                                    i = i - 1;
-                                }
-                            }
-                        } else {
-                            System.out.println("Error sorting recipes: User not found!");
-                        }
-                        break;
-
-                    default:
-                        System.out.print("Error sorting recipes: Unknown sortStyle!");
-                        break;
+                    }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
                 }
-            }
+                break;
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+            case "My":
+                if(user != null) {
+                    for (int i = 0; i < recipes.size(); i++) {
+                        if(!recipes.get(i).getUserID().equals(user.getUserID())) {
+                            recipes.remove(i);
+                            i = i - 1;
+                        }
+                    }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
+                }
+                break;
+
+            default:
+                System.out.print("Error sorting recipes: Unknown sortStyle!");
+                break;
+        }
 
         return recipes;
     }
