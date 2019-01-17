@@ -44,30 +44,30 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^" +
-                    "(?=.*[0-9])" +         //at least 1 digit
-                    "(?=.*[a-z])" +         //at least 1 lower case letter
-                    "(?=.*[A-Z])" +         //at least 1 upper case letter
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{8,16}" +              //at least 4 characters
+            Pattern.compile("^"         +
+                    "(?=.*[0-9])"       +
+                    "(?=.*[a-z])"       +
+                    "(?=.*[A-Z])"       +
+                    "(?=.*[a-zA-Z])"    +
+                    "(?=\\S+$)"         +
+                    ".{8,16}"           +
                     "$");
 
 
-    private static final int RESULT_LOAD_IMAGE = 1;
-    private EditText inputFirstName, inputLastName, inputEmail, inputPassword, inputPasswordAgain;
-    private Button btnSignup, addProfilePic, delImage, testt;
-    private ImageView pictureholder;
-    private RadioGroup radioGroup;
-    private RadioButton radioButton;
-    private Uri selImage;
+    private static final int    RESULT_LOAD_IMAGE = 1;
+    private EditText            inputFirstName, inputLastName, inputEmail, inputPassword, inputPasswordAgain;
+    private Button              btnSignup, addProfilePic, delImage;
+    private StorageReference    storageReference;
+    private FirebaseStorage     storage;
+    private ImageView           pictureholder;
+    private RadioGroup          radioGroup;
+    private Uri                 selImage;
 
-    AlertDialog.Builder builder;
-    AlertDialog progressDialog;
 
-    UserDAO userDAO = new UserDAO();
-    FirebaseStorage storage;
-    StorageReference storageReference;
+    AlertDialog.Builder         builder;
+    AlertDialog                 progressDialog;
+
+    UserDAO                     userDAO = new UserDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,25 +85,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         pictureholder       = findViewById(R.id.pictureHolder);
         delImage            = findViewById(R.id.delImage);
         radioGroup          = findViewById(R.id.radioJegEr);
-
-        btnSignup = findViewById(R.id.btn_signup);
+        btnSignup           = findViewById(R.id.btn_signup);
 
         //Loading dialog
         builder = new AlertDialog.Builder(SignUpActivity.this);
-        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setCancelable(false);
         builder.setView(R.layout.loading_dialog);
         progressDialog = builder.create();
 
 
-        pictureholder.setVisibility(View.GONE);
-        delImage.setVisibility(View.GONE);
+        pictureholder   .setVisibility(View.GONE);
+        delImage        .setVisibility(View.GONE);
 
 
-        addProfilePic.setOnClickListener(this);
-        delImage.setOnClickListener(this);
-        btnSignup.setOnClickListener(this);
+        addProfilePic   .setOnClickListener(this);
+        delImage        .setOnClickListener(this);
+        btnSignup       .setOnClickListener(this);
 
-        storage = FirebaseStorage.getInstance();
+        storage          = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
     }
@@ -228,8 +227,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         } else {
 
             String type = "";
-            int radioId = radioGroup.getCheckedRadioButtonId();
-            radioButton = findViewById(radioId);
 
             if (radioGroup.getCheckedRadioButtonId() == R.id.radioS) {
                 type = "KNITTING";
