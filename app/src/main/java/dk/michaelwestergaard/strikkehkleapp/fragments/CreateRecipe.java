@@ -57,7 +57,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         stepperLayout.setAdapter(new CreateRecipeAdapter(getFragmentManager(), getActivity(), fragments));
         stepperLayout.setListener(this);
-
+        stepperLayout.setNextButtonVerificationFailed(true);
+        stepperLayout.setCompleteButtonVerificationFailed(true);
 
 
         return view;
@@ -107,9 +108,12 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         String recipeID = recipeDAO.insert(recipe);
 
-        Intent intent = new Intent (getContext(), Opskrift.class);
-        intent.putExtra("RecipeID", recipeID);
-        getContext().startActivity(intent);
+        if(!recipeID.isEmpty()) {
+
+            Intent intent = new Intent(getContext(), Opskrift.class);
+            intent.putExtra("RecipeID", recipeID);
+            getContext().startActivity(intent);
+        }
 
     }
 

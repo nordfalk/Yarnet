@@ -62,7 +62,11 @@ public class fragment_recipe_information extends Fragment implements AdapterView
             BaseAdapter materialAdapter = new BaseAdapter() {
                 @Override
                 public int getCount() {
-                    return materials.size();
+                    if(materials != null) {
+                        return materials.size();
+                    } else {
+                        return 0;
+                    }
                 }
 
                 @Override
@@ -80,8 +84,9 @@ public class fragment_recipe_information extends Fragment implements AdapterView
                     View view = getLayoutInflater().inflate(R.layout.fragment_recipe_information_matelement, null);
 
                     TextView materialElement = view.findViewById(R.id.materialListElement);
-                    materialElement.setText("Test"+ materials.get(position));
-
+                    if(materials != null) {
+                        materialElement.setText("Test" + materials.get(position));
+                    }
                     return view;
                 }
             };
@@ -89,7 +94,11 @@ public class fragment_recipe_information extends Fragment implements AdapterView
             BaseAdapter toolsAdapter = new BaseAdapter() {
                 @Override
                 public int getCount() {
-                    return tools.size();
+                    if(tools != null) {
+                        return tools.size();
+                    } else {
+                        return 0;
+                    }
                 }
 
                 @Override
@@ -108,8 +117,10 @@ public class fragment_recipe_information extends Fragment implements AdapterView
                     View view = getLayoutInflater().inflate(R.layout.fragment_recipe_information_toolelement, null);
 
                     TextView toolElement = view.findViewById(R.id.toolListElement);
-                    toolElement.setText("Test"+ tools.get(position));
-                    System.out.println("Redskaber: " + tools.get(position));
+                    if(tools != null) {
+                        toolElement.setText("Test" + tools.get(position));
+                        System.out.println("Redskaber: " + tools.get(position));
+                    }
                     return view;
                 }
             };

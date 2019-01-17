@@ -9,6 +9,10 @@ public class RecipeDTO {
         CROCHETING, KNITTING
     }
 
+    public enum RecipeDifficulty {
+        EASY, MEDIUM, HARD
+    }
+
     private String recipeID;
     private String categoryID;
     private String subcategoryID;
@@ -16,15 +20,17 @@ public class RecipeDTO {
     private String title;
     private double price;
     private RecipeType recipeType;
+    private RecipeDifficulty recipeDifficulty;
     private Date createdTimestamp;
     private Date updatedTimestamp;
+    private int savedAmount;
 
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO) {
+    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, RecipeDifficulty recipeDifficulty, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.subcategoryID = subcategoryID;
@@ -32,10 +38,12 @@ public class RecipeDTO {
         this.title = title;
         this.price = price;
         this.recipeType = recipeType;
+        this.recipeDifficulty = recipeDifficulty;
         this.createdTimestamp = createdTimestamp;
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
         this.recipeInstructionDTO = recipeInstructionDTO;
+        savedAmount = 0;
     }
 
     public String getRecipeID() {
@@ -94,6 +102,14 @@ public class RecipeDTO {
         this.recipeType = recipeType;
     }
 
+    public RecipeDifficulty getRecipeDifficulty() {
+        return recipeDifficulty;
+    }
+
+    public void setRecipeDifficulty(RecipeDifficulty recipeDifficulty) {
+        this.recipeDifficulty = recipeDifficulty;
+    }
+
     public Date getCreatedTimestamp() {
         return createdTimestamp;
     }
@@ -126,6 +142,18 @@ public class RecipeDTO {
         this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
+    public int getSavedAmount() {
+        return savedAmount;
+    }
+
+    public void increaseSavedAmount() {
+        this.savedAmount++;
+    }
+
+    public void decreaseSavedAmount() {
+        this.savedAmount--;
+    }
+
     @Override
     public String toString() {
         return "RecipeDTO{" +
@@ -136,8 +164,10 @@ public class RecipeDTO {
                 ", title='" + title + '\'' +
                 ", price=" + price +
                 ", recipeType=" + recipeType +
+                ", recipeDifficulty=" + recipeDifficulty +
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
+                ", savedAmount=" + savedAmount +
                 ", recipeInformationDTO=" + recipeInformationDTO +
                 ", recipeInstructionDTO=" + recipeInstructionDTO +
                 '}';

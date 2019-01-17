@@ -38,7 +38,7 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     CategoryDAO categoryDAO = new CategoryDAO();
 
     EditText title, description, price;
-    Spinner type, category, subcategory;
+    Spinner type, category, subcategory, difficulty;
     RadioGroup radioGroup;
     RadioButton radioFree, radioNotFree;
 
@@ -86,6 +86,25 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
             recipeDTO.setPrice(0.00);
         }
 
+        RecipeDTO.RecipeDifficulty recipeDifficulty;
+        switch(difficulty.getSelectedItemPosition()){
+
+            case 0:
+                recipeDifficulty = RecipeDTO.RecipeDifficulty.EASY;
+                break;
+            case 1:
+                recipeDifficulty = RecipeDTO.RecipeDifficulty.MEDIUM;
+                break;
+            case 2:
+                recipeDifficulty = RecipeDTO.RecipeDifficulty.HARD;
+                break;
+
+            default:
+                recipeDifficulty = RecipeDTO.RecipeDifficulty.EASY;
+                break;
+        }
+        recipeDTO.setRecipeDifficulty(recipeDifficulty);
+
         recipeDTO.setCategoryID(categories.get(category.getSelectedItemPosition()).getId());
         recipeDTO.setSubcategoryID(subcategories.get(subcategory.getSelectedItemPosition()).getId());
 
@@ -108,6 +127,7 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         type = view.findViewById(R.id.create_recipe_type);
         category = view.findViewById(R.id.create_recipe_spinner_category);
         subcategory = view.findViewById(R.id.create_recipe_spinner_subcategory);
+        difficulty = view.findViewById(R.id.create_recipe_spinner_difficulty);
 
         radioGroup = view.findViewById(R.id.create_recipe_price_selection);
         radioFree = view.findViewById(R.id.create_recipe_radio_free);
@@ -119,10 +139,14 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
 
         priceContainer.setVisibility(View.GONE);
 
+        ArrayAdapter<String> difficulties = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, getResources().getStringArray(R.array.NewRecipeDifficulty));
+        difficulty.setAdapter(difficulties);
+        difficulty.setPrompt("Vælg Sværhedsgrad");
+
         categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                categories.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     CategoryDTO categoryDTO = snapshot.getValue(CategoryDTO.class);
                     categories.add(categoryDTO);
@@ -184,17 +208,19 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
     @Override
     public VerificationError verifyStep() {
         if(!title.getText().toString().matches("")){
-            if(!description.getText().toString().matches("")){
-                if(radioGroup.getCheckedRadioButtonId() != radioNotFree.getId()){
+            if(radioGroup.getCheckedRadioButtonId() != radioNotFree.getId()){
+                return null;
+            } else {
+                if(!price.getText().toString().matches("")){
                     return null;
                 } else {
-                    if(!price.getText().toString().matches("")){
-                        return null;
-                    }
+                    price.setError("Indtast venligst en pris!");
                 }
             }
+        } else {
+            title.setError("Opskriften skal have en overskrift!");
         }
-        return new VerificationError("Udfyld venligst alle felter!");
+        return new VerificationError("Udfyld venligst overstående felter!");
     }
 
     @Override

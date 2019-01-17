@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -32,11 +33,14 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class Opskrift extends AppCompatActivity implements View.OnClickListener {
 
+    private FirebaseAuth auth= FirebaseAuth.getInstance();
+
     private RecipeDTO recipe = null;
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String recipeID = "";
 
-    private UserDTO user;
+    private UserDTO userBrowsing;
+    private UserDTO createdByUser;
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -55,8 +59,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_opskrift);
 
         recipeID = getIntent().getStringExtra("RecipeID");
-
-        String test = getIntent().getStringExtra("TEST");
 
         title = findViewById(R.id.recipe_title);
         creator = findViewById(R.id.recipe_creator);
@@ -79,10 +81,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         favoriteBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
-
-        if(test == "1"){
-            bought = true;
-        }
 
         showRecipe();
     }
@@ -112,8 +110,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 userDAO.getReference().child(recipe.getUserID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        user = dataSnapshot.getValue(UserDTO.class);
-                        creator.setText(user.getFirst_name() + " " + user.getLast_name());
+                        createdByUser = dataSnapshot.getValue(UserDTO.class);
+                        creator.setText(createdByUser.getFirst_name() + " " + createdByUser.getLast_name());
                     }
 
                     @Override
@@ -129,6 +127,48 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     priceTextView.setText("Pris: " + recipe.getPrice() + " DKK");
                     købContainer.setVisibility(View.VISIBLE);
                 }
+
+                userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        userBrowsing = dataSnapshot.getValue(UserDTO.class);
+                        if(userBrowsing.getSavedRecipes() != null){
+                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
+
+                String[] difficulties = getResources().getStringArray(R.array.NewRecipeDifficulty);
+
+                String difficultyText = "";
+                switch(recipe.getRecipeDifficulty()){
+                    case EASY:
+                        difficultyText = difficulties[0];
+                        break;
+
+                    case MEDIUM:
+                        difficultyText = difficulties[1];
+                        break;
+
+                    case HARD:
+                        difficultyText = difficulties[2];
+                        break;
+
+                    default:
+                        difficultyText = "Ikke opgivet";
+                        break;
+                }
+
+                difficulty.setText(difficultyText);
 
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(viewPager);
@@ -148,15 +188,31 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         viewPager.setAdapter(adapter);
     }
 
-
-
     @Override
     public void onClick(View v) {
         if(v==købKnap){
             Intent koeb = new Intent(this, OpskriftKoeb.class);
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
-            favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+            if(userBrowsing.getSavedRecipes() == null){
+                List<String> savedRecipes = new ArrayList<String>();
+                savedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setSavedRecipes(savedRecipes);
+                recipe.increaseSavedAmount();
+                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+            } else {
+                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                    favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
+                    recipe.decreaseSavedAmount();
+                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                } else {
+                    favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+                    recipe.increaseSavedAmount();
+                    userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
+                }
+            }
+            recipeDAO.update(recipe);
+            userDAO.update(userBrowsing);
         }
     }
 
