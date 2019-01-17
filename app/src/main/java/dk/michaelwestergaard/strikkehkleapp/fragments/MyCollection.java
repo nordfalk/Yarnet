@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
@@ -40,6 +43,7 @@ public class MyCollection extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecipeDAO recipeDAO = new RecipeDAO();
+    private UserDAO userDAO = new UserDAO();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -92,9 +96,13 @@ public class MyCollection extends Fragment {
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
 
-                RecipeAdapter adapterSaved = new RecipeAdapter(recipes);
-                RecipeAdapter adapterBought = new RecipeAdapter(recipes);
-                RecipeAdapter adapterMy = new RecipeAdapter(recipes);
+                List<RecipeDTO> savedRecipes = sortRecipes("saved", recipes);
+                List<RecipeDTO> boughtRecipes = sortRecipes("bought", recipes);
+                List<RecipeDTO> myRecipes = sortRecipes("my", recipes);
+
+                RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes);
+                RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes);
+                RecipeAdapter adapterMy = new RecipeAdapter(myRecipes);
 
                 RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
                 RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -119,6 +127,104 @@ public class MyCollection extends Fragment {
         });
 
         return view;
+    }
+
+    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipeSource) {
+        final String sortCase = sortStyle;
+        final List<RecipeDTO> recipes = recipeSource;
+
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
+        final List<UserDTO> users = new ArrayList<>();
+
+        userDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                users.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    users.add(snapshot.getValue(UserDTO.class));
+                }
+
+                UserDTO actualUser = new UserDTO();
+                for(UserDTO user : users) {
+                    if(user.getUserID().equals(auth.getCurrentUser().getUid())) {
+                        actualUser = user;
+                    }
+                }
+
+                switch(sortCase) {
+                    case "saved":
+                        if(actualUser != null) {
+                            List<String> savedRecipeIDs = actualUser.getSavedRecipes();
+
+                            for (int i = 0; i < recipes.size(); i++) {
+                                boolean keepRecipe = false;
+
+                                for(String savedRecipeID : savedRecipeIDs) {
+                                    if(recipes.get(i).getRecipeID().equals(savedRecipeID)) {
+                                        keepRecipe = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!keepRecipe) {
+                                    recipes.remove(i);
+                                    i = i - 1;
+                                }
+                            }
+                        } else {
+                            System.out.println("Error sorting recipes: User not found!");
+                        }
+                        break;
+
+                    case "bought":
+                        if(actualUser != null) {
+                            List<String> boughtRecipeIDs = actualUser.getBoughtRecipes();
+
+                            for (int i = 0; i < recipes.size(); i++) {
+                                boolean keepRecipe = false;
+
+                                for(String boughtRecipeID : boughtRecipeIDs) {
+                                    if(recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
+                                        keepRecipe = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!keepRecipe) {
+                                    recipes.remove(i);
+                                    i = i - 1;
+                                }
+                            }
+                        } else {
+                            System.out.println("Error sorting recipes: User not found!");
+                        }
+                        break;
+
+                    case "My":
+                        if(actualUser != null) {
+                            for (int i = 0; i < recipes.size(); i++) {
+                                if(!recipes.get(i).getUserID().equals(actualUser.getUserID())) {
+                                    recipes.remove(i);
+                                    i = i - 1;
+                                }
+                            }
+                        } else {
+                            System.out.println("Error sorting recipes: User not found!");
+                        }
+                        break;
+
+                    default:
+                        System.out.print("Error sorting recipes: Unknown sortStyle!");
+                        break;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        return recipes;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
