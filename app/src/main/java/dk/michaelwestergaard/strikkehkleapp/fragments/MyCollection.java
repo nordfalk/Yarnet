@@ -4,12 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +23,6 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
@@ -164,19 +163,21 @@ public class MyCollection extends Fragment {
                 if(user != null) {
                     List<String> savedRecipeIDs = user.getSavedRecipes();
 
-                    for (int i = 0; i < recipes.size(); i++) {
-                        boolean keepRecipe = false;
+                    if(savedRecipeIDs != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            boolean keepRecipe = false;
 
-                        for(String savedRecipeID : savedRecipeIDs) {
-                            if(recipes.get(i).getRecipeID().equals(savedRecipeID)) {
-                                keepRecipe = true;
-                                break;
+                            for (String savedRecipeID : savedRecipeIDs) {
+                                if (recipes.get(i).getRecipeID().equals(savedRecipeID)) {
+                                    keepRecipe = true;
+                                    break;
+                                }
                             }
-                        }
 
-                        if(!keepRecipe) {
-                            recipes.remove(i);
-                            i = i - 1;
+                            if (!keepRecipe) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
                         }
                     }
                 } else {
@@ -188,19 +189,21 @@ public class MyCollection extends Fragment {
                 if(user != null) {
                     List<String> boughtRecipeIDs = user.getBoughtRecipes();
 
-                    for (int i = 0; i < recipes.size(); i++) {
-                        boolean keepRecipe = false;
+                    if(boughtRecipeIDs != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            boolean keepRecipe = false;
 
-                        for(String boughtRecipeID : boughtRecipeIDs) {
-                            if(recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
-                                keepRecipe = true;
-                                break;
+                            for (String boughtRecipeID : boughtRecipeIDs) {
+                                if (recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
+                                    keepRecipe = true;
+                                    break;
+                                }
                             }
-                        }
 
-                        if(!keepRecipe) {
-                            recipes.remove(i);
-                            i = i - 1;
+                            if (!keepRecipe) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
                         }
                     }
                 } else {
