@@ -160,14 +160,24 @@ public class MyCollection extends Fragment {
                     List<String> savedRecipeIDs = user.getSavedRecipes();
 
                     if(savedRecipeIDs != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            boolean keepRecipe = false;
 
-                        for (RecipeDTO recipe : recipes) {
                             for (String savedRecipeID : savedRecipeIDs) {
-                                if (recipe.getRecipeID().equals(savedRecipeID)) {
-                                    recipesToShow.add(recipe);
+                                if (recipes.get(i).getRecipeID().equals(savedRecipeID)) {
+                                    keepRecipe = true;
+                                    break;
                                 }
                             }
+
+                            if (!keepRecipe) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
                         }
+                    } else {
+                        recipes.clear();
+                        System.out.println("Error sorting recipes: No saved recipes.");
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -179,14 +189,24 @@ public class MyCollection extends Fragment {
                     List<String> boughtRecipeIDs = user.getBoughtRecipes();
 
                     if(boughtRecipeIDs != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            boolean keepRecipe = false;
 
-                        for (RecipeDTO recipe : recipes) {
                             for (String boughtRecipeID : boughtRecipeIDs) {
-                                if (recipe.getRecipeID().equals(boughtRecipeID)) {
-                                    recipesToShow.add(recipe);
+                                if (recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
+                                    keepRecipe = true;
+                                    break;
                                 }
                             }
+
+                            if (!keepRecipe) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
                         }
+                    } else {
+                        recipes.clear();
+                        System.out.println("Error sorting recipes: No saved recipes.");
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
