@@ -57,8 +57,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         stepperLayout.setAdapter(new CreateRecipeAdapter(getFragmentManager(), getActivity(), fragments));
         stepperLayout.setListener(this);
-
-
+        stepperLayout.setNextButtonVerificationFailed(true);
+        stepperLayout.setCompleteButtonVerificationFailed(true);
 
         return view;
     }
