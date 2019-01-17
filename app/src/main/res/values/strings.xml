@@ -25,6 +25,13 @@
         <item>Erfaren</item>
     </string-array>
 
+
+    <string-array name="NewRecipeDifficulty">
+        <item>Let</item>
+        <item>Middel</item>
+        <item>Svær</item>
+    </string-array>
+
     <string-array name="create_recipe_types">
         <item>Strikke Opskrift</item>
         <item>Hækle Opskrift</item>
