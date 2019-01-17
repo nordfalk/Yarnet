@@ -151,12 +151,9 @@ public class MyCollection extends Fragment {
         return view;
     }
 
-    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipeSource, UserDTO user) {
-        List<RecipeDTO> recipes = new ArrayList<>();
-
-        for(RecipeDTO recipe : recipeSource) {
-            recipes.add(recipe);
-        }
+    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
+        List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
+        recipesToShow.addAll(recipes);
 
         switch(sortStyle) {
             case "saved":
@@ -164,21 +161,25 @@ public class MyCollection extends Fragment {
                     List<String> savedRecipeIDs = user.getSavedRecipes();
 
                     if(savedRecipeIDs != null) {
-                        for (int i = 0; i < recipes.size(); i++) {
+
+                        for (RecipeDTO recipe : recipesToShow) {
                             boolean keepRecipe = false;
 
                             for (String savedRecipeID : savedRecipeIDs) {
-                                if (recipes.get(i).getRecipeID().equals(savedRecipeID)) {
+                                System.out.println(savedRecipeID + " saved id");
+                                if (recipe.getRecipeID().equals(savedRecipeID)) {
                                     keepRecipe = true;
                                     break;
                                 }
                             }
 
                             if (!keepRecipe) {
-                                recipes.remove(i);
-                                i = i - 1;
+                                System.out.println("removing " + recipe.getRecipeID());
+                                recipesToShow.remove(recipe);
                             }
                         }
+                    } else {
+                        recipesToShow.clear();
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -190,21 +191,23 @@ public class MyCollection extends Fragment {
                     List<String> boughtRecipeIDs = user.getBoughtRecipes();
 
                     if(boughtRecipeIDs != null) {
-                        for (int i = 0; i < recipes.size(); i++) {
+
+                        for (RecipeDTO recipe : recipesToShow) {
                             boolean keepRecipe = false;
 
                             for (String boughtRecipeID : boughtRecipeIDs) {
-                                if (recipes.get(i).getRecipeID().equals(boughtRecipeID)) {
+                                if (recipe.getRecipeID().equals(boughtRecipeID)) {
                                     keepRecipe = true;
                                     break;
                                 }
                             }
 
                             if (!keepRecipe) {
-                                recipes.remove(i);
-                                i = i - 1;
+                                recipesToShow.remove(recipe);
                             }
                         }
+                    } else {
+                        recipesToShow.clear();
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -213,11 +216,9 @@ public class MyCollection extends Fragment {
 
             case "my":
                 if(user != null) {
-                    for (int i = 0; i < recipes.size(); i++) {
-                        if(!recipes.get(i).getUserID().equals(user.getUserID())) {
-                            recipes.remove(i);
-                            i = i - 1;
-                        }
+                    for(RecipeDTO recipe : recipesToShow){
+                        if(!recipe.getUserID().equals(user.getUserID()))
+                            recipes.remove(recipe);
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -229,7 +230,7 @@ public class MyCollection extends Fragment {
                 break;
         }
 
-        return recipes;
+        return recipesToShow;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
