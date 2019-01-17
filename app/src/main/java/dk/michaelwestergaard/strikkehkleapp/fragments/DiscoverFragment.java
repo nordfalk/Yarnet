@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,6 +30,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FloatingSearchView searchView;
     private CategoryDAO categoryDAO = new CategoryDAO();
 
     @Override
@@ -41,6 +44,25 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
         tabLayout = getView().findViewById(R.id.top_menu);
         viewPager = getView().findViewById(R.id.container);
+        searchView = getView().findViewById(R.id.floating_search_view)
+
+        searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, final String newQuery) {
+
+                //get suggestions based on newQuery
+
+                //pass them on to the search view
+                searchView.swapSuggestions(suggestions);
+            }
+        });
+
+        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(MenuItem item) {
+
+            }
+        });
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
