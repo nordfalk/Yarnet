@@ -19,7 +19,7 @@
         android:ems="10"
         android:fontFamily="@font/roboto"
         android:hint="Underlinje"
-        android:inputType="textCapSentences|textAutoCorrect"
+        android:inputType="textCapSentences"
         android:padding="10dp"
         android:textAlignment="viewStart"
         android:textAllCaps="false"

@@ -93,7 +93,7 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
 
     @Override
     public void onClick(View view) {
-        TextView instructionNumber;
+        final TextView instructionNumber;
         EditText inputField;
         Button removeInstructionBtn;
         Button addSubInstructionBtn;
@@ -120,10 +120,10 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
             removeInstructionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    instructionLinearLayout.removeView((View) view.getParent());
-
+                    instructionLinearLayout.removeViewAt(0);
 
                     final int childCount = instructionLinearLayout.getChildCount();
+
                     for (int i = 0; i < childCount; i++) {
                         View v = instructionLinearLayout.getChildAt(i);
                         TextView instructionNumber = v.findViewById(R.id.create_recipe_instruction_number);
