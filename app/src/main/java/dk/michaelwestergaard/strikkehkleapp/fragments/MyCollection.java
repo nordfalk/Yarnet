@@ -208,7 +208,7 @@ public class MyCollection extends Fragment {
                 }
                 break;
 
-            case "My":
+            case "my":
                 if(user != null) {
                     for (int i = 0; i < recipes.size(); i++) {
                         if(!recipes.get(i).getUserID().equals(user.getUserID())) {
