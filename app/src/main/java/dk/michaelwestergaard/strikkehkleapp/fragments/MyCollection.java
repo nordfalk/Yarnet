@@ -4,12 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +23,6 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
@@ -152,12 +151,8 @@ public class MyCollection extends Fragment {
         return view;
     }
 
-    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipeSource, UserDTO user) {
-        List<RecipeDTO> recipes = new ArrayList<>();
-
-        for(RecipeDTO recipe : recipeSource) {
-            recipes.add(recipe);
-        }
+    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
+        List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
 
         switch(sortStyle) {
             case "saved":
@@ -220,11 +215,9 @@ public class MyCollection extends Fragment {
 
             case "my":
                 if(user != null) {
-                    for (int i = 0; i < recipes.size(); i++) {
-                        if(!recipes.get(i).getUserID().equals(user.getUserID())) {
-                            recipes.remove(i);
-                            i = i - 1;
-                        }
+                    for(RecipeDTO recipe : recipes){
+                        if(recipe.getUserID().equals(user.getUserID()))
+                            recipesToShow.add(recipe);
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -236,7 +229,7 @@ public class MyCollection extends Fragment {
                 break;
         }
 
-        return recipes;
+        return recipesToShow;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
