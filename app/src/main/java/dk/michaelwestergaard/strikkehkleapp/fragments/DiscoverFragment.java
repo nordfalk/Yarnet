@@ -78,8 +78,12 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
                     @Override
                     public void onPageSelected(int position) {
-                        if((((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)) instanceof DiscoverSubFragment)
-                            ((DiscoverSubFragment)((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)).viewPager.setCurrentItem(0);
+                        try {
+                            if((((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)) instanceof DiscoverSubFragment)
+                                ((DiscoverSubFragment)((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)).viewPager.setCurrentItem(0);
+                        } catch(NullPointerException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
