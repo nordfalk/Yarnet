@@ -153,7 +153,6 @@ public class MyCollection extends Fragment {
 
     private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
         List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
-        recipesToShow.addAll(recipes);
 
         switch(sortStyle) {
             case "saved":
@@ -162,24 +161,13 @@ public class MyCollection extends Fragment {
 
                     if(savedRecipeIDs != null) {
 
-                        for (RecipeDTO recipe : recipesToShow) {
-                            boolean keepRecipe = false;
-
+                        for (RecipeDTO recipe : recipes) {
                             for (String savedRecipeID : savedRecipeIDs) {
-                                System.out.println(savedRecipeID + " saved id");
                                 if (recipe.getRecipeID().equals(savedRecipeID)) {
-                                    keepRecipe = true;
-                                    break;
+                                    recipesToShow.add(recipe);
                                 }
                             }
-
-                            if (!keepRecipe) {
-                                System.out.println("removing " + recipe.getRecipeID());
-                                recipesToShow.remove(recipe);
-                            }
                         }
-                    } else {
-                        recipesToShow.clear();
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -192,22 +180,13 @@ public class MyCollection extends Fragment {
 
                     if(boughtRecipeIDs != null) {
 
-                        for (RecipeDTO recipe : recipesToShow) {
-                            boolean keepRecipe = false;
-
+                        for (RecipeDTO recipe : recipes) {
                             for (String boughtRecipeID : boughtRecipeIDs) {
                                 if (recipe.getRecipeID().equals(boughtRecipeID)) {
-                                    keepRecipe = true;
-                                    break;
+                                    recipesToShow.add(recipe);
                                 }
                             }
-
-                            if (!keepRecipe) {
-                                recipesToShow.remove(recipe);
-                            }
                         }
-                    } else {
-                        recipesToShow.clear();
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
@@ -216,9 +195,9 @@ public class MyCollection extends Fragment {
 
             case "my":
                 if(user != null) {
-                    for(RecipeDTO recipe : recipesToShow){
-                        if(!recipe.getUserID().equals(user.getUserID()))
-                            recipes.remove(recipe);
+                    for(RecipeDTO recipe : recipes){
+                        if(recipe.getUserID().equals(user.getUserID()))
+                            recipesToShow.add(recipe);
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
