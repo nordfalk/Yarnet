@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.1'
 
     //FloatingSearch https://github.com/arimorty/floatingsearchview
-    compile 'com.github.arimorty:floatingsearchview:2.1.1'
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

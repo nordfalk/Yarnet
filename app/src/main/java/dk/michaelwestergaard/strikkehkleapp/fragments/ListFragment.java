@@ -39,6 +39,7 @@ public class ListFragment extends Fragment {
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String categoryID;
     private String subCategoryID;
+    private String searchValue;
 
     public ListFragment() {
     }
@@ -57,6 +58,7 @@ public class ListFragment extends Fragment {
             Bundle arguments = getArguments();
             categoryID = arguments.getString("categoryID");
             subCategoryID = arguments.getString("subCategoryID");
+            searchValue = arguments.getString("searchValue");
         }
     }
 
@@ -74,22 +76,30 @@ public class ListFragment extends Fragment {
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
 
-                for(int i = 0; i < recipes.size(); i++) {
-                    if(!(recipes.get(i).getCategoryID().equals(categoryID))) {
-                        recipes.remove(i);
-                        i = i - 1;
+                if(searchValue == null) {
+                    for (int i = 0; i < recipes.size(); i++) {
+                        if (!(recipes.get(i).getCategoryID().equals(categoryID))) {
+                            recipes.remove(i);
+                            i = i - 1;
+                        }
                     }
-                }
 
-                if(subCategoryID != null) {
-                    for(int i = 0; i < recipes.size(); i++) {
-                        if(!(recipes.get(i).getSubcategoryID().equals(subCategoryID))) {
+                    if (subCategoryID != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            if (!(recipes.get(i).getSubcategoryID().equals(subCategoryID))) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < recipes.size(); i++) {
+                        if (!(recipes.get(i).getTitle().toLowerCase().contains(searchValue.toLowerCase()))) {
                             recipes.remove(i);
                             i = i - 1;
                         }
                     }
                 }
-
 
 
                 RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
