@@ -280,7 +280,7 @@
                 </RadioGroup>
 
                 <ImageView
-                    android:id="@+id/pictureHolder"
+                    android:id="@+id/pic1"
                     android:layout_width="233dp"
                     android:layout_height="200dp"
                     android:layout_marginStart="8dp"
@@ -296,16 +296,16 @@
                     android:id="@+id/addProfilePic"
                     android:layout_width="138dp"
                     android:layout_height="35dp"
+                    android:text="+Tilføj et profilbillede"
+                    android:background="@drawable/addpicsignup"
+                    android:fontFamily="@font/roboto"
+                    android:textColor="#ffffff"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@drawable/addpicsignup"
-                    android:fontFamily="@font/roboto"
-                    android:text="+Tilføj et profilbillede"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radioJegEr" />
@@ -314,9 +314,6 @@
                     android:id="@+id/delImage"
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/delimagebcg"
                     android:fontFamily="@font/roboto"
                     android:text="Slet billede"
@@ -324,9 +321,12 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pictureHolder" />
+                    app:layout_constraintTop_toBottomOf="@+id/pic1" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
