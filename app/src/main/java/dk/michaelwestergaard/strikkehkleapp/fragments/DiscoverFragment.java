@@ -153,6 +153,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                     @Override
                     public void onPageSelected(int position) {
                         try {
+
                             boolean track = true;
 
                             if(!(((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentTitleList().get(position).contains("\""))) {
