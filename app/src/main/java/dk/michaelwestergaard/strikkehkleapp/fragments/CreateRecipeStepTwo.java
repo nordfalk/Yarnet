@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -131,15 +132,18 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
     @Override
     public void onClick(View view) {
         View listElement;
+        TextView header;
         EditText inputField;
         Button removeBtn;
 
         if(view.equals(newMaterialBtn)){
             listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
+            header = listElement.findViewById(R.id.create_recipe_instruction_header);
             inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
             removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
 
+            header.setText("Materiale:");
             inputField.setHint("Nyt Materiale");
             removeBtn.setOnClickListener(this);
 
@@ -147,8 +151,11 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
         } else if(view.equals(newToolBtn)){
             listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
+            header = listElement.findViewById(R.id.create_recipe_instruction_header);
             inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
             removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+
+            header.setText("Redskab:");
 
             inputField.setHint("Nyt Redskab");
             removeBtn.setOnClickListener(this);
