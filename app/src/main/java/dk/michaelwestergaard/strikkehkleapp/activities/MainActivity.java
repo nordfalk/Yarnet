@@ -21,7 +21,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
 
-public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, MyCollection.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener {
+public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
     BottomNavigationView bottomNavigationView;
@@ -39,8 +39,8 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        editProfileBtn2 = (TextView)headerView.findViewById(R.id.editProfileBtn2);
+        drawer = findViewById(R.id.drawer_layout);
+        editProfileBtn2 = headerView.findViewById(R.id.editProfileBtn2);
         editProfileBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
