@@ -22,9 +22,9 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickListener {
 
-    LayoutInflater inflater;
-    LinearLayout materialLinearLayout, toolLinearLayout;
-    Button newMaterialBtn, newToolBtn;
+    private LayoutInflater inflater;
+    private LinearLayout materialLinearLayout, toolLinearLayout;
+    private Button newMaterialBtn, newToolBtn;
 
     public CreateRecipeStepTwo() {}
 
@@ -91,6 +91,30 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
     @Nullable
     @Override
     public VerificationError verifyStep() {
+        if(materialLinearLayout.getChildCount() == 0) {
+            return new VerificationError("Tilføj venligst et materiale!");
+        } else if(materialLinearLayout.getChildCount() != 0) {
+            for(int i = 0; i < materialLinearLayout.getChildCount(); i++){
+                View view = materialLinearLayout.getChildAt(i);
+                EditText materialTxt = view.findViewById(R.id.create_recipe_instruction_title);
+                if(materialTxt.getText().toString().equals("")) {
+                    return new VerificationError("Tilføj venligst en titel til alle materialer!");
+                }
+            }
+        }
+
+        if(toolLinearLayout.getChildCount() == 0) {
+            return new VerificationError("Tilføj venligst et redskab!");
+        } else if(toolLinearLayout.getChildCount() != 0) {
+            for(int i = 0; i < toolLinearLayout.getChildCount(); i++){
+                View view = toolLinearLayout.getChildAt(i);
+                EditText editTxt = view.findViewById(R.id.create_recipe_instruction_title);
+                if(editTxt.getText().toString().equals("")) {
+                    return new VerificationError("Tilføj venligst en titel til alle redskaber!");
+                }
+            }
+        }
+
         return null;
     }
 

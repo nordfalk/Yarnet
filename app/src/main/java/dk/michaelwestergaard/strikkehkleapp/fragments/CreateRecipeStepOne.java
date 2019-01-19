@@ -73,7 +73,11 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         recipeDTO.setTitle(title.getText().toString());
 
         RecipeInformationDTO recipeInformationDTO = new RecipeInformationDTO();
-        recipeInformationDTO.setDescription(description.getText().toString());
+        if(!description.getText().toString().equals("")) {
+            recipeInformationDTO.setDescription(description.getText().toString());
+        } else {
+            recipeInformationDTO.setDescription("Beskrivelsen er tom.");
+        }
         recipeDTO.setRecipeInformationDTO(recipeInformationDTO);
 
         if(radioGroup.getCheckedRadioButtonId() == radioNotFree.getId()){
