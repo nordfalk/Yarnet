@@ -18,20 +18,23 @@ public class fragment_recipe_instruction extends Fragment {
     TextView headlineElement,underlineElement,instructionPoint;
 
     List<RecipeInstructionDTO> recipeInstructionDTO;
+    String recipeID;
 
     public fragment_recipe_instruction() {
         // Required empty public constructor
     }
 
-    public static fragment_recipe_instruction newInstance(List<RecipeInstructionDTO> recipeInstructionDTO) {
+    public static fragment_recipe_instruction newInstance(String recipeID,List<RecipeInstructionDTO> recipeInstructionDTO) {
         fragment_recipe_instruction fragment = new fragment_recipe_instruction();
         fragment.recipeInstructionDTO = recipeInstructionDTO;
+        fragment.recipeID = recipeID;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -42,12 +45,14 @@ public class fragment_recipe_instruction extends Fragment {
         if(opskrift.bought = true){
             instructionRecycleView = view.findViewById(R.id.recipeInstructionList);
 
-            InstructionAdapter instructionAdapter = new InstructionAdapter(recipeInstructionDTO);
+            InstructionAdapter instructionAdapter = new InstructionAdapter(recipeID, recipeInstructionDTO);
             instructionRecycleView.setAdapter(instructionAdapter);
             instructionRecycleView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.VERTICAL, false));
         }
 
         return view;
     }
+
+
 }
 

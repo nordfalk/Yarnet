@@ -91,13 +91,13 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void insertRecipe(){
-
-
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("Recipe found! " + dataSnapshot.getKey());
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
+                RecipeChecklist recipeChecklist = RecipeChecklist.getInstance();
+                recipeChecklist.addChecklist(recipeID, recipe.getRecipeInstructionDTO().size());
                 title.setText(recipe.getTitle());
 
                 userDAO.getReference().child(recipe.getUserID()).addValueEventListener(new ValueEventListener() {
@@ -129,7 +129,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private void setupViewPager(ViewPager viewPager) {
         RecipeViewPagerAdapter adapter = new RecipeViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new fragment_recipe_information().newInstance(recipe.getRecipeInformationDTO()), "Information");
-        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipe.getRecipeInstructionDTO()), "Vejledning");
+        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipeID,recipe.getRecipeInstructionDTO()), "Vejledning");
         viewPager.setAdapter(adapter);
     }
 
@@ -140,8 +140,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         if(v==købKnap){
         Intent koeb = new Intent(this, OpskriftKoeb.class);
         startActivity(koeb);
-
-     }
+        }
     }
 
     @Override
