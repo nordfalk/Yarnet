@@ -12,7 +12,7 @@
     <string name="radio_s">Strikker</string>
     <string name="radio_h">Hækler</string>
     <string name="radio_begge">Begge</string>
-  
+
     <string-array name="RecipeTypes">
         <item>Alle</item>
         <item>Hækle</item>

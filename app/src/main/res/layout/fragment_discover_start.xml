@@ -57,6 +57,18 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/discover_listing_title" />
+
+                    <Button
+                        android:id="@+id/watchMore2"
+                        style="@android:style/Widget.Material.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Se Mere"
+                        android:textColor="#2297E6"
+                        app:layout_constraintBottom_toBottomOf="@+id/discover_listing_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/discover_listing_title" />
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.CardView>
@@ -103,6 +115,18 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/discover_listing_title" />
+
+                    <Button
+                        android:id="@+id/watchMore3"
+                        style="@android:style/Widget.Material.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Se Mere"
+                        android:textColor="#2297E6"
+                        app:layout_constraintBottom_toBottomOf="@+id/discover_listing_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/discover_listing_title" />
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
@@ -146,6 +170,18 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/discover_listing_title" />
+
+                    <Button
+                        android:id="@+id/watchMore1"
+                        style="@android:style/Widget.Material.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Se Mere"
+                        android:textColor="#2297E6"
+                        app:layout_constraintBottom_toBottomOf="@+id/discover_listing_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/discover_listing_title" />
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
         </android.support.constraint.ConstraintLayout>

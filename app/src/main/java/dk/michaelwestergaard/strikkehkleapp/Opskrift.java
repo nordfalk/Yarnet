@@ -51,12 +51,26 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     public boolean bought;
     ImageView backgroundPicture, favoriteBtn;
     CardView købContainer;
+    ImageView backBtn;
+    ImageView drawerBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opskrift);
+
+        drawerBtn = findViewById(R.id.drawerBtn);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } ));
+
+        backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
