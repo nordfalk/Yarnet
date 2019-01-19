@@ -42,6 +42,8 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
     private CategoryDAO categoryDAO = new CategoryDAO();
     private int lastPosition = 0;
     private int lastNonSearchPosition = 0;
+    private String lastSearchValue = "";
+    private boolean returnFromRecipe = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -89,6 +91,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
             public void onSuggestionClicked(final SearchSuggestion searchSuggestion) {
                 String search = searchSuggestion.getBody();
                 setupViewPager(viewPager, search);
+                lastSearchValue = search;
                 searchView.clearSuggestions();
                 hideKeyboardFrom(getContext(), getView());
             }
@@ -97,6 +100,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
             public void onSearchAction(String query) {
                 String search = query;
                 setupViewPager(viewPager, search);
+                lastSearchValue = search;
             }
         });
 
@@ -140,7 +144,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
                 if(adapterCount != 0) {
                     viewPager.setCurrentItem(adapterCount);
-                } else if(lastNonSearchPosition != 0) {
+                } else if(lastNonSearchPosition != 0 && !returnFromRecipe) {
                     viewPager.setCurrentItem(lastNonSearchPosition);
                 }
 
@@ -155,19 +159,25 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                         try {
 
                             boolean track = true;
+                            returnFromRecipe = false;
 
                             if(!(((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentTitleList().get(position).contains("\""))) {
-                                if(((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentTitleList().get(lastPosition).contains("\"")) {
-                                    setupViewPager(viewPager, null);
-                                    lastPosition = lastNonSearchPosition;
-                                    track = false;
+                                if(lastPosition < ((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentTitleList().size()) {
+                                    if (((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentTitleList().get(lastPosition).contains("\"")) {
+                                        setupViewPager(viewPager, null);
+                                        lastPosition = lastNonSearchPosition;
+                                        track = false;
+                                    }
+                                } else {
+                                    returnFromRecipe = true;
+                                    setupViewPager(viewPager, lastSearchValue);
                                 }
                                 if(position < categories.size()) {
                                     lastNonSearchPosition = position;
                                 }
                             }
 
-                            if(track && position < categories.size()) {
+                            if(track) {
                                 lastPosition = position;
                             }
 
