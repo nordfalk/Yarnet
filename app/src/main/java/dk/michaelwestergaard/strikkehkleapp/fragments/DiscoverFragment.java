@@ -1,5 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
@@ -86,6 +89,8 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
             public void onSuggestionClicked(final SearchSuggestion searchSuggestion) {
                 String search = searchSuggestion.getBody();
                 setupViewPager(viewPager, search);
+                searchView.clearSuggestions();
+                hideKeyboardFrom(getContext(), getView());
             }
 
             @Override
@@ -186,6 +191,11 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
             }
         });
         Log.d("Recipes", categories.toString());
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
