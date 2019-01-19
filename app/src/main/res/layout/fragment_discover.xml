@@ -94,7 +94,7 @@
         app:floatingSearch_dimBackground="false"
         app:floatingSearch_leftActionMode="showSearch"
         app:floatingSearch_searchHint="@string/search_hint"
-        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_showSearchKey="true"
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
