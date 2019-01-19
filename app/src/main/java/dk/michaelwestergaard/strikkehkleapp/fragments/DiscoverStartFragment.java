@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,9 +38,9 @@ import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class DiscoverStartFragment extends Fragment {
 
-        TextView watchMore1;
-        TextView watchMore2;
-        TextView watchMore3;
+        Button watchMore1;
+        Button watchMore2;
+        Button watchMore3;
         ViewPager viewPager;
 
     final List<RecipeDTO> recipesNewest = new ArrayList<RecipeDTO>();

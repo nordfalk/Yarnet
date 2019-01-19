@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +24,18 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class MyCollection extends Fragment {
+
+    Button watchMore4;
+    Button watchMore5;
+    Button watchMore6;
+
+    List<RecipeDTO> savedRecipes;
+    List<RecipeDTO> boughtRecipes;
+    List<RecipeDTO> myRecipes;
 
     private RecipeDAO recipeDAO = new RecipeDAO();
     private UserDAO userDAO = new UserDAO();
@@ -41,6 +52,37 @@ public class MyCollection extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_my_collection, container, false);
+
+        watchMore4 = view.findViewById(R.id.watchMore4);
+        watchMore4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(savedRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore5 = view.findViewById(R.id.watchMore5);
+        watchMore5.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(boughtRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore6 = view.findViewById(R.id.watchMore6);
+        watchMore6.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(myRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
 
         final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
@@ -70,13 +112,13 @@ public class MyCollection extends Fragment {
                             }
                         }
 
-                        List<RecipeDTO> savedRecipes = sortRecipes("saved", recipes, actualUser);
-                        List<RecipeDTO> boughtRecipes = sortRecipes("bought", recipes, actualUser);
-                        List<RecipeDTO> myRecipes = sortRecipes("my", recipes, actualUser);
+                        savedRecipes = sortRecipes("saved", recipes, actualUser);
+                        boughtRecipes = sortRecipes("bought", recipes, actualUser);
+                        myRecipes = sortRecipes("my", recipes, actualUser);
 
-                        RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes);
-                        RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes);
-                        RecipeAdapter adapterMy = new RecipeAdapter(myRecipes);
+                        RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes, 12);
+                        RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes, 12);
+                        RecipeAdapter adapterMy = new RecipeAdapter(myRecipes, 12);
 
                         RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
                         RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
