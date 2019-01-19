@@ -61,16 +61,15 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         parent.getItemAtPosition(position);
 
         if (difficultySpinner.getSelectedItemPosition()==0){
-            recipeDTO.setRecipeDifficulty(RecipeDTO.RecipeDifficulty.EASY);
+            userDTO.setDifficulty("EASY");
         }else if(difficultySpinner.getSelectedItemPosition()==1){
-            recipeDTO.setRecipeDifficulty(RecipeDTO.RecipeDifficulty.MEDIUM);
+            userDTO.setDifficulty("MEDIUM");
         }else if(difficultySpinner.getSelectedItemPosition()==2) {
-            recipeDTO.setRecipeDifficulty(RecipeDTO.RecipeDifficulty.HARD);
+            userDTO.setDifficulty("HARD");
         }
-        //recipeDAO.update(recipeDTO);
 
         if (recipeTypeSpinner.getSelectedItemPosition()==0) {
-            userDTO.setType("ALL");
+            userDTO.setType("BOTH");
         } else if (recipeTypeSpinner.getSelectedItemPosition()==1) {
             userDTO.setType("CROCHETING");
         } else if (recipeTypeSpinner.getSelectedItemPosition()==2) {
