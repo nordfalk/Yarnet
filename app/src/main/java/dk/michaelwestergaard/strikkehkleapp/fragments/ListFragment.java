@@ -21,18 +21,10 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DiscoverStartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DiscoverStartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -51,11 +43,12 @@ public class ListFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Bundle arguments = getArguments();
+            Bundle arguments = this.getArguments();
             categoryID = arguments.getString("categoryID");
             subCategoryID = arguments.getString("subCategoryID");
             searchValue = arguments.getString("searchValue");
@@ -67,6 +60,8 @@ public class ListFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
+
+        final String searchValue = MainSingleton.getInstance().getSearchValue();
 
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override

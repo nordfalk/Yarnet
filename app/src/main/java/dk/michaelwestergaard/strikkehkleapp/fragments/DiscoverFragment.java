@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +27,7 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class DiscoverFragment extends Fragment implements ListFragment.OnFragmentInteractionListener {
@@ -56,7 +56,6 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, final String newQuery) {
-
                 final List<Suggestion> suggestions = new ArrayList<>();
 
                 recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
@@ -103,6 +102,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
     private void setupViewPager(final ViewPager viewPager, String search) {
         final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
         final String searchValue = search;
+        MainSingleton.getInstance().setSearchValue(search);
 
         categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,13 +126,8 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
                 int adapterCount = 0;
                 if(searchValue != null){
-                    Bundle arguments = new Bundle();
-                    arguments.putString("searchValue", searchValue);
-
                     ListFragment searchFragment = new ListFragment();
-                    searchFragment.setArguments(arguments);
                     adapter.addFragment(searchFragment, "\"" + searchValue + "\"");
-
                     adapterCount = adapter.getCount();
                 }
 
@@ -141,7 +136,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                 if(adapterCount != 0) {
                     viewPager.setCurrentItem(adapterCount);
                 } else if(lastNonSearchPosition != 0) {
-                    viewPager.setCurrentItem(lastPosition);
+                    viewPager.setCurrentItem(lastNonSearchPosition);
                 }
 
                 viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -162,11 +157,12 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                                     lastPosition = lastNonSearchPosition;
                                     track = false;
                                 }
-
-                                lastNonSearchPosition = position;
+                                if(position < categories.size()) {
+                                    lastNonSearchPosition = position;
+                                }
                             }
 
-                            if(track) {
+                            if(track && position < categories.size()) {
                                 lastPosition = position;
                             }
 
