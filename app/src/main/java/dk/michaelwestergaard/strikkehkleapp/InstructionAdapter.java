@@ -76,7 +76,7 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                     List<View> views = ((InstructionUnderAdapter)underlineCycleview.getAdapter()).getViews();
                     RecipeChecklist recipeChecklist = RecipeChecklist.getInstance();
                     String state = recipeChecklist.getChecklistState(recipeID, position);
-                    System.out.println("State:"+state);
+                    System.out.println("State:"+state+ "\n recipeID: " + recipeID);
 
 
                     if (state != null){
@@ -98,8 +98,12 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                             recipeChecklist.updateChecklist(recipeID,position,true);
                         }
                     } else{
-                        System.out.println("State"+state);
                         recipeChecklist.addChecklist(recipeID, recipeInstructionDTO.size());
+                        System.out.println("Recipe"+recipeChecklist.getChecklist());
+                        System.out.println("State"+state);
+                        recipeChecklist.updateChecklist(recipeID,position,true);
+                        String state1 = recipeChecklist.getChecklistState(recipeID, position);
+                        System.out.println("State1:"+state1);
                         instructionpoint.setBackgroundResource(0);
                         headlineElement.setTextColor(Color.parseColor("#DCDCDC"));
                         for (int i = 0; i < views.size();i++) {

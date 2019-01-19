@@ -96,8 +96,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 System.out.println("Recipe found! " + dataSnapshot.getKey());
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
-                RecipeChecklist recipeChecklist = RecipeChecklist.getInstance();
-                recipeChecklist.addChecklist(recipeID, recipe.getRecipeInstructionDTO().size());
+
                 title.setText(recipe.getTitle());
 
                 userDAO.getReference().child(recipe.getUserID()).addValueEventListener(new ValueEventListener() {
