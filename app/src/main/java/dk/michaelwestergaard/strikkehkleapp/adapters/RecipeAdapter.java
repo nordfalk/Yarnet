@@ -19,11 +19,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     private List<RecipeDTO> recipes;
     private RecipeDTO recipe;
+    private int maxCount;
+
+    public RecipeAdapter(List<RecipeDTO> recipes, int maxCount) {
+        this.recipes = recipes;
+        this.maxCount = maxCount;
+    }
 
     public RecipeAdapter(List<RecipeDTO> recipes) {
         this.recipes = recipes;
+        maxCount = 0;
     }
-
     @Override
     public RecipeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -43,8 +49,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
+
+        if (maxCount != 0) {
+            if(recipes.size() > maxCount) {
+                return maxCount;
+            }
+            return recipes.size();
+        }
         return recipes.size();
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

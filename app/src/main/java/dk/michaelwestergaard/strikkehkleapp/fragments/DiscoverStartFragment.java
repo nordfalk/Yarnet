@@ -164,9 +164,9 @@ public class DiscoverStartFragment extends Fragment {
                 sortNewest(recipesNewest);
                 sortPop(recipesBought);
                 sortPop(recipesFree);
-                RecipeAdapter adapterNewest = new RecipeAdapter(recipesNewest);
-                RecipeAdapter adapterBought = new RecipeAdapter(recipesBought);
-                RecipeAdapter adapterFree = new RecipeAdapter(recipesFree);
+                RecipeAdapter adapterNewest = new RecipeAdapter(recipesNewest, 12);
+                RecipeAdapter adapterBought = new RecipeAdapter(recipesBought, 12);
+                RecipeAdapter adapterFree = new RecipeAdapter(recipesFree, 12);
 
                 RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
                 RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
