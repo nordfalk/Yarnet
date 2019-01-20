@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +37,7 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeImageSliderAdapter;
 
 
 public class Opskrift extends AppCompatActivity implements View.OnClickListener {
@@ -59,6 +62,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     CardView købContainer;
     ImageView backBtn;
     ImageView drawerBtn;
+
+
+    AlertDialog.Builder alertBuilder;
+    AlertDialog alertDialog;
+    ViewPager imageSliderViewPager;
+    final List<String> imageUrls = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +110,11 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         favoriteBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
+        backgroundPicture.setOnClickListener(this);
 
         showRecipe();
     }
-  
+
     private void showRecipe(){
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,6 +122,30 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 title.setText(recipe.getTitle());
 
+                createImageSlider(imageUrls);
+
+                if(recipe.getImageList() != null){
+                    String firstImage = recipe.getImageList().get(0);
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.centerCropTransform()).into(backgroundPicture);
+                        }
+                    });
+                }
+
+                for(String recipeImage : recipe.getImageList()){
+                    System.out.println("Billede: " +recipeImage);
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            imageUrls.add(uri.toString());
+                            imageSliderViewPager.getAdapter().notifyDataSetChanged();
+                        }
+                    });
+                }
                 if(recipe.getRecipeInstructionDTO() != null)
                     stepsCount.setText(recipe.getRecipeInstructionDTO().size() + " trin");
 
@@ -216,6 +250,32 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         });
     }
 
+    private void createImageSlider(List<String> images){
+
+        alertBuilder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.image_dialog_slider, null, false);
+
+        TabLayout tabLayoutSlider = dialogView.findViewById(R.id.viewPagerTabs);
+        imageSliderViewPager = dialogView.findViewById(R.id.image_slider_view_pager);
+        imageSliderViewPager.setAdapter(new RecipeImageSliderAdapter(this, images));
+        tabLayoutSlider.setupWithViewPager(imageSliderViewPager,true);
+
+        Button closeBtn = dialogView.findViewById(R.id.close_image_slider);
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertBuilder.setView(dialogView);
+
+        alertDialog = alertBuilder.create();
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         RecipeViewPagerAdapter adapter = new RecipeViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new fragment_recipe_information().newInstance(recipe.getRecipeInformationDTO()), "Information");
@@ -248,6 +308,9 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             }
             recipeDAO.update(recipe);
             userDAO.update(userBrowsing);
+        } else if (v.equals(backgroundPicture)) {
+            System.out.println(imageUrls);
+            alertDialog.show();
         }
     }
 

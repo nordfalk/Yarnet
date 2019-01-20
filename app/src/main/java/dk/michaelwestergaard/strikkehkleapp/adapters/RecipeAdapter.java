@@ -2,12 +2,19 @@ package dk.michaelwestergaard.strikkehkleapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -20,6 +27,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private List<RecipeDTO> recipes;
     private RecipeDTO recipe;
     private int maxCount;
+    Context context;
 
     public RecipeAdapter(List<RecipeDTO> recipes, int maxCount) {
         this.recipes = recipes;
@@ -32,7 +40,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
     @Override
     public RecipeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View recipeView = inflater.inflate(R.layout.recipe_listing_item, parent, false);
@@ -77,6 +85,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public void bindView(int position){
             recipe = recipes.get(position);
             titleView.setText(recipe.getTitle());
+            if(recipe.getImageList() != null){
+                String firstImage = recipe.getImageList().get(0);
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(imageView);
+                    }
+                });
+            }
         }
 
         @Override
