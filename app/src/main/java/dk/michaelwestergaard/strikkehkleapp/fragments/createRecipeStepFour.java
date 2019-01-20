@@ -42,7 +42,7 @@ public class createRecipeStepFour extends Fragment implements View.OnClickListen
     ImageView pic;
     Button removeBtn, addPic;
     View newView, list;
-    List<Uri> imageList;
+    List<Uri> imageList = new ArrayList<Uri>();
     private StorageReference storageReference;
     private FirebaseStorage storage;
 
