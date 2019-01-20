@@ -98,7 +98,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         showRecipe();
     }
-
+  
     private void showRecipe(){
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -198,7 +198,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private void setupViewPager(ViewPager viewPager) {
         RecipeViewPagerAdapter adapter = new RecipeViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new fragment_recipe_information().newInstance(recipe.getRecipeInformationDTO()), "Information");
-        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipe.getRecipeInstructionDTO()), "Vejledning");
+        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipeID,recipe.getRecipeInstructionDTO()), "Vejledning");
         viewPager.setAdapter(adapter);
     }
 
