@@ -38,8 +38,10 @@ public class InstructionAdapter extends RecyclerView.Adapter {
         Gson gson = new Gson();
         String json = pref.getString("RecipeCheckList", null);
         System.out.println(json);
-        this.recipeChecklist = gson.fromJson(json, RecipeChecklist.class);
-        recipeChecklist.setChecklist(recipeChecklist.getChecklist());
+        if(json != null) {
+            this.recipeChecklist = gson.fromJson(json, RecipeChecklist.class);
+            recipeChecklist.setChecklist(recipeChecklist.getChecklist());
+        }
     }
 
     public void saveChecklists(){
