@@ -21,13 +21,15 @@
 
     <TextView
         android:id="@+id/headlineElement"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="Overskrift - indsæt start elementet"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/instructionPoint"
         app:layout_constraintTop_toTopOf="parent" />
 

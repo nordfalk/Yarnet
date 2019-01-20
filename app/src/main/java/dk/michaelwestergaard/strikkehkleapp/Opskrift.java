@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -15,10 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +55,10 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    ImageView backgroundPicture, favoriteBtn;
+    ImageView backgroundPicture, favoriteBtn, creatorImage;
     CardView købContainer;
     ImageView backBtn;
     ImageView drawerBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         backgroundPicture = findViewById(R.id.baggrundsBillede);
         favoriteBtn = findViewById(R.id.recipe_favorite_btn);
+        creatorImage = findViewById(R.id.creator_image);
 
         købContainer = findViewById(R.id.købContainer);
 
@@ -126,6 +132,21 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         createdByUser = dataSnapshot.getValue(UserDTO.class);
                         creator.setText(createdByUser.getFirst_name() + " " + createdByUser.getLast_name());
+                        if(createdByUser.getAvatar() != null){
+                            String avatar = createdByUser.getAvatar();
+                            System.out.println(avatar);
+                            if(avatar.contains("http") || avatar.contains("https")){
+                                Glide.with(Opskrift.this).load(avatar).into(creatorImage);
+                            } else {
+                                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("users/" + avatar);
+                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(creatorImage);
+                                    }
+                                });
+                            }
+                        }
                     }
 
                     @Override
