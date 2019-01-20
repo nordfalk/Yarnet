@@ -2,34 +2,44 @@ package dk.michaelwestergaard.strikkehkleapp;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeChecklistDTO;
 
 public class RecipeChecklist {
-    List<RecipeChecklistDTO> checklist;
+
+    private List<RecipeChecklistDTO> checklist;
     private static RecipeChecklist instance = null;
 
-    public RecipeChecklist() {
-        checklist = new ArrayList<RecipeChecklistDTO>();
-    }
+    public RecipeChecklist(){}
 
     public static RecipeChecklist getInstance() {
         if (instance == null) {
-            return new RecipeChecklist();
+            instance = new RecipeChecklist();
         }
         return instance;
     }
 
-    public List<RecipeChecklistDTO> getChecklist() {
+
+    List<RecipeChecklistDTO> getChecklist() {
         return checklist;
     }
 
+    public boolean isChecklistCreated(String recipeID){
+        for(RecipeChecklistDTO recipeChecklistDTO : getChecklist()){
+            if(recipeChecklistDTO.getRecipeID().equals(recipeID)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getChecklistState(String recipeID, int stepPosition){
-        List<RecipeChecklistDTO> checklist = getInstance().getChecklist();
-        System.out.println("sizechecklist: "+checklist.size());
-        for (int i = 0; i<checklist.size();i++){
-            if(checklist.get(i).getRecipeID().equals(recipeID)){
-                System.out.println("gucci gang");
-                return String.valueOf(checklist.get(i).getSteps()[stepPosition]);
+        if(checklist != null) {
+            for (RecipeChecklistDTO recipeChecklistDTO : checklist) {
+                if (recipeChecklistDTO.getRecipeID().equals(recipeID)) {
+                    boolean[] steps = recipeChecklistDTO.getSteps();
+                    return String.valueOf(steps[stepPosition]);
+                }
             }
         }
         return null;
@@ -42,21 +52,26 @@ public class RecipeChecklist {
     public void addChecklist(String recipeID, int stepAmount){
         boolean[] steps = new boolean[stepAmount];
         RecipeChecklistDTO recipeChecklistDTO = new RecipeChecklistDTO(recipeID, steps);
-        getChecklist().add(recipeChecklistDTO);
-        System.out.println("gang"+getChecklist().size());
+        if(checklist == null)
+            checklist = new ArrayList<RecipeChecklistDTO>();
+
+        checklist.add(recipeChecklistDTO);
     }
 
     public boolean updateChecklist(String recipeID, int stepPosition, boolean state){
-        System.out.println("size"+getChecklist().size());
-        for (int i = 0; i<getChecklist().size();i++) {
-            System.out.println("Test"+getChecklist().get(i).getRecipeID());
-            if(getChecklist().get(i).getRecipeID().equals(recipeID)) {
-                getChecklist().get(i).updateStep(stepPosition, state);
+        for (int i = 0; i< checklist.size();i++) {
+            if(checklist.get(i).getRecipeID().equals(recipeID)) {
+                checklist.get(i).updateStep(stepPosition, state);
                 return true;
             }
         }
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "RecipeChecklist{" +
+                "checklist=" + checklist +
+                '}';
+    }
 }

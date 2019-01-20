@@ -14,9 +14,11 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
     TextView instructionPoint,underlineElement;
     List<String> instruction;
     List<View> views = new ArrayList<View>();
+    String state;
 
-    public InstructionUnderAdapter(List<String> instructions) {
+    public InstructionUnderAdapter(List<String> instructions, String state) {
         this.instruction = instructions;
+        this.state = state;
     }
 
     @Override
@@ -46,7 +48,6 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
     private class InstructionBottomViewHolder extends RecyclerView.ViewHolder{
 
         private TextView instructionPoint,underlineElement;
-        private boolean done = true;
 
         public InstructionBottomViewHolder(View itemView) {
             super(itemView);
@@ -54,7 +55,15 @@ public class InstructionUnderAdapter extends RecyclerView.Adapter{
             instructionPoint= itemView.findViewById(R.id.instructionPoint2);
         }
 
-        public void bindView(int position){ underlineElement.setText(instruction.get(position)); }
+        public void bindView(int position){
+            underlineElement.setText(instruction.get(position));
+            if(state != null){
+                if (state.equals("true")) {
+                    instructionPoint.setBackgroundResource(R.drawable.done);
+                    underlineElement.setTextColor(Color.parseColor("#B7B7B7"));
+                }
+            }
+        }
 
     }
 

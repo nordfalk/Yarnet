@@ -1,6 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class RecipeChecklistDTO {
     private String recipeID;
@@ -25,5 +25,13 @@ public class RecipeChecklistDTO {
 
     public void updateStep(int position, boolean state) {
         steps[position] = state;
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeChecklistDTO{" +
+                "recipeID='" + recipeID + '\'' +
+                ", steps=" + Arrays.toString(steps) +
+                '}';
     }
 }

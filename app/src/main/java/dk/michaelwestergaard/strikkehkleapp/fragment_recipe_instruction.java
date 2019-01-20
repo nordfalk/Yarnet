@@ -28,6 +28,7 @@ public class fragment_recipe_instruction extends Fragment {
         fragment_recipe_instruction fragment = new fragment_recipe_instruction();
         fragment.recipeInstructionDTO = recipeInstructionDTO;
         fragment.recipeID = recipeID;
+        RecipeChecklist recipeChecklist = RecipeChecklist.getInstance();
         return fragment;
     }
 
