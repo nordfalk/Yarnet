@@ -97,6 +97,7 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         ((CreateRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((CreateRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((CreateRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
+        ((createRecipeStepFour) fragments.get(3).getFragment()).getData(recipe);
 
         recipe.setCreatedTimestamp(new Date());
 

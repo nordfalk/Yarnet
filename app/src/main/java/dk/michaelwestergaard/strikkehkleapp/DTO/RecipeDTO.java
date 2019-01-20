@@ -27,10 +27,11 @@ public class RecipeDTO {
 
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
+    private List<String> imageList;
 
     public RecipeDTO(){}
 
-    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, RecipeDifficulty recipeDifficulty, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO) {
+    public RecipeDTO(String recipeID, String categoryID, String subcategoryID, String userID, String title, double price, RecipeType recipeType, RecipeDifficulty recipeDifficulty, Date createdTimestamp, Date updatedTimestamp, RecipeInformationDTO recipeInformationDTO, List<RecipeInstructionDTO> recipeInstructionDTO, List<String> imageList) {
         this.recipeID = recipeID;
         this.categoryID = categoryID;
         this.subcategoryID = subcategoryID;
@@ -43,6 +44,7 @@ public class RecipeDTO {
         this.updatedTimestamp = updatedTimestamp;
         this.recipeInformationDTO = recipeInformationDTO;
         this.recipeInstructionDTO = recipeInstructionDTO;
+        this.imageList = imageList;
         savedAmount = 0;
     }
 
@@ -142,6 +144,14 @@ public class RecipeDTO {
         this.recipeInstructionDTO = recipeInstructionDTO;
     }
 
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
+    }
+
     public int getSavedAmount() {
         return savedAmount;
     }
@@ -170,6 +180,7 @@ public class RecipeDTO {
                 ", savedAmount=" + savedAmount +
                 ", recipeInformationDTO=" + recipeInformationDTO +
                 ", recipeInstructionDTO=" + recipeInstructionDTO +
+                ", imageList=" + imageList +
                 '}';
     }
 }
