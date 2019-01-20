@@ -21,24 +21,17 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DiscoverStartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DiscoverStartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String categoryID;
     private String subCategoryID;
+    private String searchValue;
 
     public ListFragment() {
     }
@@ -50,13 +43,15 @@ public class ListFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Bundle arguments = getArguments();
+            Bundle arguments = this.getArguments();
             categoryID = arguments.getString("categoryID");
             subCategoryID = arguments.getString("subCategoryID");
+            searchValue = arguments.getString("searchValue");
         }
     }
 
@@ -66,6 +61,8 @@ public class ListFragment extends Fragment {
 
         final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
+        final String searchValue = MainSingleton.getInstance().getSearchValue();
+
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,22 +71,30 @@ public class ListFragment extends Fragment {
                     recipes.add(snapshot.getValue(RecipeDTO.class));
                 }
 
-                for(int i = 0; i < recipes.size(); i++) {
-                    if(!(recipes.get(i).getCategoryID().equals(categoryID))) {
-                        recipes.remove(i);
-                        i = i - 1;
+                if(searchValue == null) {
+                    for (int i = 0; i < recipes.size(); i++) {
+                        if (!(recipes.get(i).getCategoryID().equals(categoryID))) {
+                            recipes.remove(i);
+                            i = i - 1;
+                        }
                     }
-                }
 
-                if(subCategoryID != null) {
-                    for(int i = 0; i < recipes.size(); i++) {
-                        if(!(recipes.get(i).getSubcategoryID().equals(subCategoryID))) {
+                    if (subCategoryID != null) {
+                        for (int i = 0; i < recipes.size(); i++) {
+                            if (!(recipes.get(i).getSubcategoryID().equals(subCategoryID))) {
+                                recipes.remove(i);
+                                i = i - 1;
+                            }
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < recipes.size(); i++) {
+                        if (!(recipes.get(i).getTitle().toLowerCase().contains(searchValue.toLowerCase()))) {
                             recipes.remove(i);
                             i = i - 1;
                         }
                     }
                 }
-
 
 
                 RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);

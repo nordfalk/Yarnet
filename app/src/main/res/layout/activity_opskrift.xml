@@ -7,7 +7,13 @@
     android:background="#ECECEC"
     android:fitsSystemWindows="true">
 
+    <include
+        android:id="@+id/toolbarops"
+        layout="@layout/nav_bar" />
+
+
     <android.support.v7.widget.CardView
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:id="@+id/topcardview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

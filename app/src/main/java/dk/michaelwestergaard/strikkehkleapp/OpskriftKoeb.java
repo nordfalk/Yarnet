@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListener {
@@ -12,12 +13,26 @@ public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListe
     RadioGroup radioGroup;
     Button annulere,fortsæt;
     Opskrift opskrift;
-
+    ImageView backBtn;
+    ImageView drawerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opskrift_koeb);
+
+        drawerBtn = findViewById(R.id.drawerBtn);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } ));
+
+        backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
+
         radioGroup = findViewById(R.id.radioGroup);
         annulere = findViewById(R.id.AnnulereKnap);
         fortsæt = findViewById(R.id.FortsætKnap);

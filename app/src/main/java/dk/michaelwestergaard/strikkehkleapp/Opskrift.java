@@ -51,12 +51,26 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     public boolean bought;
     ImageView backgroundPicture, favoriteBtn;
     CardView købContainer;
+    ImageView backBtn;
+    ImageView drawerBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opskrift);
+
+        drawerBtn = findViewById(R.id.drawerBtn);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } ));
+
+        backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
@@ -84,7 +98,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         showRecipe();
     }
-
+  
     private void showRecipe(){
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -184,7 +198,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private void setupViewPager(ViewPager viewPager) {
         RecipeViewPagerAdapter adapter = new RecipeViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new fragment_recipe_information().newInstance(recipe.getRecipeInformationDTO()), "Information");
-        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipe.getRecipeInstructionDTO()), "Vejledning");
+        adapter.addFragment(new fragment_recipe_instruction().newInstance(recipeID,recipe.getRecipeInstructionDTO()), "Vejledning");
         viewPager.setAdapter(adapter);
     }
 
