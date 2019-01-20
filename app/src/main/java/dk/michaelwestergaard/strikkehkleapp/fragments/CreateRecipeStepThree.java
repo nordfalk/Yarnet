@@ -24,9 +24,9 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class CreateRecipeStepThree extends Fragment implements Step, View.OnClickListener {
 
-    LayoutInflater inflater;
-    LinearLayout instructionLinearLayout;
-    Button newInstructionBtn;
+    private LayoutInflater inflater;
+    private LinearLayout instructionLinearLayout;
+    private Button newInstructionBtn;
 
     public CreateRecipeStepThree() {}
 
@@ -82,6 +82,32 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
     @Nullable
     @Override
     public VerificationError verifyStep() {
+        if(instructionLinearLayout.getChildCount() == 0) {
+            return new VerificationError("Tilføj venligst et instruktionstrin!");
+        } else if(instructionLinearLayout.getChildCount() != 0) {
+            for(int i = 0; i < instructionLinearLayout.getChildCount(); i++){
+                View view = instructionLinearLayout.getChildAt(i);
+                EditText title = view.findViewById(R.id.create_recipe_instruction_title);
+
+                if(title.getText().toString().equals("")) {
+                    return new VerificationError("Tilføj venligst en tekst til alle trin!");
+                }
+
+                LinearLayout underLinearLayout = view.findViewById(R.id.create_recipe_sub_instruction);
+
+                if(underLinearLayout.getChildCount() != 0) {
+                    for (int n = 0; n < underLinearLayout.getChildCount(); n++) {
+                        View viewUnder = instructionLinearLayout.getChildAt(i);
+                        EditText underInstructionTxt = viewUnder.findViewById(R.id.create_recipe_sub_instruction_text);
+
+                        if (underInstructionTxt.getText().toString().equals("")) {
+                            return new VerificationError("Tilføj venligst en tekst til alle underlinjer!");
+                        }
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
@@ -93,7 +119,7 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
 
     @Override
     public void onClick(View view) {
-        TextView instructionNumber;
+        final TextView instructionNumber;
         EditText inputField;
         Button removeInstructionBtn;
         Button addSubInstructionBtn;
@@ -120,10 +146,10 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
             removeInstructionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    instructionLinearLayout.removeView((View) view.getParent());
-
+                    instructionLinearLayout.removeViewAt(0);
 
                     final int childCount = instructionLinearLayout.getChildCount();
+
                     for (int i = 0; i < childCount; i++) {
                         View v = instructionLinearLayout.getChildAt(i);
                         TextView instructionNumber = v.findViewById(R.id.create_recipe_instruction_number);

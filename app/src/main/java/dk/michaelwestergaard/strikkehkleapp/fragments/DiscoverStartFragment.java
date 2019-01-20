@@ -1,17 +1,17 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,17 +24,28 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
+import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class DiscoverStartFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+        Button watchMore1;
+        Button watchMore2;
+        Button watchMore3;
+        ViewPager viewPager;
+
+    final List<RecipeDTO> recipesNewest = new ArrayList<RecipeDTO>();
+    final List<RecipeDTO> recipesBought = new ArrayList<RecipeDTO>();
+    final List<RecipeDTO> recipesFree = new ArrayList<RecipeDTO>();
 
     private RecipeDAO recipeDAO = new RecipeDAO();
 
@@ -51,16 +62,65 @@ public class DiscoverStartFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
+        super.onCreate(savedInstanceState);
+
     }
 
+    public void sortNewest(List<RecipeDTO> recipes) {
+        Collections.sort(recipes, new Comparator<RecipeDTO>() {
+            @Override
+            public int compare(RecipeDTO recipe1, RecipeDTO recipe2) {
+                return recipe2.getCreatedTimestamp().compareTo(recipe1.getCreatedTimestamp());
+
+            }
+        });
+    }
+
+    public void sortPop(List<RecipeDTO> recipes) {
+        Collections.sort(recipes, new Comparator<RecipeDTO>() {
+            @Override
+            public int compare(RecipeDTO recipe1, RecipeDTO recipe2) {
+                return recipe2.getSavedAmount() - recipe1.getSavedAmount();
+
+            }
+        });
+    }
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_discover_start, container, false);
+
+        watchMore1 = view.findViewById(R.id.watchMore1);
+        watchMore1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(recipesNewest);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore2 = view.findViewById(R.id.watchMore2);
+        watchMore2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(recipesBought);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore3 = view.findViewById(R.id.watchMore3);
+        watchMore3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(recipesFree);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
 
         Query query = FirebaseDatabase.getInstance().getReference().child("recipes");
         FirebaseRecyclerOptions<RecipeDTO> options = new FirebaseRecyclerOptions.Builder<RecipeDTO>()
@@ -72,13 +132,11 @@ public class DiscoverStartFragment extends Fragment {
             @Override
             public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_listing_item, parent, false);
-                Log.d("test", "bindiengienrgienrgierngierngeirgn");
                 return new RecipeViewHolder(view);
             }
 
             @Override
             protected void onBindViewHolder(RecipeViewHolder holder, int position, RecipeDTO recipe) {
-                Log.d("test",recipe.toString());
                 holder.recipeID = recipe.getRecipeID();
                 holder.title.setText(recipe.getTitle());
             }
@@ -86,80 +144,55 @@ public class DiscoverStartFragment extends Fragment {
 
             @Override
             public void onError(DatabaseError e) {
-                // Called when there is an error getting data. You may want to update
-                // your UI to display an error message to the user.
-                // ...
-                Log.d("ERROR", e.getMessage());
             }
         };
-
-        //TODO: Skal fixes, det virker ikke...
-
-        final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                recipes.clear();
+                recipesNewest.clear();
+                recipesBought.clear();
+                recipesFree.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                    RecipeDTO recipe = snapshot.getValue(RecipeDTO.class);
+                    recipesNewest.add(recipe);
+                    if (recipe.getPrice() == 0) {
+                        recipesFree.add(recipe);
+                    } else {
+                        recipesBought.add(recipe);
+                    }
                 }
-
-                RecipeAdapter adapter = new RecipeAdapter(recipes);
+                sortNewest(recipesNewest);
+                sortPop(recipesBought);
+                sortPop(recipesFree);
+                RecipeAdapter adapterNewest = new RecipeAdapter(recipesNewest, 12);
+                RecipeAdapter adapterBought = new RecipeAdapter(recipesBought, 12);
+                RecipeAdapter adapterFree = new RecipeAdapter(recipesFree, 12);
 
                 RecyclerView recyclerViewNew = view.findViewById(R.id.item_list_new);
                 RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewNew.setAdapter(adapter);
+                recyclerViewNew.setAdapter(adapterNewest);
                 recyclerViewNew.setLayoutManager(layoutManagerNew);
 
                 RecyclerView recyclerViewPaid = view.findViewById(R.id.item_list_paid);
                 RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewPaid.setAdapter(adapter);
+                recyclerViewPaid.setAdapter(adapterBought);
                 recyclerViewPaid.setLayoutManager(layoutManagerPaid);
 
                 RecyclerView recyclerViewFree = view.findViewById(R.id.item_list_free);
                 RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerViewFree.setAdapter(adapter);
+                recyclerViewFree.setAdapter(adapterFree);
                 recyclerViewFree.setLayoutManager(layoutManagerFree);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
+
+
         });
-
+      
         return view;
-    }
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -175,7 +208,6 @@ public class DiscoverStartFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Clicked " + recipeID);
                     Intent intent = new Intent (view.getContext(), Opskrift.class);
                     intent.putExtra("RecipeID", recipeID);
                     view.getContext().startActivity(intent);

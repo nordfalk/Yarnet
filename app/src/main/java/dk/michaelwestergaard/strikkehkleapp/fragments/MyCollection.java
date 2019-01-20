@@ -1,130 +1,213 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
+import android.widget.Button;
 
-import dk.michaelwestergaard.strikkehkleapp.ListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
+import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyCollection.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyCollection#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyCollection extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Button watchMore4;
+    Button watchMore5;
+    Button watchMore6;
 
-    private OnFragmentInteractionListener mListener;
+    List<RecipeDTO> savedRecipes;
+    List<RecipeDTO> boughtRecipes;
+    List<RecipeDTO> myRecipes;
+
+    private RecipeDAO recipeDAO = new RecipeDAO();
+    private UserDAO userDAO = new UserDAO();
 
     public MyCollection() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyCollection.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MyCollection newInstance(String param1, String param2) {
-        MyCollection fragment = new MyCollection();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_collection, container, false);
+        final View view = inflater.inflate(R.layout.fragment_my_collection, container, false);
 
-        ListAdapter listAdapter = new ListAdapter();
+        watchMore4 = view.findViewById(R.id.watchMore4);
+        watchMore4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(savedRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore5 = view.findViewById(R.id.watchMore5);
+        watchMore5.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(boughtRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
+        watchMore6 = view.findViewById(R.id.watchMore6);
+        watchMore6.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WatchMore.WatchMoreSingleton.getInstance().setRecipes(myRecipes);
+                startActivity( new Intent(v.getContext(), WatchMore.class));
+            }
+        });
 
-        RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
-        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewSaved.setAdapter(listAdapter);
-        recyclerViewSaved.setLayoutManager(layoutManagerNew);
+        final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
-        RecyclerView recyclerViewBought = view.findViewById(R.id.BoughtPatternsView);
-        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewBought.setAdapter(listAdapter);
-        recyclerViewBought.setLayoutManager(layoutManagerPaid);
+        recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipes.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                }
 
-        RecyclerView recyclerViewMy = view.findViewById(R.id.MyPatternsView);
-        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewMy.setAdapter(listAdapter);
-        recyclerViewMy.setLayoutManager(layoutManagerFree);
+                final FirebaseAuth auth = FirebaseAuth.getInstance();
+                final List<UserDTO> users = new ArrayList<>();
+
+                userDAO.getReference().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        users.clear();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            users.add(snapshot.getValue(UserDTO.class));
+                        }
+
+                        UserDTO actualUser = new UserDTO();
+                        for(UserDTO user : users) {
+                            if(user.getUserID().equals(auth.getCurrentUser().getUid())) {
+                                actualUser = user;
+                            }
+                        }
+
+                        savedRecipes = sortRecipes("saved", recipes, actualUser);
+                        boughtRecipes = sortRecipes("bought", recipes, actualUser);
+                        myRecipes = sortRecipes("my", recipes, actualUser);
+
+                        RecipeAdapter adapterSaved = new RecipeAdapter(savedRecipes, 12);
+                        RecipeAdapter adapterBought = new RecipeAdapter(boughtRecipes, 12);
+                        RecipeAdapter adapterMy = new RecipeAdapter(myRecipes, 12);
+
+                        RecyclerView recyclerViewSaved = view.findViewById(R.id.SavedPatternsView);
+                        RecyclerView.LayoutManager layoutManagerNew = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewSaved.setAdapter(adapterSaved);
+                        recyclerViewSaved.setLayoutManager(layoutManagerNew);
+
+                        RecyclerView recyclerViewBought = view.findViewById(R.id.BoughtPatternsView);
+                        RecyclerView.LayoutManager layoutManagerPaid = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewBought.setAdapter(adapterBought);
+                        recyclerViewBought.setLayoutManager(layoutManagerPaid);
+
+                        RecyclerView recyclerViewMy = view.findViewById(R.id.MyPatternsView);
+                        RecyclerView.LayoutManager layoutManagerFree = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                        recyclerViewMy.setAdapter(adapterMy);
+                        recyclerViewMy.setLayoutManager(layoutManagerFree);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
+        List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
+
+        switch(sortStyle) {
+            case "saved":
+                if(user != null) {
+                    List<String> savedRecipeIDs = user.getSavedRecipes();
+
+                    if(savedRecipeIDs != null) {
+
+                        for (RecipeDTO recipe : recipes) {
+                            for (String savedRecipeID : savedRecipeIDs) {
+                                if (recipe.getRecipeID().equals(savedRecipeID)) {
+                                    recipesToShow.add(recipe);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
+                }
+                break;
+
+            case "bought":
+                if(user != null) {
+                    List<String> boughtRecipeIDs = user.getBoughtRecipes();
+
+                    if(boughtRecipeIDs != null) {
+
+                        for (RecipeDTO recipe : recipes) {
+                            for (String boughtRecipeID : boughtRecipeIDs) {
+                                if (recipe.getRecipeID().equals(boughtRecipeID)) {
+                                    recipesToShow.add(recipe);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
+                }
+                break;
+
+            case "my":
+                if(user != null) {
+                    for(RecipeDTO recipe : recipes){
+                        if(recipe.getUserID().equals(user.getUserID()))
+                            recipesToShow.add(recipe);
+                    }
+                } else {
+                    System.out.println("Error sorting recipes: User not found!");
+                }
+                break;
+
+            default:
+                System.out.print("Error sorting recipes: Unknown sortStyle!");
+                break;
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        return recipesToShow;
     }
 }

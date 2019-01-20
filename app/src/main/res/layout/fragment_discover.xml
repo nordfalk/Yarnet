@@ -11,39 +11,23 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="103dp"
         android:background="@color/colorToolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.arlib.floatingsearchview.FloatingSearchView
-            android:id="@+id/floating_search_view"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:floatingSearch_close_search_on_keyboard_dismiss="true"
-            app:floatingSearch_dimBackground="false"
-            app:floatingSearch_leftActionMode="showSearch"
-            app:floatingSearch_searchHint="@string/search_hint"
-            app:floatingSearch_showSearchKey="false"
-            app:floatingSearch_suggestionsListAnimDuration="250"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/top_menu"
             android:layout_width="0dp"
             android:layout_height="35dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="68dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/floating_search_view"
+            app:layout_constraintTop_toTopOf="parent"
             app:tabBackground="@drawable/tab_color_selector"
             app:tabIndicatorColor="@null"
             app:tabMode="scrollable">
@@ -82,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Huer" />
+
         </android.support.design.widget.TabLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -93,6 +78,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" >
+
+    </android.support.v4.view.ViewPager>
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/floating_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:floatingSearch_dimBackground="false"
+        app:floatingSearch_leftActionMode="showSearch"
+        app:floatingSearch_searchHint="@string/search_hint"
+        app:floatingSearch_showSearchKey="true"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
 </android.support.constraint.ConstraintLayout>

@@ -5,13 +5,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class UserDAO implements DAO<UserDTO> {
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = database.getReference("users");
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference("users");
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference("users");
 
     @Override
     public String insert(UserDTO user) {

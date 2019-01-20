@@ -9,6 +9,10 @@
     <string name="facebook_app_id">333212644140047</string>
     <string name="fb_login_protocol_scheme">fb333212644140047</string>
 
+    <string name="radio_s">Strikker</string>
+    <string name="radio_h">Hækler</string>
+    <string name="radio_begge">Begge</string>
+
     <string-array name="RecipeTypes">
         <item>Alle</item>
         <item>Hækle</item>
@@ -19,6 +23,13 @@
         <item>Nybegynder</item>
         <item>Øvet</item>
         <item>Erfaren</item>
+    </string-array>
+
+
+    <string-array name="NewRecipeDifficulty">
+        <item>Let</item>
+        <item>Middel</item>
+        <item>Svær</item>
     </string-array>
 
     <string-array name="create_recipe_types">

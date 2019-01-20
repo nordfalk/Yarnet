@@ -1,24 +1,32 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import java.util.List;
+
 public class UserDTO {
 
-    String userID;
-    String email;
-    String first_name;
-    String last_name;
-    String avatar;
+    private String userID;
+    private String email;
+    private String first_name;
+    private String last_name;
+    private String avatar;
+    private String type;
+    private List<String> savedRecipes;
+    private List<String> boughtRecipes;
     // Måske også role
     int status;
 
     public UserDTO(){}
 
-    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, int status) {
+    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
         this.avatar = avatar;
+        this.type = type;
         this.status = status;
+        savedRecipes = null;
+        boughtRecipes = null;
     }
 
     public String getUserID() {
@@ -61,6 +69,14 @@ public class UserDTO {
         this.avatar = avatar;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -69,15 +85,34 @@ public class UserDTO {
         this.status = status;
     }
 
+    public List<String> getSavedRecipes() {
+        return savedRecipes;
+    }
+
+    public void setSavedRecipes(List<String> savedRecipes) {
+        this.savedRecipes = savedRecipes;
+    }
+
+    public List<String> getBoughtRecipes() {
+        return boughtRecipes;
+    }
+
+    public void setBoughtRecipes(List<String> boughtRecipes) {
+        this.boughtRecipes = boughtRecipes;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userID=" + userID +
+                "userID='" + userID + '\'' +
                 ", email='" + email + '\'' +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", type='" + type + '\'' +
                 ", status=" + status +
+                ", savedRecipes=" + savedRecipes +
+                ", boughtRecipes=" + boughtRecipes +
                 '}';
     }
 }
