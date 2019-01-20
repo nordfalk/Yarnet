@@ -100,12 +100,12 @@
                         android:text="TextView"
                         android:textColor="#696969"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                        app:layout_constraintStart_toEndOf="@+id/imageView5"
-                        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                        app:layout_constraintBottom_toBottomOf="@+id/creator_image"
+                        app:layout_constraintStart_toEndOf="@+id/creator_image"
+                        app:layout_constraintTop_toTopOf="@+id/creator_image" />
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/creator_image"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="16dp"

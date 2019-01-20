@@ -140,6 +140,7 @@ public class InstructionAdapter extends RecyclerView.Adapter {
             instructionpoint.setText(position+1+"");
             underlineCycleview.setAdapter(new InstructionUnderAdapter(recipeInstructionDTO.get(position).getInstructions(), state));
             underlineCycleview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            underlineCycleview.setLayoutFrozen(true);
             if(state != null){
                 if (state.equals("true")) {
                     instructionpoint.setText("\u2713");
