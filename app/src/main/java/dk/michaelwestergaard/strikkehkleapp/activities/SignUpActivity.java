@@ -1,8 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,25 +9,18 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -82,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         inputPassword       = findViewById(R.id.input_password);
         inputPasswordAgain  = findViewById(R.id.input_password_again);
         addProfilePic       = findViewById(R.id.addProfilePic);
-        pictureholder       = findViewById(R.id.pictureHolder);
+        pictureholder       = findViewById(R.id.pic1);
         delImage            = findViewById(R.id.delImage);
         radioGroup          = findViewById(R.id.radioJegEr);
         btnSignup           = findViewById(R.id.btn_signup);

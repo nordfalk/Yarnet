@@ -39,11 +39,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
     //Facebook
     implementation 'com.facebook.android:facebook-android-sdk:4.38.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
-
+    implementation 'com.android.support:cardview-v7:26.1.0'
     //FloatingSearch https://github.com/arimorty/floatingsearchview
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
