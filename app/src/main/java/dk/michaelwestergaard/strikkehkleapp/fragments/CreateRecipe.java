@@ -54,6 +54,7 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepOne(), "Oplysninger"));
         fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepTwo(), "Materialer"));
         fragments.add(new CreateRecipeAdapterStepperInfo(new CreateRecipeStepThree(), "Vejledning"));
+        fragments.add(new CreateRecipeAdapterStepperInfo(new createRecipeStepFour(), "Billeder"));
 
         stepperLayout.setAdapter(new CreateRecipeAdapter(getFragmentManager(), getActivity(), fragments));
         stepperLayout.setListener(this);

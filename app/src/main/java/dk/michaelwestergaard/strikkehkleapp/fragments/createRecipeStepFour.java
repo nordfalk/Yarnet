@@ -2,38 +2,33 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.stepstone.stepper.Step;
+import com.stepstone.stepper.VerificationError;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeImagesDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
-import dk.michaelwestergaard.strikkehkleapp.activities.SignUpActivity;
 
 import static android.app.Activity.RESULT_OK;
 
-public class createRecipeStepFour extends Fragment implements View.OnClickListener {
+public class createRecipeStepFour extends Fragment implements Step, View.OnClickListener {
 
     private static final int RESULT_LOAD_IMAGE = 4;
     LayoutInflater inflater;
@@ -139,5 +134,37 @@ public class createRecipeStepFour extends Fragment implements View.OnClickListen
             picture1.setImageURI(uri);
             imageList.add(uri);
         }
+    }
+
+    /**
+     * Checks if the stepper can go to the next step after this step.<br>
+     * <b>This does not mean the user clicked on the Next/Complete button.</b><br>
+     * If the user clicked the Next/Complete button and wants to be informed of that error
+     * he should handle this in {@link #onError(VerificationError)}.
+     *
+     * @return the cause of the validation failure or <i>null</i> if step was validated successfully
+     */
+    @Nullable
+    @Override
+    public VerificationError verifyStep() {
+        return null;
+    }
+
+    /**
+     * Called when this step gets selected in the the stepper layout.
+     */
+    @Override
+    public void onSelected() {
+
+    }
+
+    /**
+     * Called when the user clicked on the Next/Complete button and the step verification failed.
+     *
+     * @param error the cause of the validation failure
+     */
+    @Override
+    public void onError(@NonNull VerificationError error) {
+
     }
 }
