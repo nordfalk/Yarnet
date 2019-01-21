@@ -85,7 +85,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
 
                     TextView materialElement = view.findViewById(R.id.materialListElement);
                     if(materials != null) {
-                        materialElement.setText("Test" + materials.get(position));
+                        materialElement.setText("" + materials.get(position));
                     }
                     return view;
                 }
@@ -118,8 +118,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
 
                     TextView toolElement = view.findViewById(R.id.toolListElement);
                     if(tools != null) {
-                        toolElement.setText("Test" + tools.get(position));
-                        System.out.println("Redskaber: " + tools.get(position));
+                        toolElement.setText("" + tools.get(position));
                     }
                     return view;
                 }
