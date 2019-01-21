@@ -135,16 +135,18 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     });
                 }
 
-                for(String recipeImage : recipe.getImageList()){
-                    System.out.println("Billede: " +recipeImage);
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            imageUrls.add(uri.toString());
-                            imageSliderViewPager.getAdapter().notifyDataSetChanged();
-                        }
-                    });
+                if(recipe.getImageList() != null) {
+                    for (String recipeImage : recipe.getImageList()) {
+                        System.out.println("Billede: " + recipeImage);
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                imageUrls.add(uri.toString());
+                                imageSliderViewPager.getAdapter().notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
                 if(recipe.getRecipeInstructionDTO() != null)
                     stepsCount.setText(recipe.getRecipeInstructionDTO().size() + " trin");
