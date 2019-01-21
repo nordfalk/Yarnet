@@ -120,10 +120,12 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
     @Override
     public void onClick(View view) {
         final TextView instructionNumber;
+        TextView header;
         EditText inputField;
         Button removeInstructionBtn;
         Button addSubInstructionBtn;
 
+        final TextView[] subHeader = new TextView[1];
         final EditText[] subInputField = new EditText[1];
         final Button[] removeSubInstructionBtn = new Button[1];
         final LinearLayout linearLayout;
@@ -134,14 +136,16 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
             instructionNumber = listElement.findViewById(R.id.create_recipe_instruction_number);
             inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
 
+            header = listElement.findViewById(R.id.create_recipe_instruction_header);
+
             linearLayout = listElement.findViewById(R.id.create_recipe_sub_instruction);
 
             removeInstructionBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
             addSubInstructionBtn = listElement.findViewById(R.id.create_recipe_add_sub_instruction);
 
             instructionNumber.setText(""+(instructionLinearLayout.getChildCount()+1));
-
-            inputField.setHint("Nyt trin");
+            header.setText("Trin Overskrift:");
+            inputField.setHint("Eks.: Ærme, Hale, Øre...");
 
             removeInstructionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,7 +167,12 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
                 public void onClick(View view) {
                     View subElement = inflater.inflate(R.layout.create_recipe_instruction_sub_element, null);
 
+                    subHeader[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_header);
+                    subHeader[0].setText("Underlinje:");
+
                     subInputField[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_text);
+                    subInputField[0].setHint("Instruktioner til overskriften...");
+
                     removeSubInstructionBtn[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_remove_btn);
 
                     removeSubInstructionBtn[0].setOnClickListener(new View.OnClickListener() {
