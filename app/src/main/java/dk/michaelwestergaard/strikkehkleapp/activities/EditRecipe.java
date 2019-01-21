@@ -69,17 +69,18 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 recipeInformation = recipe.getRecipeInformationDTO();
                 recipeInstructions = recipe.getRecipeInstructionDTO();
 
-                Bundle arguments = new Bundle();
-                arguments.putString("recipeType", recipe.getRecipeType().toString());
-                arguments.putString("recipeDifficulty", recipe.getRecipeDifficulty().toString());
-                arguments.putString("recipeID", recipe.getRecipeID());
-                arguments.putString("categoryID", recipe.getCategoryID());
-                arguments.putString("subCategoryID", recipe.getSubcategoryID());
-                arguments.putString("title", recipe.getTitle());
-                arguments.putString("description", recipeInformation.getDescription());
-                arguments.putDouble("price", recipe.getPrice());
-                arguments.putStringArrayList("materials", (ArrayList) recipeInformation.getMaterials());
-                arguments.putStringArrayList("tools", (ArrayList) recipeInformation.getTools());
+                Bundle stepOneArgs = new Bundle();
+                stepOneArgs.putString("recipeType", recipe.getRecipeType().toString());
+                stepOneArgs.putString("recipeDifficulty", recipe.getRecipeDifficulty().toString());
+                stepOneArgs.putString("categoryID", recipe.getCategoryID());
+                stepOneArgs.putString("subCategoryID", recipe.getSubcategoryID());
+                stepOneArgs.putString("title", recipe.getTitle());
+                stepOneArgs.putString("description", recipeInformation.getDescription());
+                stepOneArgs.putDouble("price", recipe.getPrice());
+
+                Bundle stepTwoArgs = new Bundle();
+                stepTwoArgs.putStringArrayList("materials", (ArrayList) recipeInformation.getMaterials());
+                stepTwoArgs.putStringArrayList("tools", (ArrayList) recipeInformation.getTools());
 
 
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
@@ -87,10 +88,10 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 EditRecipeStepThree stepThreeFrag = new EditRecipeStepThree();
                 EditRecipeStepFour stepFourFrag = new EditRecipeStepFour();
 
-                stepOneFrag.setArguments(arguments);
-                stepTwoFrag.setArguments(arguments);
-                stepThreeFrag.setArguments(arguments);
-                stepFourFrag.setArguments(arguments);
+                stepOneFrag.setArguments(stepOneArgs);
+                stepTwoFrag.setArguments(stepTwoArgs);
+                //stepThreeFrag.setArguments(arguments);
+                //stepFourFrag.setArguments(arguments);
 
                 fragments = new ArrayList<>();
                 fragments.add(new EditRecipeAdapterStepperInfo(stepOneFrag, "Oplysninger"));
