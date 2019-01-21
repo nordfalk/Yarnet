@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -115,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             pictureholder.setImageURI(null);
             pictureholder.setVisibility(View.GONE);
             addProfilePic.setVisibility(View.VISIBLE);
-            delImage.setVisibility(view.GONE);
+            delImage.setVisibility(View.GONE);
         }
     }
 
@@ -249,7 +247,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
                         inputEmail.getText().toString(), inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(), "defaultPic112233445566",
+                        inputLastName.getText().toString(), "defaultPic112233445566.png",
                         type, 1);
                 userDAO.insert(userDTO);
                 finish();
