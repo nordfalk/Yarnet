@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/create_new_instruction_top_element"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -39,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/input_field_new"
                 android:elevation="4dp"
@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/create_recipe_instruction_title"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/create_recipe_instruction_title" />
 
             <Button
                 android:id="@+id/create_recipe_add_sub_instruction"
@@ -68,13 +68,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/create_recipe_sub_instruction" />
 
+            <TextView
+                android:id="@+id/create_recipe_instruction_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Trin Overskrift:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintStart_toEndOf="@+id/create_recipe_instruction_number"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/create_recipe_instruction_title"
                 style="@android:style/Widget.Material.EditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/input_field_new"
@@ -91,7 +102,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/create_recipe_instruction_remove_btn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/create_recipe_instruction_number"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/create_recipe_instruction_header" />
 
             <TextView
                 android:id="@+id/create_recipe_instruction_number"

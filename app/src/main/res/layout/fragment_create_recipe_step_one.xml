@@ -99,19 +99,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/headlineTitleTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Titel:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <EditText
                         android:id="@+id/create_recipe_title"
                         style="@android:style/Widget.Material.EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         android:ems="10"
                         android:fontFamily="@font/roboto"
-                        android:hint="Overskrift"
+                        android:hint="Opskriftens titel..."
                         android:inputType="textCapSentences"
                         android:padding="10dp"
                         android:textAlignment="viewStart"
@@ -120,7 +131,18 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/headlineTitleTxt" />
+
+                    <TextView
+                        android:id="@+id/headlineDescriptionTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Beskrivelse:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_title" />
 
                     <EditText
                         android:id="@+id/create_recipe_description"
@@ -128,13 +150,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         android:ems="10"
                         android:fontFamily="@font/roboto"
-                        android:hint="Beskrivelse af opskriften"
+                        android:hint="Tilføj en beskrivelse til din opskrift (valgfrit)"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="2500"
                         android:maxLines="5"
@@ -144,21 +166,32 @@
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_title"
+                        app:layout_constraintTop_toBottomOf="@+id/headlineDescriptionTxt"
                         app:layout_constraintVertical_chainStyle="spread" />
+
+                    <TextView
+                        android:id="@+id/headlineCategoryTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Kategori:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_description" />
 
                     <RelativeLayout
                         android:id="@+id/relativeLayoutCategory"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         app:layout_constraintEnd_toStartOf="@+id/relativeLayoutSubcategory"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_description">
+                        app:layout_constraintTop_toBottomOf="@+id/headlineCategoryTxt">
 
                         <Spinner
                             android:id="@+id/create_recipe_spinner_category"
@@ -169,6 +202,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
                             android:layout_marginEnd="8dp"
                             android:dropDownWidth="match_parent"
                             android:fontFamily="@font/roboto"
@@ -179,12 +213,23 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/headlinerSubCategoryTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Underkategori:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:layout_constraintStart_toEndOf="@+id/relativeLayoutCategory"
+                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_description" />
+
                     <RelativeLayout
                         android:id="@+id/relativeLayoutSubcategory"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="44dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
@@ -212,19 +257,30 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/headlineDifficultyTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Sværhedsgrad:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutCategory" />
+
                     <RelativeLayout
                         android:id="@+id/difficultyContainer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         app:layout_constraintBottom_toTopOf="@+id/create_recipe_price_selection"
                         app:layout_constraintEnd_toEndOf="@+id/relativeLayoutCategory"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutCategory">
+                        app:layout_constraintTop_toBottomOf="@+id/headlineDifficultyTxt">
 
                         <Spinner
                             android:id="@+id/create_recipe_spinner_difficulty"

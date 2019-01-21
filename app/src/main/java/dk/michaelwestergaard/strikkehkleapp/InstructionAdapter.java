@@ -57,7 +57,7 @@ public class InstructionAdapter extends RecyclerView.Adapter {
 
         context = parent.getContext();
 
-        return new InstructionViewHolder(view,parent.getChildCount());
+        return new InstructionViewHolder(view);
     }
 
     @Override
@@ -76,17 +76,26 @@ public class InstructionAdapter extends RecyclerView.Adapter {
     private class InstructionViewHolder extends RecyclerView.ViewHolder{
         TextView headlineElement, instructionpoint, underlineElement, instructionpoint2;
         RecyclerView underlineCycleview;
-        int position;
+        View view;
 
-        public InstructionViewHolder(View view, final int position) {
+        public InstructionViewHolder(final View view) {
             super(view);
-            this.position = position;
+            this.view = view;
             headlineElement = view.findViewById(R.id.headlineElement);
             underlineElement = view.findViewById(R.id.underlineElement);
             instructionpoint = view.findViewById(R.id.instructionPoint);
             instructionpoint2=view.findViewById(R.id.instructionPoint2);
             underlineCycleview = view.findViewById(R.id.underlineCycleView);
             loadCheckLists();
+        }
+
+        public void bindView(final int position){
+            String state = recipeChecklist.getChecklistState(recipeID, position);
+            headlineElement.setText(recipeInstructionDTO.get(position).getTitle());
+            instructionpoint.setText(position+1+"");
+            underlineCycleview.setAdapter(new InstructionUnderAdapter(recipeInstructionDTO.get(position).getInstructions(), state));
+            underlineCycleview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            underlineCycleview.setLayoutFrozen(true);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,10 +105,12 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                     String state = recipeChecklist.getChecklistState(recipeID, position);
                     System.out.println(state);
 
+                    System.out.println("position " + position);
+
                     if (state != null){
                         if(state.equals("true")){
                             instructionpoint.setTextColor(Color.parseColor("#696969"));
-                            instructionpoint.setText(""+(position+1));
+                            instructionpoint.setText(String.valueOf(position+1));
                             instructionpoint.setBackgroundResource(R.drawable.rounded_corner);
                             headlineElement.setTextColor(Color.parseColor("#696969"));
                             for (int i = 0; i < views.size();i++) {
@@ -132,15 +143,7 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                     saveChecklists();
                 }
             });
-        }
 
-        public void bindView(int position){
-            String state = recipeChecklist.getChecklistState(recipeID, position);
-            headlineElement.setText(recipeInstructionDTO.get(position).getTitle());
-            instructionpoint.setText(position+1+"");
-            underlineCycleview.setAdapter(new InstructionUnderAdapter(recipeInstructionDTO.get(position).getInstructions(), state));
-            underlineCycleview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-            underlineCycleview.setLayoutFrozen(true);
             if(state != null){
                 if (state.equals("true")) {
                     instructionpoint.setText("\u2713");
@@ -150,8 +153,5 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                 }
             }
         }
-
     }
-
-
 }

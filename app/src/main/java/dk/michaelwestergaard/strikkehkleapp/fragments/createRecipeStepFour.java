@@ -3,7 +3,6 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
     Uri uri;
     ImageView pic;
     Button removeBtn, addPic;
-    View newView, list;
+    View viewLoadPic, imageListView;
     List<Uri> imageList = new ArrayList<Uri>();
     private StorageReference storageReference;
     private FirebaseStorage storage;
@@ -48,9 +49,9 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
 
         addPic          = view.findViewById(R.id.addPic);
         picContainer    = view.findViewById(R.id.picContainer);
-        list            = inflater.inflate(R.layout.recipe_add_pic, null);
-        removeBtn       = list.findViewById(R.id.create_recipe_instruction_delete_btn);
-        pic             = list.findViewById(R.id.pic4);
+        imageListView   = inflater.inflate(R.layout.recipe_add_pic, null);
+        removeBtn       = imageListView.findViewById(R.id.create_recipe_instruction_delete_btn);
+        pic             = imageListView.findViewById(R.id.pic4);
 
 
         removeBtn   .setOnClickListener(this);
@@ -67,24 +68,27 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
     @Override
     public void onClick(View view) {
 
-        View newView2;
+        View viewOnClick;
         Button delete2;
 
 
         if (view.equals(addPic)) {
 
             if (picContainer.getChildCount() < 4) {
-                newView2 = inflater.inflate(R.layout.recipe_add_pic, null);
 
-                openGallery();
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1,1)
+                        .start(getContext(), this);
 
-                newView = newView2;
+                viewOnClick = inflater.inflate(R.layout.recipe_add_pic, null);
 
-                delete2 = newView2.findViewById(R.id.create_recipe_instruction_delete_btn);
+                viewLoadPic = viewOnClick;
+
+                delete2 = viewOnClick.findViewById(R.id.create_recipe_instruction_delete_btn);
 
                 delete2.setOnClickListener(this);
 
-                picContainer.addView(newView2, picContainer.getChildCount());
 
                 if (picContainer.getChildCount() == 4) {
 
@@ -116,23 +120,29 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
         return recipeDTO;
     }
 
-    public void openGallery() {
-        Intent galleryIntet = new Intent (Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntet, RESULT_LOAD_IMAGE);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         ImageView picture1;
-        picture1 = newView.findViewById(R.id.pic4);
+        picture1 = viewLoadPic.findViewById(R.id.pic4);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-            uri = data.getData();
-            picture1.setImageURI(uri);
-            imageList.add(uri);
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                picContainer.addView(viewLoadPic, picContainer.getChildCount());
+
+                uri = result.getUri();
+                picture1.setImageURI(uri);
+                imageList.add(uri);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+
+            }
         }
     }
 

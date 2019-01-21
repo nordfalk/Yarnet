@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
@@ -21,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -45,7 +46,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     "$");
 
 
-    private static final int    RESULT_LOAD_IMAGE = 1;
     private EditText            inputFirstName, inputLastName, inputEmail, inputPassword, inputPasswordAgain;
     private Button              btnSignup, addProfilePic, delImage;
     private StorageReference    storageReference;
@@ -104,14 +104,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             progressDialog.show();
             validateInputs();
         } else if (view == addProfilePic) {
-            Intent galleryIntet = new Intent (Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(galleryIntet, RESULT_LOAD_IMAGE);
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
 
         } else if (view == delImage) {
             pictureholder.setImageURI(null);
             pictureholder.setVisibility(View.GONE);
             addProfilePic.setVisibility(View.VISIBLE);
-            delImage.setVisibility(view.GONE);
+            delImage.setVisibility(View.GONE);
         }
     }
 
@@ -245,7 +247,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
                         inputEmail.getText().toString(), inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(), "defaultPic112233445566",
+                        inputLastName.getText().toString(), "defaultPic112233445566.png",
                         type, 1);
                 userDAO.insert(userDTO);
                 finish();
@@ -257,14 +259,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
 
-            addProfilePic.setVisibility(View.GONE);
-            pictureholder.setVisibility(View.VISIBLE);
-            selImage = data.getData();
-            pictureholder.setImageURI(selImage);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-            delImage.setVisibility(View.VISIBLE);
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                selImage = result.getUri();
+                pictureholder.setImageURI(selImage);
+
+                addProfilePic.setVisibility(View.GONE);
+                pictureholder.setVisibility(View.VISIBLE);
+                delImage.setVisibility(View.VISIBLE);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 }
