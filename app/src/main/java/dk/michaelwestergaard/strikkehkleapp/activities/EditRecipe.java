@@ -87,6 +87,9 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 Bundle stepThreeArgs = new Bundle();
                 stepThreeArgs.putParcelableArrayList("instructions", recipeInstructions);
 
+                Bundle stepFourArgs = new Bundle();
+                stepFourArgs.putStringArrayList("imageList", (ArrayList) recipe.getImageList());
+
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
                 EditRecipeStepTwo stepTwoFrag = new EditRecipeStepTwo();
                 EditRecipeStepThree stepThreeFrag = new EditRecipeStepThree();
@@ -95,7 +98,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 stepOneFrag.setArguments(stepOneArgs);
                 stepTwoFrag.setArguments(stepTwoArgs);
                 stepThreeFrag.setArguments(stepThreeArgs);
-                //stepFourFrag.setArguments(arguments);
+                stepFourFrag.setArguments(stepFourArgs);
 
                 fragments = new ArrayList<>();
                 fragments.add(new EditRecipeAdapterStepperInfo(stepOneFrag, "Oplysninger"));

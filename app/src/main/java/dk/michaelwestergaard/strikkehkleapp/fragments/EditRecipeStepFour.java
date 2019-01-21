@@ -41,6 +41,17 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
     private StorageReference storageReference;
     private FirebaseStorage storage;
 
+    private List<String> recipeImageList;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle arguments = this.getArguments();
+            recipeImageList = arguments.getStringArrayList("imageList");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
