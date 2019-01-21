@@ -37,6 +37,7 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.activities.EditRecipe;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeImageSliderAdapter;
 
 
@@ -53,20 +54,20 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    ImageView backgroundPicture, favoriteBtn, creatorImage;
-    CardView købContainer;
-    ImageView backBtn;
-    ImageView drawerBtn;
+    private ImageView backgroundPicture, favoriteBtn, creatorImage, editImg;
+    private CardView købContainer;
+    private ImageView backBtn;
+    private ImageView drawerBtn;
 
 
-    AlertDialog.Builder alertBuilder;
-    AlertDialog alertDialog;
-    ViewPager imageSliderViewPager;
+    private AlertDialog.Builder alertBuilder;
+    private AlertDialog alertDialog;
+    private ViewPager imageSliderViewPager;
     final List<String> imageUrls = new ArrayList<String>();
 
     @Override
@@ -85,6 +86,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         backBtn.setVisibility(View.VISIBLE);
         drawerBtn.setVisibility(View.GONE);
+
+        editTxt.findViewById(R.id.editTxt);
+        editImg.findViewById(R.id.editImg);
+
+        editTxt.setVisibility(View.GONE);
+        editImg.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
@@ -111,6 +118,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         favoriteBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
         backgroundPicture.setOnClickListener(this);
+        editTxt.setOnClickListener(this);
+        editImg.setOnClickListener(this);
 
         showRecipe();
     }
@@ -207,6 +216,11 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                             if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
                                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                             }
+                        }
+
+                        if(userBrowsing.getUserID().equals(recipe.getUserID())) {
+                            editTxt.setVisibility(View.VISIBLE);
+                            editImg.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -313,6 +327,10 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         } else if (v.equals(backgroundPicture)) {
             System.out.println(imageUrls);
             alertDialog.show();
+        } else if(v == editTxt || v == editImg){
+            Intent intent = new Intent(this, EditRecipe.class);
+            intent.putExtra("recipeID", recipeID);
+            startActivity(intent);
         }
     }
 

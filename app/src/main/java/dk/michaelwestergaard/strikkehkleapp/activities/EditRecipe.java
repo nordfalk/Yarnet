@@ -1,18 +1,21 @@
-package dk.michaelwestergaard.strikkehkleapp.fragments;
+package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -26,43 +29,73 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.EditRecipeAdapter;
+import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepFour;
+import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepOne;
+import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepThree;
+import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepTwo;
 
-public class EditRecipe extends Fragment implements StepperLayout.StepperListener, BlockingStep {
+public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep {
 
     private OnFragmentInteractionListener mListener;
     private StepperLayout stepperLayout;
 
-    List<EditRecipeAdapterStepperInfo> fragments;
+    private String recipeID;
+    private RecipeDTO recipe = null;
+    private RecipeDAO recipeDAO = new RecipeDAO();
 
-    public EditRecipe() {
-
-    }
+    private List<EditRecipeAdapterStepperInfo> fragments;
+    private Context myContext = this;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_edit_recipe);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_edit_recipe, container, false);
-
-        stepperLayout = view.findViewById(R.id.stepperLayout);
-
-        fragments = new ArrayList<EditRecipeAdapterStepperInfo>();
-        fragments.add(new EditRecipeAdapterStepperInfo(new EditRecipeStepOne(), "Oplysninger"));
-        fragments.add(new EditRecipeAdapterStepperInfo(new EditRecipeStepTwo(), "Materialer"));
-        fragments.add(new EditRecipeAdapterStepperInfo(new EditRecipeStepThree(), "Vejledning"));
-        fragments.add(new EditRecipeAdapterStepperInfo(new EditRecipeStepFour(), "Billeder"));
-
-        stepperLayout.setAdapter(new EditRecipeAdapter(getFragmentManager(), getActivity(), fragments));
+        stepperLayout = findViewById(R.id.stepperLayout);
         stepperLayout.setListener(this);
         stepperLayout.setNextButtonVerificationFailed(true);
         stepperLayout.setCompleteButtonVerificationFailed(true);
 
+        recipeID = getIntent().getStringExtra("recipeID");
 
-        return view;
+        recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recipe = dataSnapshot.getValue(RecipeDTO.class);
+
+                Bundle arguments = new Bundle();
+                arguments.putString("recipeType", recipe.getRecipeType().toString());
+                arguments.putString("recipeDifficulty", recipe.getRecipeDifficulty().toString());
+                arguments.putString("recipeID", recipe.getRecipeID());
+                arguments.putString("categoryID", recipe.getCategoryID());
+                arguments.putString("subCategoryID", recipe.getSubcategoryID());
+                arguments.putString("title", recipe.getTitle());
+                arguments.putDouble("price", recipe.getPrice());
+
+                EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
+                EditRecipeStepTwo stepTwoFrag = new EditRecipeStepTwo();
+                EditRecipeStepThree stepThreeFrag = new EditRecipeStepThree();
+                EditRecipeStepFour stepFourFrag = new EditRecipeStepFour();
+
+                stepOneFrag.setArguments(arguments);
+                stepTwoFrag.setArguments(arguments);
+                stepThreeFrag.setArguments(arguments);
+                stepFourFrag.setArguments(arguments);
+
+                fragments = new ArrayList<>();
+                fragments.add(new EditRecipeAdapterStepperInfo(stepOneFrag, "Oplysninger"));
+                fragments.add(new EditRecipeAdapterStepperInfo(stepTwoFrag, "Materialer"));
+                fragments.add(new EditRecipeAdapterStepperInfo(stepThreeFrag, "Vejledning"));
+                fragments.add(new EditRecipeAdapterStepperInfo(stepFourFrag, "Billeder"));
+
+                stepperLayout.setAdapter(new EditRecipeAdapter(getSupportFragmentManager(), myContext, fragments));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {
@@ -72,29 +105,12 @@ public class EditRecipe extends Fragment implements StepperLayout.StepperListene
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onCompleted(View completeButton) {
 
         RecipeDTO recipe = new RecipeDTO();
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        Toast.makeText(getActivity(), "onCompleted!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
         ((EditRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((EditRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((EditRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
@@ -112,9 +128,9 @@ public class EditRecipe extends Fragment implements StepperLayout.StepperListene
 
         if(!recipeID.isEmpty()) {
 
-            Intent intent = new Intent(getContext(), Opskrift.class);
+            Intent intent = new Intent(this, Opskrift.class);
             intent.putExtra("RecipeID", recipeID);
-            getContext().startActivity(intent);
+            startActivity(intent);
         }
 
     }
@@ -135,7 +151,7 @@ public class EditRecipe extends Fragment implements StepperLayout.StepperListene
 
     @Override
     public void onError(VerificationError verificationError) {
-        Toast.makeText(getActivity(), verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

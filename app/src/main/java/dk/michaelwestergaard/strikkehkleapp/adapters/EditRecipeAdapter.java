@@ -11,7 +11,7 @@ import com.stepstone.stepper.viewmodel.StepViewModel;
 
 import java.util.List;
 
-import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipe;
+import dk.michaelwestergaard.strikkehkleapp.activities.EditRecipe;
 
 public class EditRecipeAdapter extends AbstractFragmentStepAdapter {
 
