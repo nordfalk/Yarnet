@@ -78,6 +78,9 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 arguments.putString("title", recipe.getTitle());
                 arguments.putString("description", recipeInformation.getDescription());
                 arguments.putDouble("price", recipe.getPrice());
+                arguments.putStringArrayList("materials", (ArrayList) recipeInformation.getMaterials());
+                arguments.putStringArrayList("tools", (ArrayList) recipeInformation.getTools());
+
 
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
                 EditRecipeStepTwo stepTwoFrag = new EditRecipeStepTwo();

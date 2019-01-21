@@ -26,6 +26,8 @@ public class EditRecipeStepTwo extends Fragment implements Step, View.OnClickLis
     private LinearLayout materialLinearLayout, toolLinearLayout;
     private Button newMaterialBtn, newToolBtn;
 
+    private List<String> recipeMaterials, recipeTools;
+
     public EditRecipeStepTwo() {}
 
     public RecipeDTO getData(RecipeDTO recipeDTO){
@@ -59,6 +61,11 @@ public class EditRecipeStepTwo extends Fragment implements Step, View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle arguments = this.getArguments();
+            recipeMaterials = arguments.getStringArrayList("materials");
+            recipeTools = arguments.getStringArrayList("tools");
+        }
     }
 
     @Override
@@ -75,6 +82,36 @@ public class EditRecipeStepTwo extends Fragment implements Step, View.OnClickLis
 
         newMaterialBtn.setOnClickListener(this);
         newToolBtn.setOnClickListener(this);
+
+        View listElement;
+        EditText inputField;
+        Button removeBtn;
+
+        for(String material : recipeMaterials) {
+            listElement = inflater.inflate(R.layout.recipe_new_field, null);
+
+            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+
+            inputField.setHint("Nyt Materiale");
+            inputField.setText(material);
+            removeBtn.setOnClickListener(this);
+
+            materialLinearLayout.addView(listElement, materialLinearLayout.getChildCount());
+        }
+
+        for(String tool : recipeTools) {
+            listElement = inflater.inflate(R.layout.recipe_new_field, null);
+
+            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+
+            inputField.setHint("Nyt Redskab");
+            inputField.setText(tool);
+            removeBtn.setOnClickListener(this);
+
+            toolLinearLayout.addView(listElement, toolLinearLayout.getChildCount());
+        }
 
         return view;
     }
