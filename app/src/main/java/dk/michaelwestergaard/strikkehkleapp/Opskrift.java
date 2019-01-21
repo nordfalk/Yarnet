@@ -87,8 +87,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         backBtn.setVisibility(View.VISIBLE);
         drawerBtn.setVisibility(View.GONE);
 
-        editTxt.findViewById(R.id.editTxt);
-        editImg.findViewById(R.id.editImg);
+        editTxt = findViewById(R.id.editTxt);
+        editImg = findViewById(R.id.editImg);
 
         editTxt.setVisibility(View.GONE);
         editImg.setVisibility(View.GONE);

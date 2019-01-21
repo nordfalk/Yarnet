@@ -35,17 +35,20 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCheckedChangeListener {
 
-    CategoryDAO categoryDAO = new CategoryDAO();
+    private CategoryDAO categoryDAO = new CategoryDAO();
 
-    EditText title, description, price;
-    Spinner type, category, subcategory, difficulty;
-    RadioGroup radioGroup;
-    RadioButton radioFree, radioNotFree;
+    private EditText title, description, price;
+    private Spinner type, category, subcategory, difficulty;
+    private RadioGroup radioGroup;
+    private RadioButton radioFree, radioNotFree;
 
-    final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
-    List<SubcategoryDTO> subcategories;
+    private final List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
+    private List<SubcategoryDTO> subcategories;
 
-    CardView priceContainer;
+    private CardView priceContainer;
+
+    private String recipeType, recipeTitle, recipeDescription, recipeCategoryID, recipeSubCategoryID, recipeDifficulty;
+    private Double recipePrice;
 
     public EditRecipeStepOne() {
         // Required empty public constructor
@@ -114,6 +117,16 @@ public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCh
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle arguments = this.getArguments();
+            recipeType = arguments.getString("recipeType");
+            recipeTitle = arguments.getString("title");
+            recipeDescription = arguments.getString("description");
+            recipeCategoryID = arguments.getString("categoryID");
+            recipeSubCategoryID = arguments.getString("subCategoryID");
+            recipeDifficulty = arguments.getString("recipeDifficulty");
+            recipePrice = arguments.getDouble("price");
+        }
     }
 
     @Override
@@ -121,7 +134,11 @@ public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCh
         final View view = inflater.inflate(R.layout.fragment_edit_recipe_step_one, container, false);
 
         title = view.findViewById(R.id.edit_recipe_title);
+        title.setText(recipeTitle);
+
         description = view.findViewById(R.id.edit_recipe_description);
+        description.setText(recipeDescription);
+
         price = view.findViewById(R.id.edit_recipe_price);
 
         type = view.findViewById(R.id.edit_recipe_type);
@@ -137,11 +154,24 @@ public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCh
 
         priceContainer = view.findViewById(R.id.edit_recipe_price_container);
 
-        priceContainer.setVisibility(View.GONE);
+        if(recipePrice == 0.0) {
+            priceContainer.setVisibility(View.GONE);
+        } else {
+            radioGroup.check(R.id.edit_recipe_radio_not_free);
+            priceContainer.setVisibility(View.VISIBLE);
+            price.setText(recipePrice.toString().replace(".0", ""));
+        }
 
         ArrayAdapter<String> difficulties = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, getResources().getStringArray(R.array.NewRecipeDifficulty));
         difficulty.setAdapter(difficulties);
         difficulty.setPrompt("Vælg Sværhedsgrad");
+        if(recipeDifficulty.equals("EASY")) {
+            difficulty.setSelection(0);
+        } else if(recipeDifficulty.equals("MEDIUM")) {
+            difficulty.setSelection(1);
+        } else if(recipeDifficulty.equals("HARD")) {
+            difficulty.setSelection(2);
+        }
 
         categoryDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
@@ -153,15 +183,20 @@ public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCh
                 }
 
                 List<String> categoryNames = new ArrayList<String>();
+                int previousCategoryIndex = 0;
 
                 for(CategoryDTO categoryDTO : categories){
                     categoryNames.add(categoryDTO.getName());
+
+                    if(categoryDTO.getId().equals(recipeCategoryID)) {
+                        previousCategoryIndex = categoryNames.size() - 1;
+                    }
                 }
 
                 ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, categoryNames);
                 category.setAdapter(categoryAdapter);
                 category.setPrompt("Vælg Kategori");
-
+                category.setSelection(previousCategoryIndex);
             }
 
             @Override
@@ -175,14 +210,20 @@ public class EditRecipeStepOne extends Fragment implements Step, RadioGroup.OnCh
             public void onItemSelected(AdapterView<?> adapterView, final View view, int i, long l) {
                 subcategories = categories.get(i).getSubcategoryList();
                 List<String> subcategoryNames = new ArrayList<String>();
+                int previousSubCategoryIndex = 0;
+
                 for(SubcategoryDTO subcategoryDTO : subcategories){
                     subcategoryNames.add(subcategoryDTO.getName());
+
+                    if(subcategoryDTO.getId().equals(recipeSubCategoryID)) {
+                        previousSubCategoryIndex = subcategoryNames.size() - 1;
+                    }
                 }
 
                 ArrayAdapter<String> subCategoryAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_item, R.id.name, subcategoryNames);
                 subcategory.setAdapter(subCategoryAdapter);
                 subcategory.setPrompt("Vælg Underkategori");
-
+                subcategory.setSelection(previousSubCategoryIndex);
             }
 
             @Override

@@ -26,6 +26,8 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInformationDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInstructionDTO;
 import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.EditRecipeAdapter;
@@ -41,6 +43,8 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
     private String recipeID;
     private RecipeDTO recipe = null;
+    private RecipeInformationDTO recipeInformation = null;
+    private List<RecipeInstructionDTO> recipeInstructions = null;
     private RecipeDAO recipeDAO = new RecipeDAO();
 
     private List<EditRecipeAdapterStepperInfo> fragments;
@@ -62,6 +66,8 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
+                recipeInformation = recipe.getRecipeInformationDTO();
+                recipeInstructions = recipe.getRecipeInstructionDTO();
 
                 Bundle arguments = new Bundle();
                 arguments.putString("recipeType", recipe.getRecipeType().toString());
@@ -70,6 +76,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 arguments.putString("categoryID", recipe.getCategoryID());
                 arguments.putString("subCategoryID", recipe.getSubcategoryID());
                 arguments.putString("title", recipe.getTitle());
+                arguments.putString("description", recipeInformation.getDescription());
                 arguments.putDouble("price", recipe.getPrice());
 
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
