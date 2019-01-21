@@ -74,17 +74,28 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         private RecipeDTO recipe;
         public TextView titleView;
         public ImageView imageView;
+        public TextView favouriteCount1;
+        public TextView listPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.item_title);
             imageView = itemView.findViewById(R.id.item_image);
+            favouriteCount1 = itemView.findViewById(R.id.favoriteCount1);
+            listPrice = itemView.findViewById(R.id.listPrice);
             itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
             recipe = recipes.get(position);
             titleView.setText(recipe.getTitle());
+            favouriteCount1.setText(String.valueOf(recipe.getSavedAmount()));
+            if(recipe.getPrice() == 0){
+                listPrice.setText("Gratis");
+            } else {
+                listPrice.setText(recipe.getPrice() + "DKK");
+            }
+
             if(recipe.getImageList() != null){
                 String firstImage = recipe.getImageList().get(0);
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
