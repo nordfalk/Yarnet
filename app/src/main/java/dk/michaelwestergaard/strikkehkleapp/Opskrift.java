@@ -116,13 +116,11 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void showRecipe(){
-        recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
+        recipeDAO.getReference().child(recipeID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 title.setText(recipe.getTitle());
-
-                createImageSlider(imageUrls);
 
                 if(recipe.getImageList() != null){
                     String firstImage = recipe.getImageList().get(0);
@@ -136,6 +134,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 if(recipe.getImageList() != null) {
+                    imageUrls.clear();
                     for (String recipeImage : recipe.getImageList()) {
                         System.out.println("Billede: " + recipeImage);
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
@@ -148,6 +147,9 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                         });
                     }
                 }
+
+                createImageSlider(imageUrls);
+
                 if(recipe.getRecipeInstructionDTO() != null)
                     stepsCount.setText(recipe.getRecipeInstructionDTO().size() + " trin");
 
