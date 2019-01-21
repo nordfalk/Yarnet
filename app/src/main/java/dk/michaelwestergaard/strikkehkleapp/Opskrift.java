@@ -130,7 +130,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.centerCropTransform()).into(backgroundPicture);
+                            Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                         }
                     });
                 }
