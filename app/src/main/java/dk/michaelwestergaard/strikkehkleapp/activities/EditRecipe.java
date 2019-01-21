@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +46,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     private String recipeID;
     private RecipeDTO recipe = null;
     private RecipeInformationDTO recipeInformation = null;
-    private List<RecipeInstructionDTO> recipeInstructions = null;
+    private ArrayList<RecipeInstructionDTO> recipeInstructions = null;
     private RecipeDAO recipeDAO = new RecipeDAO();
 
     private List<EditRecipeAdapterStepperInfo> fragments;
@@ -67,7 +69,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 recipeInformation = recipe.getRecipeInformationDTO();
-                recipeInstructions = recipe.getRecipeInstructionDTO();
+                recipeInstructions = (ArrayList) recipe.getRecipeInstructionDTO();
 
                 Bundle stepOneArgs = new Bundle();
                 stepOneArgs.putString("recipeType", recipe.getRecipeType().toString());
@@ -82,6 +84,8 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 stepTwoArgs.putStringArrayList("materials", (ArrayList) recipeInformation.getMaterials());
                 stepTwoArgs.putStringArrayList("tools", (ArrayList) recipeInformation.getTools());
 
+                Bundle stepThreeArgs = new Bundle();
+                stepThreeArgs.putParcelableArrayList("instructions", recipeInstructions);
 
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
                 EditRecipeStepTwo stepTwoFrag = new EditRecipeStepTwo();
@@ -90,7 +94,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
                 stepOneFrag.setArguments(stepOneArgs);
                 stepTwoFrag.setArguments(stepTwoArgs);
-                //stepThreeFrag.setArguments(arguments);
+                stepThreeFrag.setArguments(stepThreeArgs);
                 //stepFourFrag.setArguments(arguments);
 
                 fragments = new ArrayList<>();

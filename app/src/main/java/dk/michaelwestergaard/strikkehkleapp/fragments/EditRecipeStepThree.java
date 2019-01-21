@@ -28,6 +28,8 @@ public class EditRecipeStepThree extends Fragment implements Step, View.OnClickL
     private LinearLayout instructionLinearLayout;
     private Button newInstructionBtn;
 
+    private ArrayList<RecipeInstructionDTO> instructions = null;
+
     public EditRecipeStepThree() {}
 
     public static EditRecipeStepThree newInstance(String param1, String param2) {
@@ -63,10 +65,14 @@ public class EditRecipeStepThree extends Fragment implements Step, View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle arguments = this.getArguments();
+            instructions = arguments.getParcelableArrayList("instructions");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
 
         View view = inflater.inflate(R.layout.fragment_edit_recipe_step_three, container, false);
@@ -75,6 +81,88 @@ public class EditRecipeStepThree extends Fragment implements Step, View.OnClickL
         newInstructionBtn = view.findViewById(R.id.edit_recipe_add_new_instruction);
 
         newInstructionBtn.setOnClickListener(this);
+
+        for(RecipeInstructionDTO instructionDTO : instructions) {
+            final TextView instructionNumber;
+            EditText inputField;
+            Button removeInstructionBtn;
+            Button addSubInstructionBtn;
+
+            final EditText[] subInputField = new EditText[1];
+            final Button[] removeSubInstructionBtn = new Button[1];
+            final LinearLayout linearLayout;
+
+            View listElement = inflater.inflate(R.layout.create_recipe_instruction_element, null);
+
+            instructionNumber = listElement.findViewById(R.id.create_recipe_instruction_number);
+            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+
+            linearLayout = listElement.findViewById(R.id.create_recipe_sub_instruction);
+
+            removeInstructionBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+            addSubInstructionBtn = listElement.findViewById(R.id.create_recipe_add_sub_instruction);
+
+            instructionNumber.setText("" + (instructionLinearLayout.getChildCount() + 1));
+
+            inputField.setHint("Nyt trin");
+            inputField.setText(instructionDTO.getTitle());
+
+            if(instructionDTO.getInstructions() != null) {
+                for (String subString : instructionDTO.getInstructions()) {
+                    View subElement = inflater.inflate(R.layout.create_recipe_instruction_sub_element, null);
+
+                    subInputField[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_text);
+                    subInputField[0].setText(subString);
+
+                    removeSubInstructionBtn[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_remove_btn);
+
+                    removeSubInstructionBtn[0].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            linearLayout.removeView((View) view.getParent());
+                        }
+                    });
+
+                    linearLayout.addView(subElement, linearLayout.getChildCount());
+                }
+            }
+
+            removeInstructionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    instructionLinearLayout.removeViewAt(0);
+
+                    final int childCount = instructionLinearLayout.getChildCount();
+
+                    for (int i = 0; i < childCount; i++) {
+                        View v = instructionLinearLayout.getChildAt(i);
+                        TextView instructionNumber = v.findViewById(R.id.create_recipe_instruction_number);
+                        instructionNumber.setText("" + (i + 1));
+                    }
+                }
+            });
+
+            addSubInstructionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    View subElement = inflater.inflate(R.layout.create_recipe_instruction_sub_element, null);
+
+                    subInputField[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_text);
+                    removeSubInstructionBtn[0] = subElement.findViewById(R.id.create_recipe_sub_instruction_remove_btn);
+
+                    removeSubInstructionBtn[0].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            linearLayout.removeView((View) view.getParent());
+                        }
+                    });
+
+                    linearLayout.addView(subElement, linearLayout.getChildCount());
+                }
+            });
+
+            instructionLinearLayout.addView(listElement, instructionLinearLayout.getChildCount());
+        }
 
         return view;
     }
