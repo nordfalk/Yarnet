@@ -23,9 +23,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -49,7 +53,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(LogInActivity.this, MainActivity.class));
             finish();
         }
 
@@ -115,8 +119,20 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                                 createUser(userDTO);
                             }
                             System.out.println("UserID: " + user.getUid());
-                            Intent i = new Intent(LogInActivity.this, MainActivity.class);
-                            startActivity(i);
+                            userDAO.getReference().child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    UserDTO user = dataSnapshot.getValue(UserDTO.class);
+                                    MainSingleton.getInstance().setUser(user);
+
+                                    startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
                         } else {
                             Toast.makeText(LogInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -142,10 +158,21 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                                 Toast.makeText(LogInActivity.this, "Kunne ikke logge ind, prøv igen", Toast.LENGTH_LONG).show();
                                 progressDialog.dismiss();
                             } else {
-                                Intent i = new Intent(LogInActivity.this, MainActivity.class);
-                                startActivity(i);
-                                progressDialog.dismiss();
-                                finish();
+                                userDAO.getReference().child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        UserDTO user = dataSnapshot.getValue(UserDTO.class);
+                                        MainSingleton.getInstance().setUser(user);
+
+                                        startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                                        progressDialog.dismiss();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    }
+                                });
                             }
                         }
 

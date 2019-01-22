@@ -213,22 +213,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     købContainer.setVisibility(View.VISIBLE);
                 }
 
-                userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        userBrowsing = dataSnapshot.getValue(UserDTO.class);
-                        if(userBrowsing.getSavedRecipes() != null){
-                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
-                                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                            }
-                        }
+                userBrowsing = MainSingleton.getInstance().getUser();
+                if(userBrowsing.getSavedRecipes() != null){
+                    if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                        favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                }
 
                 favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
 
