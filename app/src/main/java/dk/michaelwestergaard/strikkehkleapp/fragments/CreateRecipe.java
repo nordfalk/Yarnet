@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,6 +42,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
     private StepperLayout stepperLayout;
 
     List<CreateRecipeAdapterStepperInfo> fragments;
+    AlertDialog.Builder builder;
+    AlertDialog progressDialog;
 
     public CreateRecipe() {
 
@@ -68,7 +71,12 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         stepperLayout.setListener(this);
         stepperLayout.setNextButtonVerificationFailed(true);
         stepperLayout.setCompleteButtonVerificationFailed(true);
+        stepperLayout.setOffscreenPageLimit(5);
 
+        builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
+        builder.setView(R.layout.loading_dialog);
+        progressDialog = builder.create();
 
         return view;
     }
@@ -98,11 +106,11 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
     @Override
     public void onCompleted(View completeButton) {
+        progressDialog.show();
 
         final RecipeDTO recipe = new RecipeDTO();
         final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        Toast.makeText(getActivity(), "onCompleted!", Toast.LENGTH_SHORT).show();
         ((CreateRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((CreateRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((CreateRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
@@ -110,34 +118,24 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
         final List<String> images = new ArrayList<String>();
 
-        final List<String> recipeImageURIs = recipe.getImageList();
-
         final int[] count = {0};
-
-        System.out.println("Random tekst");
-        System.out.println(recipeImageURIs);
-
 
         final List<Uri> recipeUriList = recipe.getImageUriList();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
         for(Uri uriImage : recipeUriList){
             UUID picRandomID = UUID.randomUUID();
-            System.out.println("billede : " + picRandomID);
             final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
             ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                    System.out.println("upload done ");
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             images.add(uri.toString());
-                            System.out.println("Count " + count[0]);
                             count[0]++;
                             if(count[0] == recipeUriList.size()){
-                                System.out.println("Download done");
                                 System.out.println(images);
                                 recipe.setImageList(images);
 
@@ -151,11 +149,20 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
                                 RecipeDAO recipeDAO = new RecipeDAO();
 
                                 String recipeID = recipeDAO.insert(recipe);
-                                System.out.println("should be inserted now " + recipeID);
                                 if(!recipeID.isEmpty()) {
+
+                                    ((CreateRecipeStepOne) fragments.get(0).getFragment()).clearData();
+                                    ((CreateRecipeStepTwo) fragments.get(1).getFragment()).clearData();
+                                    ((CreateRecipeStepThree) fragments.get(2).getFragment()).clearData();
+                                    ((createRecipeStepFour) fragments.get(3).getFragment()).clearData();
+                                    stepperLayout.setCurrentStepPosition(0);
+
+                                    //TODO: Success dialog
                                     Intent intent = new Intent(getContext(), Opskrift.class);
                                     intent.putExtra("RecipeID", recipeID);
                                     getContext().startActivity(intent);
+                                    progressDialog.dismiss();
+
                                 }
                             }
                         }
@@ -164,6 +171,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
             });
         }
     }
+
+
 
     @Nullable
     @Override

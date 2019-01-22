@@ -110,6 +110,11 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
         return recipeDTO;
     }
 
+    public void clearData(){
+        picContainer.removeAllViews();
+        imageList = new ArrayList<Uri>();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

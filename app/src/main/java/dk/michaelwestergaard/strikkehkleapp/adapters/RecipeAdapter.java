@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -52,7 +54,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(RecipeAdapter.ViewHolder holder, int position) {
         holder.bindView(position);
-        System.out.println("binding " + position);
     }
 
     @Override
@@ -66,8 +67,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
         return recipes.size();
     }
-
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -86,22 +85,28 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             recipe = recipes.get(position);
             titleView.setText(recipe.getTitle());
             if(recipe.getImageList() != null){
+                final RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(16));
                 String firstImage = recipe.getImageList().get(0);
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(imageView);
-                    }
-                });
+                System.out.println(firstImage);
+                if(!firstImage.contains("https")){
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(context).load(uri.toString()).apply(requestOptions).into(imageView);
+                            //Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(imageView);
+                        }
+                    });
+                } else {
+                    Glide.with(context).load(firstImage).apply(requestOptions).into(imageView);
+                    //Glide.with(context).load(firstImage).apply(RequestOptions.circleCropTransform()).into(imageView);
+                }
             }
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), Opskrift.class);
-            System.out.println("clicking on " + recipe.getRecipeID());
-            System.out.println("clicking on " + titleView.getText().toString());
             intent.putExtra("RecipeID", recipe.getRecipeID());
             v.getContext().startActivity(intent);
         }

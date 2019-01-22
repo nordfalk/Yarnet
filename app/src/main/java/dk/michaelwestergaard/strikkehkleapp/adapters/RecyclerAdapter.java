@@ -20,9 +20,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recipe
     List<RecipeDTO> recipeList;
 
     public RecyclerAdapter(List<RecipeDTO> recipeList) {
-        Log.d("Test", "test");
         this.recipeList = recipeList;
-        Log.d("Test", "recipeList");
 
     }
 
@@ -36,7 +34,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recipe
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.RecipeViewHolder holder, int position) {
-        Log.d("Binding", "Binding position " + position);
         RecipeDTO recipe = recipeList.get(position);
         holder.recipeID = recipe.getRecipeID();
         holder.title.setText(recipe.getTitle());
