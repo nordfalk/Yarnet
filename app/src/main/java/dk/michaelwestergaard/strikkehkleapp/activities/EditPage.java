@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
@@ -26,7 +30,7 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
     Button gemEdits;
     TextView billedeKnap;
     ImageView backBtn;
-    ImageView drawerBtn;
+    ImageView drawerBtn, profileImage;
 
     UserDTO user;
     UserDAO userDAO = new UserDAO();
@@ -51,6 +55,7 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
         drawerBtn.setVisibility(View.GONE);
 
         billedeKnap = findViewById(R.id.billedeKnap);
+        profileImage = findViewById(R.id.profile_image);
         navn = findViewById(R.id.navn);
         efternavn = findViewById(R.id.efternavn);
         mail = findViewById(R.id.mail);
@@ -61,10 +66,13 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
         navn.setText(user.getFirst_name());
         efternavn.setText(user.getLast_name());
         mail.setText(user.getEmail());
+        if(user.getAvatar().contains("https")) {
+            RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
+            Glide.with(EditPage.this).load(user.getAvatar()).apply(requestOptions).into(profileImage);
+        }
 
         gemEdits.setOnClickListener(this);
         billedeKnap.setOnClickListener(this);
-
 
         backBtn.setVisibility(View.VISIBLE);
     }
