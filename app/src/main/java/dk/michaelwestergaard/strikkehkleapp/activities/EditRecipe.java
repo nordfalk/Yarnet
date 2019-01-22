@@ -13,13 +13,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +51,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     private RecipeDTO recipe = null;
     private RecipeInformationDTO recipeInformation = null;
     private ArrayList<RecipeInstructionDTO> recipeInstructions = null;
+    private List<String> imageUrls = new ArrayList<>();
     private RecipeDAO recipeDAO = new RecipeDAO();
 
     private List<EditRecipeAdapterStepperInfo> fragments;
@@ -82,6 +87,21 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 recipeInformation = recipe.getRecipeInformationDTO();
                 recipeInstructions = (ArrayList) recipe.getRecipeInstructionDTO();
+                imageUrls.clear();
+
+                for (String recipeImage : recipe.getImageList()) {
+                    if(recipeImage.contains("https:")){
+                        imageUrls.add(recipeImage);
+                    } else {
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                imageUrls.add(uri.toString());
+                            }
+                        });
+                    }
+                }
 
                 Bundle stepOneArgs = new Bundle();
                 stepOneArgs.putString("recipeType", recipe.getRecipeType().toString());
@@ -100,7 +120,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 stepThreeArgs.putParcelableArrayList("instructions", recipeInstructions);
 
                 Bundle stepFourArgs = new Bundle();
-                stepFourArgs.putStringArrayList("imageList", (ArrayList) recipe.getImageList());
+                stepFourArgs.putStringArrayList("imageURLs", (ArrayList) imageUrls);
 
                 EditRecipeStepOne stepOneFrag = new EditRecipeStepOne();
                 EditRecipeStepTwo stepTwoFrag = new EditRecipeStepTwo();
