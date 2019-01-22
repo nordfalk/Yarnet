@@ -69,17 +69,32 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         userDAO.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserDTO user = dataSnapshot.getValue(UserDTO.class);
+                final UserDTO user = dataSnapshot.getValue(UserDTO.class);
                 MainSingleton.getInstance().setUser(user);
 
                 String userAvatar = MainSingleton.getInstance().getUser().getAvatar();
+
                 ((TextView)findViewById(R.id.drawer_profile_name)).setText("Hej, " + user.getFirst_name());
+
                 if(userAvatar.contains("https")) {
                     RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
                     Glide.with(MainActivity.this).load(userAvatar).apply(requestOptions).into(drawerBtn);
                     ImageView drawerHeaderImage = findViewById(R.id.drawer_image);
                     Glide.with(MainActivity.this).load(userAvatar).apply(requestOptions).into(drawerHeaderImage);
                 }
+
+                user.setListener(new UserDTO.DataChangeListener() {
+                    @Override
+                    public void onDataChange() {
+                        ((TextView)findViewById(R.id.drawer_profile_name)).setText("Hej, " + user.getFirst_name());
+                        if(user.getAvatar().contains("https")) {
+                            RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
+                            Glide.with(MainActivity.this).load(user.getAvatar()).apply(requestOptions).into(drawerBtn);
+                            ImageView drawerHeaderImage = findViewById(R.id.drawer_image);
+                            Glide.with(MainActivity.this).load(user.getAvatar()).apply(requestOptions).into(drawerHeaderImage);
+                        }
+                    }
+                });
             }
 
             @Override

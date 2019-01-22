@@ -355,8 +355,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
             userDAO.update(userBrowsing);
         } else if (v.equals(backgroundPicture)) {
-            System.out.println(imageUrls);
-            alertDialog.show();
+          if(imageUrls != null && alertDialog != null)
+                alertDialog.show();
         } else if(v == editTxt || v == editImg){
             Intent intent = new Intent(this, EditRecipe.class);
             intent.putExtra("recipeID", recipeID);
