@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +36,11 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepOne;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepThree;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepTwo;
 
-public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep {
+public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep, View.OnClickListener {
 
-    private OnFragmentInteractionListener mListener;
+    private ImageView backBtn;
+    private ImageView drawerBtn;
+
     private StepperLayout stepperLayout;
 
     private String recipeID;
@@ -53,6 +56,13 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
+
+        drawerBtn = findViewById(R.id.drawerBtn);
+        backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener(this);
+
+        backBtn.setVisibility(View.VISIBLE);
+        drawerBtn.setVisibility(View.GONE);
 
         stepperLayout = findViewById(R.id.stepperLayout);
         stepperLayout.setListener(this);
@@ -111,12 +121,6 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
             }
         });
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -218,6 +222,11 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
         callback.goToPrevStep();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     public interface OnFragmentInteractionListener {
