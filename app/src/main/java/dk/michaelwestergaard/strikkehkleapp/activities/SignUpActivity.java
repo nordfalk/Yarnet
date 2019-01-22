@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -117,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             pictureholder.setImageURI(null);
             pictureholder.setVisibility(View.GONE);
             addProfilePic.setVisibility(View.VISIBLE);
-            delImage.setVisibility(view.GONE);
+            delImage.setVisibility(View.GONE);
         }
     }
 
@@ -249,7 +247,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
                                         inputEmail.getText().toString(), inputFirstName.getText().toString(),
                                         inputLastName.getText().toString(), uri.toString(),
-                                        finalType, 1);
+                                        finalType, 1, "ALL");
                                 userDAO.insert(userDTO);
                                 finish();
                             }
@@ -262,7 +260,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
                         inputEmail.getText().toString(), inputFirstName.getText().toString(),
                         inputLastName.getText().toString(), "https://firebasestorage.googleapis.com/v0/b/yarnet-97349.appspot.com/o/users%2FdefaultPic112233445566.png?alt=media&token=1fa39774-4f7d-4901-b306-d0965769cb7f",
-                        type, 1);
+                        type, 1, "ALL");
                 userDAO.insert(userDTO);
                 finish();
             }
