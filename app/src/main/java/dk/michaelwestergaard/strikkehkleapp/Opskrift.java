@@ -55,12 +55,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt, deleteTxt;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg;
+    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg, deleteImg;
     private CardView købContainer;
     private ImageView backBtn;
     private ImageView drawerBtn;
@@ -90,9 +90,13 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         editTxt = findViewById(R.id.editTxt);
         editImg = findViewById(R.id.editImg);
+        deleteTxt = findViewById(R.id.deleteTxt);
+        deleteImg = findViewById(R.id.deleteImg);
 
         editTxt.setVisibility(View.GONE);
         editImg.setVisibility(View.GONE);
+        deleteTxt.setVisibility(View.GONE);
+        deleteImg.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
