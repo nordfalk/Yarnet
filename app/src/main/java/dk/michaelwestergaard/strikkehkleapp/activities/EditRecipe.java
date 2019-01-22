@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -325,6 +326,30 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
         callback.goToPrevStep();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if(stepperLayout.getCurrentStepPosition() == 0) {
+            Intent intent = new Intent(this, Opskrift.class);
+            intent.putExtra("RecipeID", recipeID);
+            startActivity(intent);
+            finish();
+        } else {
+            stepperLayout.onBackClicked();
+        }
     }
 
     public interface OnFragmentInteractionListener {

@@ -392,6 +392,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent intent = new Intent(this, EditRecipe.class);
             intent.putExtra("recipeID", recipeID);
             startActivity(intent);
+            finish();
         } else if(v == deleteTxt || v == deleteImg){
             alertBuilderDelete = new AlertDialog.Builder(this);
             alertBuilderDelete.setTitle("Slet opskrift?");
