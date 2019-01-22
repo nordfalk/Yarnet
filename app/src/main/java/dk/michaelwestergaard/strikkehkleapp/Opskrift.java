@@ -55,7 +55,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
