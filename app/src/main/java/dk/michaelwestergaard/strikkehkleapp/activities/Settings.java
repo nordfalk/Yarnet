@@ -8,10 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
-import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -19,10 +18,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     ImageView backBtn;
     ImageView drawerBtn;
     Spinner difficultySpinner, recipeTypeSpinner;
-    RecipeDTO recipeDTO = new RecipeDTO();
-    RecipeDAO recipeDAO = new RecipeDAO();
     UserDAO userDAO = new UserDAO();
-    UserDTO userDTO = new UserDTO();
+    UserDTO userDTO = MainSingleton.getInstance().getUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
