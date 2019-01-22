@@ -34,8 +34,9 @@ public class RecipeDAO implements DAO<RecipeDTO> {
     }
 
     @Override
-    public boolean delete(RecipeDTO recipe) throws NotImplementedException {
-        throw new NotImplementedException("Denne metode er ikke lavet");
+    public boolean delete(RecipeDTO recipe) {
+        databaseReference.child(recipe.getRecipeID()).removeValue();
+        return true;
     }
 
     //Skal fjernes

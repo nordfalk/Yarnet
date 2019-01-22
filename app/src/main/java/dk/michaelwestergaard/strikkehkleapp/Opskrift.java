@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -66,8 +68,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private ImageView drawerBtn;
 
 
-    private AlertDialog.Builder alertBuilder;
-    private AlertDialog alertDialog;
+    private AlertDialog.Builder alertBuilder, alertBuilderDelete;
+    private AlertDialog alertDialog, alertDialogDelete;
     private ViewPager imageSliderViewPager;
     final List<String> imageUrls = new ArrayList<String>();
 
@@ -393,7 +395,36 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             intent.putExtra("recipeID", recipeID);
             startActivity(intent);
         } else if(v == deleteTxt || v == deleteImg){
+            alertBuilderDelete = new AlertDialog.Builder(this);
+            alertBuilderDelete.setTitle("Slet opskrift?");
 
+            View dialogView = this.getLayoutInflater().inflate(R.layout.delete_recipe_prompt, null);
+
+            TextView deletePrompt = dialogView.findViewById(R.id.deletePrompt);
+            deletePrompt.setText("Er du sikker på, at du vil slette opskriften:\n\"" + recipe.getTitle() + "\"?");
+
+            alertBuilderDelete.setView(dialogView);
+
+            alertBuilderDelete.setPositiveButton("Slet", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean deleted = false;
+                    deleted = recipeDAO.delete(recipe);
+
+                    if(deleted) {
+                        Toast.makeText(getApplicationContext(), "Opskrift slettet!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            alertBuilderDelete.setNegativeButton("Annuller", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            alertDialogDelete = alertBuilderDelete.create();
+            alertBuilderDelete.show();
         }
     }
 
