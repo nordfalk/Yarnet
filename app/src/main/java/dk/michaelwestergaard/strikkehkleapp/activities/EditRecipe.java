@@ -89,17 +89,19 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 recipeInstructions = (ArrayList) recipe.getRecipeInstructionDTO();
                 imageUrls.clear();
 
-                for (String recipeImage : recipe.getImageList()) {
-                    if(recipeImage.contains("https:")){
-                        imageUrls.add(recipeImage);
-                    } else {
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                imageUrls.add(uri.toString());
-                            }
-                        });
+                if(recipe.getImageList() != null) {
+                    for (String recipeImage : recipe.getImageList()) {
+                        if (recipeImage.contains("https:")) {
+                            imageUrls.add(recipeImage);
+                        } else {
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    imageUrls.add(uri.toString());
+                                }
+                            });
+                        }
                     }
                 }
 

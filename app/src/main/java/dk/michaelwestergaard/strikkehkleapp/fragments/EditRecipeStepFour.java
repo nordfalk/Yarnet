@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.stepstone.stepper.Step;
@@ -72,6 +74,39 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        for(String imageURL : imageURLs) {
+            View viewOnClick;
+            Button delete2;
+
+            if (picContainer.getChildCount() < 4) {
+
+                viewOnClick = inflater.inflate(R.layout.recipe_add_pic, null);
+
+                viewLoadPic = viewOnClick;
+
+                ImageView picture1 = viewLoadPic.findViewById(R.id.pic4);
+
+                Glide.with(getActivity()).load(imageURL).apply(new RequestOptions().fitCenter()).into(picture1);
+
+                picContainer.addView(viewLoadPic, picContainer.getChildCount());
+
+                //TODO: Skal have fixet nedenstående udkommenteret kode, så URI bliver gemt, og getData fungere ordentligt
+/*
+                uri = result.getUri();
+                picture1.setImageURI(uri);
+                imageList.add(uri);
+*/
+                delete2 = viewOnClick.findViewById(R.id.create_recipe_instruction_delete_btn);
+
+                delete2.setOnClickListener(this);
+
+                if (picContainer.getChildCount() == 4) {
+
+                    addPic.setVisibility(View.GONE);
+                }
+            }
+        }
 
         return view;
     }
