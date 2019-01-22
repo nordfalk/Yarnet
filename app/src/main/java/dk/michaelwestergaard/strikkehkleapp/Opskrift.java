@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +55,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    private ImageView backgroundPicture, favoriteBtn, creatorImage, editImg;
+    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg;
     private CardView købContainer;
     private ImageView backBtn;
     private ImageView drawerBtn;
@@ -100,6 +101,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         backgroundPicture = findViewById(R.id.baggrundsBillede);
         favoriteBtn = findViewById(R.id.recipe_favorite_btn);
+        saveBtn = findViewById(R.id.recipe_save_btn);
         creatorImage = findViewById(R.id.creator_image);
 
         købContainer = findViewById(R.id.købContainer);
@@ -116,6 +118,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         difficulty = findViewById(R.id.recipe_difficulty);
 
         favoriteBtn.setOnClickListener(this);
+        saveBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
         backgroundPicture.setOnClickListener(this);
         editTxt.setOnClickListener(this);
@@ -125,36 +128,46 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void showRecipe(){
-        recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
+        recipeDAO.getReference().child(recipeID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
                 title.setText(recipe.getTitle());
 
-                createImageSlider(imageUrls);
-
                 if(recipe.getImageList() != null){
+                    imageUrls.clear();
                     String firstImage = recipe.getImageList().get(0);
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.centerCropTransform()).into(backgroundPicture);
-                        }
-                    });
-                }
-
-                if(recipe.getImageList() != null) {
-                    for (String recipeImage : recipe.getImageList()) {
-                        System.out.println("Billede: " + recipeImage);
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                    if(!firstImage.contains("https")){
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                imageUrls.add(uri.toString());
-                                imageSliderViewPager.getAdapter().notifyDataSetChanged();
+                                Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                             }
                         });
+                    } else {
+                        Glide.with(Opskrift.this).load(firstImage).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
+                    }
+
+                    int count = 0;
+                    for (String recipeImage : recipe.getImageList()) {
+                        count++;
+                        if(recipeImage.contains("https:")){
+                            imageUrls.add(recipeImage);
+                            if(count == recipe.getImageList().size())
+                                createImageSlider(imageUrls);
+                        } else {
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                            final int finalCount = count;
+                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    imageUrls.add(uri.toString());
+                                    if(finalCount == recipe.getImageList().size())
+                                        createImageSlider(imageUrls);
+                                }
+                            });
+                        }
                     }
                 }
                 if(recipe.getRecipeInstructionDTO() != null)
@@ -179,7 +192,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                         creator.setText(createdByUser.getFirst_name() + " " + createdByUser.getLast_name());
                         if(createdByUser.getAvatar() != null){
                             String avatar = createdByUser.getAvatar();
-                            System.out.println(avatar);
                             if(avatar.contains("http") || avatar.contains("https")){
                                 Glide.with(Opskrift.this).load(avatar).into(creatorImage);
                             } else {
@@ -204,33 +216,30 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     købContainer.setVisibility(View.GONE);
                     priceTextView.setVisibility(View.GONE);
                 } else {
-                    priceTextView.setText("Pris: " + recipe.getPrice() + " DKK");
+                    priceTextView.setText("Pris: " + new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
                     købContainer.setVisibility(View.VISIBLE);
                 }
 
-                userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        userBrowsing = dataSnapshot.getValue(UserDTO.class);
-                        if(userBrowsing.getSavedRecipes() != null){
-                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
-                                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                            }
-                        }
+                userBrowsing = MainSingleton.getInstance().getUser();
 
-                        if(userBrowsing.getUserID().equals(recipe.getUserID())) {
-                            editTxt.setVisibility(View.VISIBLE);
-                            editImg.setVisibility(View.VISIBLE);
-                        }
+                if(userBrowsing.getFavouritedRecipes() != null){
+                    if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
+                        favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                if(userBrowsing.getSavedRecipes() != null){
+                    if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                        saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
                     }
-                });
+                }
 
-                favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
+                if(userBrowsing.getUserID().equals(recipe.getUserID())) {
+                    editTxt.setVisibility(View.VISIBLE);
+                    editImg.setVisibility(View.VISIBLE);
+                }
+
+                favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
 
                 String[] difficulties = getResources().getStringArray(R.array.NewRecipeDifficulty);
 
@@ -305,24 +314,45 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent koeb = new Intent(this, OpskriftKoeb.class);
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
-            if(userBrowsing.getSavedRecipes() == null){
-                List<String> savedRecipes = new ArrayList<String>();
-                savedRecipes.add(recipe.getRecipeID());
-                userBrowsing.setSavedRecipes(savedRecipes);
-                recipe.increaseSavedAmount();
+            if(userBrowsing.getFavouritedRecipes() == null){
+                List<String> favouritedRecipes = new ArrayList<String>();
+                favouritedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setFavouritedRecipes(favouritedRecipes);
+                favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                recipe.increaseFavouritedAmount();
                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
             } else {
-                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
-                    recipe.decreaseSavedAmount();
-                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                    favoriteCount.setText((recipe.getFavouritedAmount()-1)+"");
+                    recipe.decreaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().remove(recipe.getRecipeID());
                 } else {
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                    recipe.increaseSavedAmount();
+                    favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                    recipe.increaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().add(recipe.getRecipeID());
+                }
+            }
+
+            recipeDAO.update(recipe);
+            userDAO.update(userBrowsing);
+        } else if(v.equals(saveBtn)){
+            if(userBrowsing.getSavedRecipes() == null){
+                List<String> savedRecipes = new ArrayList<>();
+                savedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setSavedRecipes(savedRecipes);
+                saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+            } else {
+                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_white));
+                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                } else {
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
                     userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }
             }
-            recipeDAO.update(recipe);
+
             userDAO.update(userBrowsing);
         } else if (v.equals(backgroundPicture)) {
             System.out.println(imageUrls);

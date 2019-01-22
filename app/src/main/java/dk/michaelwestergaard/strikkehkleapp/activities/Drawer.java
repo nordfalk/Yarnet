@@ -2,6 +2,7 @@ package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,18 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class Drawer extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -24,7 +37,7 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
         TextView editProfileBtn2;
 
         @Override
-        protected void onCreate (Bundle savedInstanceState){
+        protected void onCreate (Bundle savedInstanceState) {
             setContentView(R.layout.drawer);
             super.onCreate(savedInstanceState);
 
@@ -49,15 +62,14 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
             backBtn.setOnClickListener(this);
 
 
-            editProfileBtn2 = (TextView)headerView.findViewById(R.id.editProfileBtn2);
+            editProfileBtn2 = (TextView) headerView.findViewById(R.id.editProfileBtn2);
             editProfileBtn2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                            Intent intent = new Intent(Drawer.this, EditPage.class);
-                            startActivity(intent);
-                    }
+                    Intent intent = new Intent(Drawer.this, EditPage.class);
+                    startActivity(intent);
+                }
             });
-
 
         }
 

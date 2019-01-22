@@ -60,6 +60,10 @@ public class CreateRecipeStepThree extends Fragment implements Step, View.OnClic
         return recipeDTO;
     }
 
+    public void clearData(){
+        instructionLinearLayout.removeAllViews();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

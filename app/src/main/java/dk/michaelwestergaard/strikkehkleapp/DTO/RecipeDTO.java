@@ -1,5 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import android.net.Uri;
+
 import java.util.Date;
 import java.util.List;
 
@@ -23,11 +25,12 @@ public class RecipeDTO {
     private RecipeDifficulty recipeDifficulty;
     private Date createdTimestamp;
     private Date updatedTimestamp;
-    private int savedAmount;
+    private int favouritedAmount;
 
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
     private List<String> imageList;
+    private List<Uri> imageUriList;
 
     public RecipeDTO(){}
 
@@ -45,7 +48,7 @@ public class RecipeDTO {
         this.recipeInformationDTO = recipeInformationDTO;
         this.recipeInstructionDTO = recipeInstructionDTO;
         this.imageList = imageList;
-        savedAmount = 0;
+        favouritedAmount = 0;
     }
 
     public String getRecipeID() {
@@ -152,16 +155,24 @@ public class RecipeDTO {
         this.imageList = imageList;
     }
 
-    public int getSavedAmount() {
-        return savedAmount;
+    public int getFavouritedAmount() {
+        return favouritedAmount;
     }
 
-    public void increaseSavedAmount() {
-        this.savedAmount++;
+    public void increaseFavouritedAmount() {
+        this.favouritedAmount++;
     }
 
-    public void decreaseSavedAmount() {
-        this.savedAmount--;
+    public void decreaseFavouritedAmount() {
+        this.favouritedAmount--;
+    }
+
+    public List<Uri> getImageUriList() {
+        return imageUriList;
+    }
+
+    public void setImageUriList(List<Uri> imageURIList) {
+        this.imageUriList = imageURIList;
     }
 
     @Override
@@ -177,7 +188,7 @@ public class RecipeDTO {
                 ", recipeDifficulty=" + recipeDifficulty +
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
-                ", savedAmount=" + savedAmount +
+                ", favouritedAmount=" + favouritedAmount +
                 ", recipeInformationDTO=" + recipeInformationDTO +
                 ", recipeInstructionDTO=" + recipeInstructionDTO +
                 ", imageList=" + imageList +

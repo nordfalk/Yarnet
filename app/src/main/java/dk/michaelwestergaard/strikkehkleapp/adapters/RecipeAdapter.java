@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
@@ -52,7 +55,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(RecipeAdapter.ViewHolder holder, int position) {
         holder.bindView(position);
-        System.out.println("binding " + position);
     }
 
     @Override
@@ -67,41 +69,56 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         return recipes.size();
     }
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private RecipeDTO recipe;
         public TextView titleView;
         public ImageView imageView;
+        public TextView favouriteCount1;
+        public TextView listPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.item_title);
             imageView = itemView.findViewById(R.id.item_image);
+            favouriteCount1 = itemView.findViewById(R.id.favoriteCount1);
+            listPrice = itemView.findViewById(R.id.listPrice);
             itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
             recipe = recipes.get(position);
             titleView.setText(recipe.getTitle());
+            favouriteCount1.setText(String.valueOf(recipe.getFavouritedAmount()));
+            if(recipe.getPrice() == 0){
+                listPrice.setText("Gratis");
+            } else {
+                listPrice.setText(new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
+            }
+
             if(recipe.getImageList() != null){
+                final RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(16));
                 String firstImage = recipe.getImageList().get(0);
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(imageView);
-                    }
-                });
+                System.out.println(firstImage);
+                if(!firstImage.contains("https")){
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(context).load(uri.toString()).apply(requestOptions).into(imageView);
+                            //Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(imageView);
+                        }
+                    });
+                } else {
+                    Glide.with(context).load(firstImage).apply(requestOptions).into(imageView);
+                    //Glide.with(context).load(firstImage).apply(RequestOptions.circleCropTransform()).into(imageView);
+                }
             }
         }
 
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), Opskrift.class);
-            System.out.println("clicking on " + recipe.getRecipeID());
-            System.out.println("clicking on " + titleView.getText().toString());
             intent.putExtra("RecipeID", recipe.getRecipeID());
             v.getContext().startActivity(intent);
         }

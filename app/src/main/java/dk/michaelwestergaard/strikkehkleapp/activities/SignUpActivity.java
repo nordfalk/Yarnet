@@ -15,11 +15,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -217,6 +219,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         if (!task.isSuccessful()) {
             Toast.makeText(SignUpActivity.this, "Kunne ikke oprette, prøv igen.", Toast.LENGTH_SHORT).show();
+            System.out.println(task.getException());
         } else {
 
             String type = "";
@@ -233,22 +236,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 UUID picRandomID = UUID.randomUUID();
 
-                StorageReference ref = storageReference.child("users/" + picRandomID);
-                ref.putFile(selImage);
-
-                UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
-                        inputEmail.getText().toString(), inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(), picRandomID.toString(),
-                        type, 1);
-                userDAO.insert(userDTO);
-                finish();
+                final StorageReference ref = storageReference.child("users/" + picRandomID);
+                final String finalType = type;
+                ref.putFile(selImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot){
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
+                                        inputEmail.getText().toString(), inputFirstName.getText().toString(),
+                                        inputLastName.getText().toString(), uri.toString(),
+                                        finalType, 1, "ALL");
+                                userDAO.insert(userDTO);
+                                finish();
+                            }
+                        });
+                    }
+                });
 
             } else {
 
                 UserDTO userDTO = new UserDTO(task.getResult().getUser().getUid(),
                         inputEmail.getText().toString(), inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(), "defaultPic112233445566.png",
-                        type, 1);
+                        inputLastName.getText().toString(), "https://firebasestorage.googleapis.com/v0/b/yarnet-97349.appspot.com/o/users%2FdefaultPic112233445566.png?alt=media&token=1fa39774-4f7d-4901-b306-d0965769cb7f",
+                        type, 1, "ALL");
                 userDAO.insert(userDTO);
                 finish();
             }

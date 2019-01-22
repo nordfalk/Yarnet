@@ -10,14 +10,16 @@ public class UserDTO {
     private String last_name;
     private String avatar;
     private String type;
+    private List<String> favouritedRecipes;
     private List<String> savedRecipes;
     private List<String> boughtRecipes;
+    private String difficulty;
     // Måske også role
     int status;
 
     public UserDTO(){}
 
-    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status) {
+    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status, String difficulty) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
@@ -25,8 +27,10 @@ public class UserDTO {
         this.avatar = avatar;
         this.type = type;
         this.status = status;
+        favouritedRecipes = null;
         savedRecipes = null;
         boughtRecipes = null;
+        this.difficulty = difficulty;
     }
 
     public String getUserID() {
@@ -85,6 +89,14 @@ public class UserDTO {
         this.status = status;
     }
 
+    public List<String> getFavouritedRecipes() {
+        return favouritedRecipes;
+    }
+
+    public void setFavouritedRecipes(List<String> favouritedRecipes) {
+        this.favouritedRecipes = favouritedRecipes;
+    }
+
     public List<String> getSavedRecipes() {
         return savedRecipes;
     }
@@ -101,6 +113,10 @@ public class UserDTO {
         this.boughtRecipes = boughtRecipes;
     }
 
+    public String getDifficulty() { return difficulty; }
+
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -111,8 +127,10 @@ public class UserDTO {
                 ", avatar='" + avatar + '\'' +
                 ", type='" + type + '\'' +
                 ", status=" + status +
+                ", favouritedRecipes=" + favouritedRecipes +
                 ", savedRecipes=" + savedRecipes +
                 ", boughtRecipes=" + boughtRecipes +
+                ", difficulty=" + difficulty+
                 '}';
     }
 }

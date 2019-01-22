@@ -22,7 +22,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
@@ -106,18 +105,14 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
 
      public RecipeDTO getData(RecipeDTO recipeDTO){
 
-        List<String> images = new ArrayList<String>();
-
-        for (Uri image : imageList) {
-            UUID picRandomID = UUID.randomUUID();
-            images.add(picRandomID.toString());
-            StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
-            ref.putFile(image);
-        }
-
-        recipeDTO.setImageList(images);
+        recipeDTO.setImageUriList(imageList);
 
         return recipeDTO;
+    }
+
+    public void clearData(){
+        picContainer.removeAllViews();
+        imageList = new ArrayList<Uri>();
     }
 
     @Override
