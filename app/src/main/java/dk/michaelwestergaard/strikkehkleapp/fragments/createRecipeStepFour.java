@@ -152,6 +152,10 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
     @Nullable
     @Override
     public VerificationError verifyStep() {
+        if(imageList.size() == 0) {
+            return new VerificationError("Tilføj venligst et billede!");
+        }
+
         return null;
     }
 
