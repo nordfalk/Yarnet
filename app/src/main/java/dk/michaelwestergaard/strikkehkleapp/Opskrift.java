@@ -1,6 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -56,18 +58,18 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt, deleteTxt;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg;
+    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg, deleteImg;
     private CardView købContainer;
     private ImageView backBtn;
     private ImageView drawerBtn;
 
-    private AlertDialog.Builder alertBuilder;
-    private AlertDialog alertDialog;
+    private AlertDialog.Builder alertBuilder, alertBuilderDelete;
+    private AlertDialog alertDialog, alertDialogDelete;
     private ViewPager imageSliderViewPager;
     final List<String> imageUrls = new ArrayList<String>();
 
@@ -90,9 +92,13 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         editTxt = findViewById(R.id.editTxt);
         editImg = findViewById(R.id.editImg);
+        deleteTxt = findViewById(R.id.deleteTxt);
+        deleteImg = findViewById(R.id.deleteImg);
 
         editTxt.setVisibility(View.GONE);
         editImg.setVisibility(View.GONE);
+        deleteTxt.setVisibility(View.GONE);
+        deleteImg.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
@@ -123,6 +129,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         backgroundPicture.setOnClickListener(this);
         editTxt.setOnClickListener(this);
         editImg.setOnClickListener(this);
+        deleteTxt.setOnClickListener(this);
+        deleteImg.setOnClickListener(this);
 
         showRecipe();
     }
@@ -240,6 +248,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 if(userBrowsing.getUserID().equals(recipe.getUserID())) {
                     editTxt.setVisibility(View.VISIBLE);
                     editImg.setVisibility(View.VISIBLE);
+                    deleteTxt.setVisibility(View.VISIBLE);
+                    deleteImg.setVisibility(View.VISIBLE);
                 }
 
                 favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
@@ -382,6 +392,37 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent intent = new Intent(this, EditRecipe.class);
             intent.putExtra("recipeID", recipeID);
             startActivity(intent);
+        } else if(v == deleteTxt || v == deleteImg){
+            alertBuilderDelete = new AlertDialog.Builder(this);
+            alertBuilderDelete.setTitle("Slet opskrift?");
+
+            View dialogView = this.getLayoutInflater().inflate(R.layout.delete_recipe_prompt, null);
+
+            TextView deletePrompt = dialogView.findViewById(R.id.deletePrompt);
+            deletePrompt.setText("Er du sikker på, at du vil slette opskriften:\n\"" + recipe.getTitle() + "\"?");
+
+            alertBuilderDelete.setView(dialogView);
+
+            alertBuilderDelete.setPositiveButton("Slet", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean deleted = false;
+                    deleted = recipeDAO.delete(recipe);
+
+                    if(deleted) {
+                        Toast.makeText(getApplicationContext(), "Opskrift slettet!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            alertBuilderDelete.setNegativeButton("Annuller", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            alertDialogDelete = alertBuilderDelete.create();
+            alertBuilderDelete.show();
         }
     }
 

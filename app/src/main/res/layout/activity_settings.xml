@@ -20,98 +20,98 @@
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="60dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/addpicsignup"
             android:text="Forbind "
-            app:layout_constraintBottom_toBottomOf="@+id/textView11"
+            android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
         <Spinner
             android:id="@+id/recipeSpinner"
-            android:layout_width="0dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="23dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
             android:text="Forbind til facebook"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintHorizontal_bias="0.888"
+            android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="23dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
             android:text="Notifikationer"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/switch1"
+            android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView15"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="23dp"
             android:layout_marginTop="24dp"
             android:text="Vælg sværhedsgrad"
-            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/textView16"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="23dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
             android:text="Skift opskrifttype"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/recipeSpinner"
+            android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <Spinner
             android:id="@+id/difficultySpinner"
-            android:layout_width="0dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView15"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView15" />
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
 
         <TextView
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="24dp"
             android:text="Skriftstørrelse"
-            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
