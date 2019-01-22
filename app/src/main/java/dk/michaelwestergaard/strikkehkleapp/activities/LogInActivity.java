@@ -53,20 +53,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            userDAO.getReference().child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserDTO user = dataSnapshot.getValue(UserDTO.class);
-                    MainSingleton.getInstance().setUser(user);
-
-                    startActivity(new Intent(LogInActivity.this, MainActivity.class));
-                    finish();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            startActivity(new Intent(LogInActivity.this, MainActivity.class));
+            finish();
         }
 
         inputEmail = findViewById(R.id.input_email);

@@ -3,18 +3,22 @@ package dk.michaelwestergaard.strikkehkleapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
@@ -46,9 +50,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         backBtn.setVisibility(View.VISIBLE);
         drawerBtn.setVisibility(View.GONE);
 
-       // drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //Der skal ændres på constraintlayoutet i den her aktivitet ellers får vi ikke draweren til at virke.
-
         btn = findViewById(R.id.editProfileBtn);
         btn.setOnClickListener(this);
 
@@ -58,10 +59,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         avatar = findViewById(R.id.avatar);
         name = findViewById(R.id.profileName);
 
-/*
-        Picasso.get().load(user.getAvatar()).transform(new RoundedCornersTransformation(50, 50)).into(avatar);
-        name.setText(user.getFirst_name() + " " + user.getFirst_name());
-*/
+        UserDTO user = MainSingleton.getInstance().getUser();
+        name.setText(user.getFirst_name() + " " + user.getLast_name());
+        if(user.getAvatar().contains("https")) {
+            RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
+            Glide.with(Profile.this).load(user.getAvatar()).apply(requestOptions).into(avatar);
+        }
+
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(this);
 
@@ -70,7 +74,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    startActivity(new Intent(Profile.this, LogInActivity.class));
+                    Intent intent = new Intent(Profile.this, LogInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     finish();
                 }
             }

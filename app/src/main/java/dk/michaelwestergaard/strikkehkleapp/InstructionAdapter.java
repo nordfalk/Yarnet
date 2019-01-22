@@ -131,14 +131,15 @@ public class InstructionAdapter extends RecyclerView.Adapter {
                         }
                     } else{
                         recipeChecklist.addChecklist(recipeID, recipeInstructionDTO.size());
-                        instructionpoint.setTextColor(Color.parseColor("#696969"));
-                        instructionpoint.setBackgroundResource(R.drawable.rounded_corner);
+                        instructionpoint.setText("\u2713");
+                        instructionpoint.setTextColor(Color.parseColor("#ffffff"));
+                        instructionpoint.setBackgroundResource(R.drawable.rounded_corner_green);
                         headlineElement.setTextColor(Color.parseColor("#B7B7B7"));
                         for (int i = 0; i < views.size();i++) {
-                            views.get(i).findViewById(R.id.instructionPoint2).setBackgroundResource(R.drawable.rounded_corner);
+                            views.get(i).findViewById(R.id.instructionPoint2).setBackgroundResource(R.drawable.done);
                             ((TextView) views.get(i).findViewById(R.id.underlineElement)).setTextColor(Color.parseColor("#B7B7B7"));
                         }
-                        recipeChecklist.updateChecklist(recipeID, position,true);
+                        recipeChecklist.updateChecklist(recipeID,position,true);
                     }
                     saveChecklists();
                 }
