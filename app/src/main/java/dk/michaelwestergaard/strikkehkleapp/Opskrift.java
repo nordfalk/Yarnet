@@ -333,6 +333,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     userBrowsing.getFavouritedRecipes().add(recipe.getRecipeID());
                 }
             }
+
             recipeDAO.update(recipe);
             userDAO.update(userBrowsing);
         } else if(v.equals(saveBtn)){
@@ -350,7 +351,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }
             }
-            recipeDAO.update(recipe);
+
             userDAO.update(userBrowsing);
         } else if (v.equals(backgroundPicture)) {
             System.out.println(imageUrls);
