@@ -39,127 +39,137 @@ public class Favourites extends AppCompatActivity {
     private RecipeDAO recipeDAO = new RecipeDAO();
     private UserDAO userDAO = new UserDAO();
 
-    public static class FavouritesListFragment extends Fragment {
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_favourites);
 
-        public FavouritesListFragment() {
+            drawerBtn = findViewById(R.id.drawerBtn);
+            backBtn = findViewById(R.id.backButton);
+            backBtn.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            }));
 
-        }
-    }
+            backBtn.setVisibility(View.VISIBLE);
+            drawerBtn.setVisibility(View.GONE);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favourites);
+            ViewPager viewPager = findViewById(R.id.favouritesViewPager);
 
-        drawerBtn = findViewById(R.id.drawerBtn);
-        backBtn = findViewById(R.id.backButton);
-        backBtn.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }));
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+            adapter.addFragment(new FavouritesListFragment(), "FavouriteList");
+            viewPager.setAdapter(adapter);
 
-        backBtn.setVisibility(View.VISIBLE);
-        drawerBtn.setVisibility(View.GONE);
-
-        ViewPager viewPager = findViewById(R.id.favouritesViewPager);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FavouritesListFragment(), "FavouriteList");
-        viewPager.setAdapter(adapter);
-
-    final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
+            final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
 
             recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            recipes.clear();
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                recipes.add(snapshot.getValue(RecipeDTO.class));
-            }
-
-            final FirebaseAuth auth = FirebaseAuth.getInstance();
-            final List<UserDTO> users = new ArrayList<>();
-
-            userDAO.getReference().addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    users.clear();
+                    recipes.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        users.add(snapshot.getValue(UserDTO.class));
+                        recipes.add(snapshot.getValue(RecipeDTO.class));
                     }
 
-                    UserDTO actualUser = new UserDTO();
-                    for (UserDTO user : users) {
-                        if (user.getUserID().equals(auth.getCurrentUser().getUid())) {
-                            actualUser = user;
+                    final FirebaseAuth auth = FirebaseAuth.getInstance();
+                    final List<UserDTO> users = new ArrayList<>();
+
+                    userDAO.getReference().addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            users.clear();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                users.add(snapshot.getValue(UserDTO.class));
+                            }
+
+                            UserDTO actualUser = new UserDTO();
+                            for (UserDTO user : users) {
+                                if (user.getUserID().equals(auth.getCurrentUser().getUid())) {
+                                    actualUser = user;
+                                }
+                            }
+
+                            favouriteRecipes = sortRecipes("favourited", recipes, actualUser);
                         }
-                    }
 
-                    favouriteRecipes = sortRecipes("favourited", recipes, actualUser);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
         }
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
+        public static class FavouritesSingleton {
+            private List<RecipeDTO> recipes;
+            private static FavouritesSingleton instance = null;
+
+            public static FavouritesSingleton getInstance() {
+                if (instance == null) {
+                    instance = new FavouritesSingleton();
+                }
+                return instance;
+            }
+
+            public List<RecipeDTO> getRecipes() {
+                return recipes;
+            }
+
+            public void setRecipes(List<RecipeDTO> recipes) {
+                this.recipes = recipes;
+            }
         }
-    });
-}
 
-    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
-        List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
+        private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
+            List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
 
-        switch (sortStyle) {
-            case "favourited":
-                if (user != null) {
-                    List<String> FavouritedRecipeIDs = user.getFavouritedRecipes();
+            switch (sortStyle) {
+                case "favourited":
+                    if (user != null) {
+                        List<String> FavouritedRecipeIDs = user.getFavouritedRecipes();
 
-                    if (FavouritedRecipeIDs != null) {
+                        if (FavouritedRecipeIDs != null) {
 
-                        for (RecipeDTO recipe : recipes) {
-                            for (String favouritedRecipeID : FavouritedRecipeIDs) {
-                                if (recipe.getRecipeID().equals(favouritedRecipeID)) {
-                                    recipesToShow.add(recipe);
+                            for (RecipeDTO recipe : recipes) {
+                                for (String favouritedRecipeID : FavouritedRecipeIDs) {
+                                    if (recipe.getRecipeID().equals(favouritedRecipeID)) {
+                                        recipesToShow.add(recipe);
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        System.out.println("Error sorting recipes: User not found!");
                     }
-                } else {
-                    System.out.println("Error sorting recipes: User not found!");
-                }
-                break;
-        }
-        return recipesToShow;
-    }
-    /*
-    public static class FavouritesSingleton {
-        private List<RecipeDTO> recipes;
-        private static FavouritesSingleton instance = null;
-        public static FavouritesSingleton getInstance() {
-            if (instance == null) {
-                instance = new FavouritesSingleton();
+                    break;
             }
-            return instance;
+            return recipesToShow;
         }
-
-        public List<RecipeDTO> getRecipes() {
-            return recipes;
-        }
-
-        public void setRecipes(List<RecipeDTO> recipes) { this.recipes = recipes;}
-    }
 
     public static class FavouritesListFragment extends Fragment {
+
         public FavouritesListFragment() {
 
         }
-*/
 
+        public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+            final View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+            RecyclerView recyclerView = view.findViewById(R.id.recyclerViewGrid);
+
+            RecipeAdapter adapter = new RecipeAdapter(FavouritesSingleton.getInstance().getRecipes());
+            recyclerView.setAdapter(adapter);
+
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            recyclerView.setLayoutManager(layoutManager);
+
+            return view;
+        }
+    }
 }
