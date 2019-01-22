@@ -219,8 +219,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         userBrowsing = dataSnapshot.getValue(UserDTO.class);
-                        if(userBrowsing.getSavedRecipes() != null){
-                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                        if(userBrowsing.getFavouritedRecipes() != null){
+                            if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                             }
                         }
@@ -232,7 +232,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
 
-                favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
+                favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
 
                 String[] difficulties = getResources().getStringArray(R.array.NewRecipeDifficulty);
 
@@ -307,24 +307,24 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent koeb = new Intent(this, OpskriftKoeb.class);
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
-            if(userBrowsing.getSavedRecipes() == null){
-                List<String> savedRecipes = new ArrayList<String>();
-                savedRecipes.add(recipe.getRecipeID());
-                userBrowsing.setSavedRecipes(savedRecipes);
-                favoriteCount.setText((recipe.getSavedAmount()+1)+"");
-                recipe.increaseSavedAmount();
+            if(userBrowsing.getFavouritedRecipes() == null){
+                List<String> FavouritedRecipes = new ArrayList<String>();
+                favouritedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setFavouritedRecipes(favouritedRecipes);
+                favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                recipe.increaseFavouritedAmount();
                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
             } else {
-                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
-                    favoriteCount.setText((recipe.getSavedAmount()-1)+"");
-                    recipe.decreaseSavedAmount();
-                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                    favoriteCount.setText((recipe.getFavouritedAmount()-1)+"");
+                    recipe.decreaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().remove(recipe.getRecipeID());
                 } else {
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                    favoriteCount.setText((recipe.getSavedAmount()+1)+"");
-                    recipe.increaseSavedAmount();
-                    userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
+                    favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                    recipe.increaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().add(recipe.getRecipeID());
                 }
             }
             recipeDAO.update(recipe);

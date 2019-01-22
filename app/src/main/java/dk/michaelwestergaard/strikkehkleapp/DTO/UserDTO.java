@@ -10,7 +10,7 @@ public class UserDTO {
     private String last_name;
     private String avatar;
     private String type;
-    private List<String> savedRecipes;
+    private List<String> favouritedRecipes;
     private List<String> boughtRecipes;
     // Måske også role
     int status;
@@ -25,7 +25,7 @@ public class UserDTO {
         this.avatar = avatar;
         this.type = type;
         this.status = status;
-        savedRecipes = null;
+        favouritedRecipes = null;
         boughtRecipes = null;
     }
 
@@ -85,12 +85,12 @@ public class UserDTO {
         this.status = status;
     }
 
-    public List<String> getSavedRecipes() {
-        return savedRecipes;
+    public List<String> getFavouritedRecipes() {
+        return favouritedRecipes;
     }
 
-    public void setSavedRecipes(List<String> savedRecipes) {
-        this.savedRecipes = savedRecipes;
+    public void setFavouritedRecipes(List<String> favouritedRecipes) {
+        this.favouritedRecipes = favouritedRecipes;
     }
 
     public List<String> getBoughtRecipes() {
@@ -111,7 +111,7 @@ public class UserDTO {
                 ", avatar='" + avatar + '\'' +
                 ", type='" + type + '\'' +
                 ", status=" + status +
-                ", savedRecipes=" + savedRecipes +
+                ", favouritedRecipes=" + favouritedRecipes +
                 ", boughtRecipes=" + boughtRecipes +
                 '}';
     }

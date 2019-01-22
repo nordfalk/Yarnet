@@ -76,75 +76,7 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
                 }
             });
 
-            final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
-
-            recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    recipes.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        recipes.add(snapshot.getValue(RecipeDTO.class));
-                    }
-
-                    final FirebaseAuth auth = FirebaseAuth.getInstance();
-                    final List<UserDTO> users = new ArrayList<>();
-
-                    userDAO.getReference().addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            users.clear();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                users.add(snapshot.getValue(UserDTO.class));
-                            }
-
-                            UserDTO actualUser = new UserDTO();
-                            for (UserDTO user : users) {
-                                if (user.getUserID().equals(auth.getCurrentUser().getUid())) {
-                                    actualUser = user;
-                                }
-                            }
-
-                            favouriteRecipes = sortRecipes("favourited", recipes, actualUser);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
         }
-
-    private List<RecipeDTO> sortRecipes(String sortStyle, List<RecipeDTO> recipes, UserDTO user) {
-        List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
-
-        switch (sortStyle) {
-            case "favourited":
-                if (user != null) {
-                    List<String> FavouritedRecipeIDs = user.getFavouritedRecipes();
-
-                    if (FavouritedRecipeIDs != null) {
-
-                        for (RecipeDTO recipe : recipes) {
-                            for (String favouritedRecipeID : favouritedRecipeIDs) {
-                                if (recipe.getRecipeID().equals(favouritedRecipeID)) {
-                                    recipesToShow.add(recipe);
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println("Error sorting recipes: User not found!");
-                }
-                break;
-        }
-        return recipesToShow;
-    }
 
         public boolean onNavigationItemSelected (MenuItem item){
             switch (item.getItemId()) {
