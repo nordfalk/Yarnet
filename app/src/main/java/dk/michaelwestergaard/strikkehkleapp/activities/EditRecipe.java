@@ -342,13 +342,15 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
     @Override
     public void onBackPressed() {
-        if(stepperLayout.getCurrentStepPosition() == 0) {
-            Intent intent = new Intent(this, Opskrift.class);
-            intent.putExtra("RecipeID", recipeID);
-            startActivity(intent);
-            finish();
-        } else {
-            stepperLayout.onBackClicked();
+        if(stepperLayout != null) {
+            if (stepperLayout.getCurrentStepPosition() == 0) {
+                Intent intent = new Intent(this, Opskrift.class);
+                intent.putExtra("RecipeID", recipeID);
+                startActivity(intent);
+                finish();
+            } else {
+                stepperLayout.onBackClicked();
+            }
         }
     }
 
