@@ -31,6 +31,7 @@ public class RecipeDTO {
     private List<RecipeInstructionDTO> recipeInstructionDTO;
     private List<String> imageList;
     private List<Uri> imageUriList;
+    private List<RecipeFeedbackDTO> feedbackList;
 
     public RecipeDTO(){}
 
@@ -173,6 +174,14 @@ public class RecipeDTO {
 
     public void setImageUriList(List<Uri> imageURIList) {
         this.imageUriList = imageURIList;
+    }
+
+    public List<RecipeFeedbackDTO> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<RecipeFeedbackDTO> feedbackList) {
+        this.feedbackList = feedbackList;
     }
 
     @Override

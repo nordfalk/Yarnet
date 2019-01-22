@@ -42,6 +42,7 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.activities.EditRecipe;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeImageSliderAdapter;
+import dk.michaelwestergaard.strikkehkleapp.fragments.fragment_recipe_feedback;
 
 
 public class Opskrift extends AppCompatActivity implements View.OnClickListener {
@@ -52,7 +53,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private RecipeDAO recipeDAO = new RecipeDAO();
     private String recipeID = "";
 
-    private UserDTO userBrowsing;
+    private UserDTO userBrowsing = MainSingleton.getInstance().getUser();
     private UserDTO createdByUser;
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
@@ -66,7 +67,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private CardView købContainer;
     private ImageView backBtn;
     private ImageView drawerBtn;
-
 
     private AlertDialog.Builder alertBuilder, alertBuilderDelete;
     private AlertDialog alertDialog, alertDialogDelete;
@@ -220,9 +220,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
 
-
-                userBrowsing = MainSingleton.getInstance().getUser();
-
                 if(userBrowsing.getFavouritedRecipes() != null){
                     if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                         favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
@@ -321,6 +318,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         RecipeViewPagerAdapter adapter = new RecipeViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new fragment_recipe_information().newInstance(recipe.getRecipeInformationDTO()), "Information");
         adapter.addFragment(new fragment_recipe_instruction().newInstance(recipeID,recipe.getRecipeInstructionDTO()), "Vejledning");
+        adapter.addFragment(new fragment_recipe_feedback().newInstance(recipe), "Feedback");
         viewPager.setAdapter(adapter);
     }
 
