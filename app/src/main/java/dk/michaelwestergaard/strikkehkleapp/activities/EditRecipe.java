@@ -125,29 +125,24 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     @Override
     public void onCompleted(View completeButton) {
 
-        RecipeDTO recipe = new RecipeDTO();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
         Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
         ((EditRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((EditRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((EditRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
         ((EditRecipeStepFour) fragments.get(3).getFragment()).getData(recipe);
 
-        recipe.setCreatedTimestamp(new Date());
-
-        recipe.setUserID(auth.getCurrentUser().getUid());
+        recipe.setUpdatedTimestamp(new Date());
 
         System.out.println(recipe);
 
         RecipeDAO recipeDAO = new RecipeDAO();
 
-        String recipeID = recipeDAO.insert(recipe);
+        boolean updated = false;
+        updated = recipeDAO.update(recipe);
 
-        if(!recipeID.isEmpty()) {
-
+        if(updated) {
             Intent intent = new Intent(this, Opskrift.class);
-            intent.putExtra("RecipeID", recipeID);
+            intent.putExtra("RecipeID", recipe.getRecipeID());
             startActivity(intent);
         }
 

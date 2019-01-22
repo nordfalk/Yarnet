@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_gravity="end"
         app:ms_backButtonText="Tilbage"
-        app:ms_completeButtonText="Opret Opskrift"
+        app:ms_completeButtonText="Gem Ændringer"
         app:ms_nextButtonText="Næste"
         app:ms_showBackButtonOnFirstStep="false"
         app:ms_stepperType="tabs"
