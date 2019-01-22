@@ -1,9 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
+import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
-public class EditPage extends AppCompatActivity {
+public class EditPage extends AppCompatActivity implements View.OnClickListener {
 
     EditText navn;
     EditText efternavn;
@@ -28,10 +28,15 @@ public class EditPage extends AppCompatActivity {
     ImageView backBtn;
     ImageView drawerBtn;
 
+    UserDTO user;
+    UserDAO userDAO = new UserDAO();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_page);
+
+        user = MainSingleton.getInstance().getUser();
 
         drawerBtn = findViewById(R.id.drawerBtn);
         backBtn = findViewById(R.id.backButton);
@@ -53,9 +58,12 @@ public class EditPage extends AppCompatActivity {
         gentagKode = findViewById(R.id.gentagKode);
         gemEdits = findViewById(R.id.gemEdits);
 
+        navn.setText(user.getFirst_name());
+        efternavn.setText(user.getLast_name());
+        mail.setText(user.getEmail());
 
-/*        gemEdits.setOnClickListener(this);
-        billedeKnap.setOnClickListener(this);*/
+        gemEdits.setOnClickListener(this);
+        billedeKnap.setOnClickListener(this);
 
 
         backBtn.setVisibility(View.VISIBLE);
@@ -67,10 +75,27 @@ public class EditPage extends AppCompatActivity {
                 finish();
                 break;
         }
-/*        if(view == gemEdits){
-            Toast.makeText(getApplicationContext(), "TEST1", Toast.LENGTH_LONG).show();
+
+        if(view == gemEdits){
+            if(!user.getEmail().equals(mail.getText().toString())){
+                FirebaseAuth.getInstance().getCurrentUser().updateEmail(mail.getText().toString());
+            }
+            user.setFirst_name(navn.getText().toString());
+            user.setLast_name(efternavn.getText().toString());
+            user.setEmail(mail.getText().toString());
+            if(kode.getText().equals("") && gentagKode.getText().equals("")){
+                if(kode.getText().equals(gentagKode.getText())){
+                    FirebaseAuth.getInstance().getCurrentUser().updatePassword(kode.getText().toString());
+                }
+            }
+            userDAO.update(user);
         } else if (view == billedeKnap) {
             Toast.makeText(getApplicationContext(), "TEST2", Toast.LENGTH_LONG).show();
-        }*/
+        }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
