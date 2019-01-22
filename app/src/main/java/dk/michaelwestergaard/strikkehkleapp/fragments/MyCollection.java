@@ -156,7 +156,7 @@ public class MyCollection extends Fragment {
         switch(sortStyle) {
             case "saved":
                 if(user != null) {
-                    List<String> savedRecipeIDs = null;//user.getSavedRecipes();
+                    List<String> savedRecipeIDs = user.getSavedRecipes();
 
                     if(savedRecipeIDs != null) {
 
