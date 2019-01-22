@@ -26,8 +26,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarFav"
         app:ms_backButtonText="Tilbage"
-        app:ms_completeButtonColor="@color/colorPrimary"
-        app:ms_completeButtonText="Gem Ændringer"
+        app:ms_completeButtonColor="@color/lyseblå"
+        app:ms_completeButtonText="Gem ændringer"
         app:ms_nextButtonText="Næste"
         app:ms_showBackButtonOnFirstStep="false"
         app:ms_stepperType="tabs" />

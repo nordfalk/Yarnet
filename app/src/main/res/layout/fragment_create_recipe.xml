@@ -19,6 +19,6 @@
         app:ms_stepperType="tabs"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
-        app:ms_completeButtonColor="@color/colorPrimary" />
+        app:ms_completeButtonColor="@color/lyseblå" />
 
 </android.support.constraint.ConstraintLayout>
