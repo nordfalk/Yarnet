@@ -59,7 +59,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    ImageView backgroundPicture, favoriteBtn, creatorImage;
+    ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage;
     CardView købContainer;
     ImageView backBtn;
     ImageView drawerBtn;
@@ -94,6 +94,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         backgroundPicture = findViewById(R.id.baggrundsBillede);
         favoriteBtn = findViewById(R.id.recipe_favorite_btn);
+        saveBtn = findViewById(R.id.recipe_save_btn);
         creatorImage = findViewById(R.id.creator_image);
 
         købContainer = findViewById(R.id.købContainer);
@@ -110,6 +111,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         difficulty = findViewById(R.id.recipe_difficulty);
 
         favoriteBtn.setOnClickListener(this);
+        saveBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
         backgroundPicture.setOnClickListener(this);
 
