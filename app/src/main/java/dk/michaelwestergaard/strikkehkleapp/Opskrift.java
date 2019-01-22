@@ -207,13 +207,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
 
-                if(recipe.getPrice() == 0){
-                    købContainer.setVisibility(View.GONE);
-                    priceTextView.setVisibility(View.GONE);
-                } else {
-                    priceTextView.setText("Pris: " + new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
-                    købContainer.setVisibility(View.VISIBLE);
-                }
 
                 userBrowsing = MainSingleton.getInstance().getUser();
               
@@ -227,6 +220,20 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
                         saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
                     }
+                }
+
+
+                if(recipe.getPrice() == 0){
+                    købContainer.setVisibility(View.GONE);
+                    priceTextView.setVisibility(View.GONE);
+                } else if(userBrowsing.getBoughtRecipes() != null){
+                    if(userBrowsing.getBoughtRecipes().contains(recipe.getRecipeID())) {
+                        købContainer.setVisibility(View.GONE);
+                        priceTextView.setVisibility(View.GONE);
+                    }
+                } else {
+                    priceTextView.setText("Pris: " + new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
+                    købContainer.setVisibility(View.VISIBLE);
                 }
                       
 
@@ -302,8 +309,25 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if(v==købKnap){
-            Intent koeb = new Intent(this, OpskriftKoeb.class);
-            startActivity(koeb);
+            if(userBrowsing.getBoughtRecipes() == null) {
+                List<String> boughtRecipes = new ArrayList<>();
+                boughtRecipes.add(recipe.getRecipeID());
+
+                userBrowsing.setBoughtRecipes(boughtRecipes);
+
+                købContainer.setVisibility(View.GONE);
+                priceTextView.setVisibility(View.GONE);
+            } else {
+                List<String> boughtRecipes = userBrowsing.getBoughtRecipes();
+                boughtRecipes.add(recipe.getRecipeID());
+
+                userBrowsing.setBoughtRecipes(boughtRecipes);
+
+                købContainer.setVisibility(View.GONE);
+                priceTextView.setVisibility(View.GONE);
+            }
+
+            userDAO.update(userBrowsing);
         } else if(v.equals(favoriteBtn)){
             if(userBrowsing.getFavouritedRecipes() == null){
                 List<String> favouritedRecipes = new ArrayList<String>();
