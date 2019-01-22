@@ -1,7 +1,9 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,19 +32,21 @@ import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
 public class Favourites extends AppCompatActivity {
 
-    ViewPager viewpager;
-    ImageView backBtn;
-    ImageView drawerBtn;
+    private ImageView backBtn;
+    private ImageView drawerBtn;
+    private RecyclerView recyclerView;
 
-    List<RecipeDTO> favouriteRecipes;
+    private FirebaseAuth auth= FirebaseAuth.getInstance();
+    private UserDAO userDAO = new UserDAO();
+    private UserDTO user;
 
     private RecipeDAO recipeDAO = new RecipeDAO();
-    private UserDAO userDAO = new UserDAO();
-
+    private List<RecipeDTO> recipes = new ArrayList<>();
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_favourites);
+            final Context myContext = this;
 
             drawerBtn = findViewById(R.id.drawerBtn);
             backBtn = findViewById(R.id.backButton);
@@ -56,41 +60,32 @@ public class Favourites extends AppCompatActivity {
             backBtn.setVisibility(View.VISIBLE);
             drawerBtn.setVisibility(View.GONE);
 
-            ViewPager viewPager = findViewById(R.id.favouritesViewPager);
+            recyclerView = findViewById(R.id.recyclerViewGrid);
 
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(new FavouritesListFragment(), "FavouriteList");
-            viewPager.setAdapter(adapter);
-
-            final List<RecipeDTO> recipes = new ArrayList<RecipeDTO>();
-
-            recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
+            userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    recipes.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        recipes.add(snapshot.getValue(RecipeDTO.class));
-                    }
+                    user = dataSnapshot.getValue(UserDTO.class);
 
-                    final FirebaseAuth auth = FirebaseAuth.getInstance();
-                    final List<UserDTO> users = new ArrayList<>();
-
-                    userDAO.getReference().addValueEventListener(new ValueEventListener() {
+                    recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            users.clear();
+                            recipes.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                users.add(snapshot.getValue(UserDTO.class));
-                            }
+                                RecipeDTO recipe = snapshot.getValue(RecipeDTO.class);
 
-                            UserDTO actualUser = new UserDTO();
-                            for (UserDTO user : users) {
-                                if (user.getUserID().equals(auth.getCurrentUser().getUid())) {
-                                    actualUser = user;
+                                for(String recipeID : user.getFavouritedRecipes()) {
+                                    if(recipe.getRecipeID().equals(recipeID)) {
+                                        recipes.add(recipe);
+                                    }
                                 }
                             }
 
-                            favouriteRecipes = sortRecipes("favourited", recipes, actualUser);
+                            RecipeAdapter adapter = new RecipeAdapter(recipes);
+                            recyclerView.setAdapter(adapter);
+
+                            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(myContext, 3);
+                            recyclerView.setLayoutManager(layoutManager);
                         }
 
                         @Override
@@ -102,10 +97,11 @@ public class Favourites extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
             });
         }
-
+/*
         public static class FavouritesSingleton {
             private List<RecipeDTO> recipes;
             private static FavouritesSingleton instance = null;
@@ -172,4 +168,5 @@ public class Favourites extends AppCompatActivity {
             return view;
         }
     }
+*/
 }
