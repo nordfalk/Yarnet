@@ -17,6 +17,8 @@ public class UserDTO {
     // Måske også role
     int status;
 
+    private DataChangeListener listener;
+
     public UserDTO(){}
 
     public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status, String difficulty) {
@@ -55,6 +57,8 @@ public class UserDTO {
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
+        if(listener != null)
+            listener.onDataChange();
     }
 
     public String getLast_name() {
@@ -71,6 +75,9 @@ public class UserDTO {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+
+        if(listener != null)
+            listener.onDataChange();
     }
 
     public String getType() {
@@ -116,6 +123,14 @@ public class UserDTO {
     public String getDifficulty() { return difficulty; }
 
     public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
+    public void setListener(DataChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public interface DataChangeListener {
+        void onDataChange();
+    }
 
     @Override
     public String toString() {
