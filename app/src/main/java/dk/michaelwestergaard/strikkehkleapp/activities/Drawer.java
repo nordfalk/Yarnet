@@ -36,11 +36,6 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
         ImageButton backBtn;
         TextView editProfileBtn2;
 
-        List<RecipeDTO> favouriteRecipes;
-
-        private RecipeDAO recipeDAO = new RecipeDAO();
-        private UserDAO userDAO = new UserDAO();
-
         @Override
         protected void onCreate (Bundle savedInstanceState) {
             setContentView(R.layout.drawer);

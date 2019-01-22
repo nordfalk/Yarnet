@@ -224,6 +224,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                             }
                         }
+
+                        if(userBrowsing.getSavedRecipes() != null){
+                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                                saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+                            }
+                        }
                     }
 
                     @Override
@@ -325,6 +331,23 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
                     recipe.increaseFavouritedAmount();
                     userBrowsing.getFavouritedRecipes().add(recipe.getRecipeID());
+                }
+            }
+            recipeDAO.update(recipe);
+            userDAO.update(userBrowsing);
+        } else if(v.equals(saveBtn)){
+            if(userBrowsing.getSavedRecipes() == null){
+                List<String> savedRecipes = new ArrayList<>();
+                savedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setSavedRecipes(savedRecipes);
+                saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+            } else {
+                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_white));
+                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                } else {
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+                    userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }
             }
             recipeDAO.update(recipe);
