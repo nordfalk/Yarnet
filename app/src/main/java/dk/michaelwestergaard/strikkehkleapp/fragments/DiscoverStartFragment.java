@@ -81,7 +81,7 @@ public class DiscoverStartFragment extends Fragment {
         Collections.sort(recipes, new Comparator<RecipeDTO>() {
             @Override
             public int compare(RecipeDTO recipe1, RecipeDTO recipe2) {
-                return recipe2.getSavedAmount() - recipe1.getSavedAmount();
+                return recipe2.getFavouritedAmount() - recipe1.getFavouritedAmount();
 
             }
         });

@@ -308,7 +308,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
             if(userBrowsing.getFavouritedRecipes() == null){
-                List<String> FavouritedRecipes = new ArrayList<String>();
+                List<String> favouritedRecipes = new ArrayList<String>();
                 favouritedRecipes.add(recipe.getRecipeID());
                 userBrowsing.setFavouritedRecipes(favouritedRecipes);
                 favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
