@@ -87,30 +87,34 @@ public class EditRecipeStepTwo extends Fragment implements Step, View.OnClickLis
         EditText inputField;
         Button removeBtn;
 
-        for(String material : recipeMaterials) {
-            listElement = inflater.inflate(R.layout.recipe_new_field, null);
+        if(recipeMaterials != null) {
+            for (String material : recipeMaterials) {
+                listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
-            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
-            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+                inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+                removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
 
-            inputField.setHint("Nyt Materiale");
-            inputField.setText(material);
-            removeBtn.setOnClickListener(this);
+                inputField.setHint("Nyt Materiale");
+                inputField.setText(material);
+                removeBtn.setOnClickListener(this);
 
-            materialLinearLayout.addView(listElement, materialLinearLayout.getChildCount());
+                materialLinearLayout.addView(listElement, materialLinearLayout.getChildCount());
+            }
         }
 
-        for(String tool : recipeTools) {
-            listElement = inflater.inflate(R.layout.recipe_new_field, null);
+        if(recipeTools != null) {
+            for (String tool : recipeTools) {
+                listElement = inflater.inflate(R.layout.recipe_new_field, null);
 
-            inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
-            removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
+                inputField = listElement.findViewById(R.id.create_recipe_instruction_title);
+                removeBtn = listElement.findViewById(R.id.create_recipe_instruction_remove_btn);
 
-            inputField.setHint("Nyt Redskab");
-            inputField.setText(tool);
-            removeBtn.setOnClickListener(this);
+                inputField.setHint("Nyt Redskab");
+                inputField.setText(tool);
+                removeBtn.setOnClickListener(this);
 
-            toolLinearLayout.addView(listElement, toolLinearLayout.getChildCount());
+                toolLinearLayout.addView(listElement, toolLinearLayout.getChildCount());
+            }
         }
 
         return view;
