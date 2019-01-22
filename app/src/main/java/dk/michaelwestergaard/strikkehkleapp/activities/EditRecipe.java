@@ -36,7 +36,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepOne;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepThree;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepTwo;
 
-public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep, View.OnClickListener {
+public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep {
 
     private ImageView backBtn;
     private ImageView drawerBtn;
@@ -59,7 +59,12 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
         drawerBtn = findViewById(R.id.drawerBtn);
         backBtn = findViewById(R.id.backButton);
-        backBtn.setOnClickListener(this);
+        backBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        }));
 
         backBtn.setVisibility(View.VISIBLE);
         drawerBtn.setVisibility(View.GONE);
@@ -222,11 +227,6 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
         callback.goToPrevStep();
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     public interface OnFragmentInteractionListener {
