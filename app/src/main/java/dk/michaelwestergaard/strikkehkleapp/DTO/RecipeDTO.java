@@ -25,7 +25,7 @@ public class RecipeDTO {
     private RecipeDifficulty recipeDifficulty;
     private Date createdTimestamp;
     private Date updatedTimestamp;
-    private int savedAmount;
+    private int favouritedAmount;
 
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
@@ -48,7 +48,7 @@ public class RecipeDTO {
         this.recipeInformationDTO = recipeInformationDTO;
         this.recipeInstructionDTO = recipeInstructionDTO;
         this.imageList = imageList;
-        savedAmount = 0;
+        favouritedAmount = 0;
     }
 
     public String getRecipeID() {
@@ -155,16 +155,16 @@ public class RecipeDTO {
         this.imageList = imageList;
     }
 
-    public int getSavedAmount() {
-        return savedAmount;
+    public int getFavouritedAmount() {
+        return favouritedAmount;
     }
 
-    public void increaseSavedAmount() {
-        this.savedAmount++;
+    public void increaseFavouritedAmount() {
+        this.favouritedAmount++;
     }
 
-    public void decreaseSavedAmount() {
-        this.savedAmount--;
+    public void decreaseFavouritedAmount() {
+        this.favouritedAmount--;
     }
 
     public List<Uri> getImageUriList() {
@@ -188,7 +188,7 @@ public class RecipeDTO {
                 ", recipeDifficulty=" + recipeDifficulty +
                 ", createdTimestamp=" + createdTimestamp +
                 ", updatedTimestamp=" + updatedTimestamp +
-                ", savedAmount=" + savedAmount +
+                ", favouritedAmount=" + favouritedAmount +
                 ", recipeInformationDTO=" + recipeInformationDTO +
                 ", recipeInstructionDTO=" + recipeInstructionDTO +
                 ", imageList=" + imageList +
