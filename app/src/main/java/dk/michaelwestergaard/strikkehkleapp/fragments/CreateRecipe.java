@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -20,6 +27,7 @@ import com.stepstone.stepper.VerificationError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
@@ -91,8 +99,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
     @Override
     public void onCompleted(View completeButton) {
 
-        RecipeDTO recipe = new RecipeDTO();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final RecipeDTO recipe = new RecipeDTO();
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
 
         Toast.makeText(getActivity(), "onCompleted!", Toast.LENGTH_SHORT).show();
         ((CreateRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
@@ -100,23 +108,61 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         ((CreateRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
         ((createRecipeStepFour) fragments.get(3).getFragment()).getData(recipe);
 
-        recipe.setCreatedTimestamp(new Date());
+        final List<String> images = new ArrayList<String>();
 
-        recipe.setUserID(auth.getCurrentUser().getUid());
+        final List<String> recipeImageURIs = recipe.getImageList();
 
-        System.out.println(recipe);
+        final int[] count = {0};
 
-        RecipeDAO recipeDAO = new RecipeDAO();
+        System.out.println("Random tekst");
+        System.out.println(recipeImageURIs);
 
-        String recipeID = recipeDAO.insert(recipe);
 
-        if(!recipeID.isEmpty()) {
+        final List<Uri> recipeUriList = recipe.getImageUriList();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-            Intent intent = new Intent(getContext(), Opskrift.class);
-            intent.putExtra("RecipeID", recipeID);
-            getContext().startActivity(intent);
+        for(Uri uriImage : recipeUriList){
+            UUID picRandomID = UUID.randomUUID();
+            System.out.println("billede : " + picRandomID);
+            final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
+            ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                    System.out.println("upload done ");
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            images.add(uri.toString());
+                            System.out.println("Count " + count[0]);
+                            count[0]++;
+                            if(count[0] == recipeUriList.size()){
+                                System.out.println("Download done");
+                                System.out.println(images);
+                                recipe.setImageList(images);
+
+                                recipe.setCreatedTimestamp(new Date());
+
+                                recipe.setUserID(auth.getCurrentUser().getUid());
+                                recipe.setImageUriList(null);
+
+                                System.out.println(recipe);
+
+                                RecipeDAO recipeDAO = new RecipeDAO();
+
+                                String recipeID = recipeDAO.insert(recipe);
+                                System.out.println("should be inserted now " + recipeID);
+                                if(!recipeID.isEmpty()) {
+                                    Intent intent = new Intent(getContext(), Opskrift.class);
+                                    intent.putExtra("RecipeID", recipeID);
+                                    getContext().startActivity(intent);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }
-
     }
 
     @Nullable
