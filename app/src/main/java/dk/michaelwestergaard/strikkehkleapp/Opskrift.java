@@ -59,7 +59,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    ImageView backgroundPicture, favoriteBtn, creatorImage;
+    ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage;
     CardView købContainer;
     ImageView backBtn;
     ImageView drawerBtn;
@@ -94,6 +94,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         backgroundPicture = findViewById(R.id.baggrundsBillede);
         favoriteBtn = findViewById(R.id.recipe_favorite_btn);
+        saveBtn = findViewById(R.id.recipe_save_btn);
         creatorImage = findViewById(R.id.creator_image);
 
         købContainer = findViewById(R.id.købContainer);
@@ -110,6 +111,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         difficulty = findViewById(R.id.recipe_difficulty);
 
         favoriteBtn.setOnClickListener(this);
+        saveBtn.setOnClickListener(this);
         købKnap.setOnClickListener(this);
         backgroundPicture.setOnClickListener(this);
 
@@ -214,13 +216,21 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 userBrowsing = MainSingleton.getInstance().getUser();
-                if(userBrowsing.getSavedRecipes() != null){
-                    if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+              
+                if(userBrowsing.getFavouritedRecipes() != null){
+                    if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                         favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                     }
                 }
 
-                favoriteCount.setText(String.valueOf(recipe.getSavedAmount()));
+                if(userBrowsing.getSavedRecipes() != null){
+                    if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                        saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+                    }
+                }
+                      
+
+                favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
 
                 String[] difficulties = getResources().getStringArray(R.array.NewRecipeDifficulty);
 
@@ -295,27 +305,45 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent koeb = new Intent(this, OpskriftKoeb.class);
             startActivity(koeb);
         } else if(v.equals(favoriteBtn)){
-            if(userBrowsing.getSavedRecipes() == null){
-                List<String> savedRecipes = new ArrayList<String>();
-                savedRecipes.add(recipe.getRecipeID());
-                userBrowsing.setSavedRecipes(savedRecipes);
-                favoriteCount.setText((recipe.getSavedAmount()+1)+"");
-                recipe.increaseSavedAmount();
+            if(userBrowsing.getFavouritedRecipes() == null){
+                List<String> favouritedRecipes = new ArrayList<String>();
+                favouritedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setFavouritedRecipes(favouritedRecipes);
+                favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                recipe.increaseFavouritedAmount();
                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
             } else {
-                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
-                    favoriteCount.setText((recipe.getSavedAmount()-1)+"");
-                    recipe.decreaseSavedAmount();
-                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                    favoriteCount.setText((recipe.getFavouritedAmount()-1)+"");
+                    recipe.decreaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().remove(recipe.getRecipeID());
                 } else {
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                    favoriteCount.setText((recipe.getSavedAmount()+1)+"");
-                    recipe.increaseSavedAmount();
+                    favoriteCount.setText((recipe.getFavouritedAmount()+1)+"");
+                    recipe.increaseFavouritedAmount();
+                    userBrowsing.getFavouritedRecipes().add(recipe.getRecipeID());
+                }
+            }
+
+            recipeDAO.update(recipe);
+            userDAO.update(userBrowsing);
+        } else if(v.equals(saveBtn)){
+            if(userBrowsing.getSavedRecipes() == null){
+                List<String> savedRecipes = new ArrayList<>();
+                savedRecipes.add(recipe.getRecipeID());
+                userBrowsing.setSavedRecipes(savedRecipes);
+                saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
+            } else {
+                if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_white));
+                    userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
+                } else {
+                    saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
                     userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }
             }
-            recipeDAO.update(recipe);
+
             userDAO.update(userBrowsing);
         } else if (v.equals(backgroundPicture)) {
             System.out.println(imageUrls);

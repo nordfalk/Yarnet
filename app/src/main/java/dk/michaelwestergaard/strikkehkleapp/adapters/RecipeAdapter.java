@@ -89,7 +89,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public void bindView(int position){
             recipe = recipes.get(position);
             titleView.setText(recipe.getTitle());
-            favouriteCount1.setText(String.valueOf(recipe.getSavedAmount()));
+            favouriteCount1.setText(String.valueOf(recipe.getFavouritedAmount()));
             if(recipe.getPrice() == 0){
                 listPrice.setText("Gratis");
             } else {

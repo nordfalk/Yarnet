@@ -10,6 +10,7 @@ public class UserDTO {
     private String last_name;
     private String avatar;
     private String type;
+    private List<String> favouritedRecipes;
     private List<String> savedRecipes;
     private List<String> boughtRecipes;
     private String difficulty;
@@ -26,6 +27,7 @@ public class UserDTO {
         this.avatar = avatar;
         this.type = type;
         this.status = status;
+        favouritedRecipes = null;
         savedRecipes = null;
         boughtRecipes = null;
         this.difficulty = difficulty;
@@ -87,6 +89,14 @@ public class UserDTO {
         this.status = status;
     }
 
+    public List<String> getFavouritedRecipes() {
+        return favouritedRecipes;
+    }
+
+    public void setFavouritedRecipes(List<String> favouritedRecipes) {
+        this.favouritedRecipes = favouritedRecipes;
+    }
+
     public List<String> getSavedRecipes() {
         return savedRecipes;
     }
@@ -117,6 +127,7 @@ public class UserDTO {
                 ", avatar='" + avatar + '\'' +
                 ", type='" + type + '\'' +
                 ", status=" + status +
+                ", favouritedRecipes=" + favouritedRecipes +
                 ", savedRecipes=" + savedRecipes +
                 ", boughtRecipes=" + boughtRecipes +
                 ", difficulty=" + difficulty+
