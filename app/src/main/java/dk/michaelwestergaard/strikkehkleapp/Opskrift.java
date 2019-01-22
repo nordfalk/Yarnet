@@ -215,28 +215,20 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     købContainer.setVisibility(View.VISIBLE);
                 }
 
-                userDAO.getReference().child(auth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        userBrowsing = dataSnapshot.getValue(UserDTO.class);
-                        if(userBrowsing.getFavouritedRecipes() != null){
-                            if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
-                                favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
-                            }
-                        }
-
-                        if(userBrowsing.getSavedRecipes() != null){
-                            if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
-                                saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
-                            }
-                        }
+                userBrowsing = MainSingleton.getInstance().getUser();
+              
+                if(userBrowsing.getFavouritedRecipes() != null){
+                    if(userBrowsing.getFavouritedRecipes().contains(recipe.getRecipeID())){
+                        favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                if(userBrowsing.getSavedRecipes() != null){
+                    if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
+                        saveBtn.setImageDrawable(getDrawable(R.drawable.save_color));
                     }
-                });
+                }
+                      
 
                 favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
 

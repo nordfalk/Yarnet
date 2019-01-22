@@ -13,12 +13,13 @@ public class UserDTO {
     private List<String> favouritedRecipes;
     private List<String> savedRecipes;
     private List<String> boughtRecipes;
+    private String difficulty;
     // Måske også role
     int status;
 
     public UserDTO(){}
 
-    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status) {
+    public UserDTO(String userID, String email, String first_name, String last_name, String avatar, String type, int status, String difficulty) {
         this.userID = userID;
         this.email = email;
         this.first_name = first_name;
@@ -29,6 +30,7 @@ public class UserDTO {
         favouritedRecipes = null;
         savedRecipes = null;
         boughtRecipes = null;
+        this.difficulty = difficulty;
     }
 
     public String getUserID() {
@@ -111,6 +113,10 @@ public class UserDTO {
         this.boughtRecipes = boughtRecipes;
     }
 
+    public String getDifficulty() { return difficulty; }
+
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -124,6 +130,7 @@ public class UserDTO {
                 ", favouritedRecipes=" + favouritedRecipes +
                 ", savedRecipes=" + savedRecipes +
                 ", boughtRecipes=" + boughtRecipes +
+                ", difficulty=" + difficulty+
                 '}';
     }
 }
