@@ -123,32 +123,44 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 title.setText(recipe.getTitle());
 
                 if(recipe.getImageList() != null){
-                    String firstImage = recipe.getImageList().get(0);
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
-                        }
-                    });
-                }
-
-                if(recipe.getImageList() != null) {
                     imageUrls.clear();
-                    for (String recipeImage : recipe.getImageList()) {
-                        System.out.println("Billede: " + recipeImage);
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                    String firstImage = recipe.getImageList().get(0);
+                    if(!firstImage.contains("https")){
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + firstImage);
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                imageUrls.add(uri.toString());
-                                imageSliderViewPager.getAdapter().notifyDataSetChanged();
+                                Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                             }
                         });
+                    } else {
+                        Glide.with(Opskrift.this).load(firstImage).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                     }
+
+                    int count = 0;
+                    for (String recipeImage : recipe.getImageList()) {
+                        count++;
+                        if(recipeImage.contains("https:")){
+                            imageUrls.add(recipeImage);
+                            if(count == recipe.getImageList().size())
+                                createImageSlider(imageUrls);
+                        } else {
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("recipeImages/" + recipeImage);
+                            final int finalCount = count;
+                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    imageUrls.add(uri.toString());
+                                    if(finalCount == recipe.getImageList().size())
+                                        createImageSlider(imageUrls);
+                                }
+                            });
+                        }
+                    }
+
+
                 }
 
-                createImageSlider(imageUrls);
 
                 if(recipe.getRecipeInstructionDTO() != null)
                     stepsCount.setText(recipe.getRecipeInstructionDTO().size() + " trin");
@@ -172,7 +184,6 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                         creator.setText(createdByUser.getFirst_name() + " " + createdByUser.getLast_name());
                         if(createdByUser.getAvatar() != null){
                             String avatar = createdByUser.getAvatar();
-                            System.out.println(avatar);
                             if(avatar.contains("http") || avatar.contains("https")){
                                 Glide.with(Opskrift.this).load(avatar).into(creatorImage);
                             } else {

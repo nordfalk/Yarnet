@@ -52,6 +52,11 @@ public class CreateRecipeStepTwo extends Fragment implements Step, View.OnClickL
         return recipeDTO;
     }
 
+    public void clearData(){
+        materialLinearLayout.removeAllViews();
+        toolLinearLayout.removeAllViews();
+    }
+
     public static CreateRecipeStepTwo newInstance(String param1, String param2) {
         CreateRecipeStepTwo fragment = new CreateRecipeStepTwo();
         return fragment;

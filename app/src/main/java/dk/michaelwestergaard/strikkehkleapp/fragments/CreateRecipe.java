@@ -1,10 +1,12 @@
 package dk.michaelwestergaard.strikkehkleapp.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -20,6 +28,7 @@ import com.stepstone.stepper.VerificationError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
@@ -33,6 +42,8 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
     private StepperLayout stepperLayout;
 
     List<CreateRecipeAdapterStepperInfo> fragments;
+    AlertDialog.Builder builder;
+    AlertDialog progressDialog;
 
     public CreateRecipe() {
 
@@ -60,7 +71,12 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
         stepperLayout.setListener(this);
         stepperLayout.setNextButtonVerificationFailed(true);
         stepperLayout.setCompleteButtonVerificationFailed(true);
+        stepperLayout.setOffscreenPageLimit(5);
 
+        builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
+        builder.setView(R.layout.loading_dialog);
+        progressDialog = builder.create();
 
         return view;
     }
@@ -90,34 +106,73 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
 
     @Override
     public void onCompleted(View completeButton) {
+        progressDialog.show();
 
-        RecipeDTO recipe = new RecipeDTO();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final RecipeDTO recipe = new RecipeDTO();
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        Toast.makeText(getActivity(), "onCompleted!", Toast.LENGTH_SHORT).show();
         ((CreateRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((CreateRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((CreateRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
         ((createRecipeStepFour) fragments.get(3).getFragment()).getData(recipe);
 
-        recipe.setCreatedTimestamp(new Date());
+        final List<String> images = new ArrayList<String>();
 
-        recipe.setUserID(auth.getCurrentUser().getUid());
+        final int[] count = {0};
 
-        System.out.println(recipe);
+        final List<Uri> recipeUriList = recipe.getImageUriList();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-        RecipeDAO recipeDAO = new RecipeDAO();
+        for(Uri uriImage : recipeUriList){
+            UUID picRandomID = UUID.randomUUID();
+            final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
+            ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-        String recipeID = recipeDAO.insert(recipe);
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            images.add(uri.toString());
+                            count[0]++;
+                            if(count[0] == recipeUriList.size()){
+                                System.out.println(images);
+                                recipe.setImageList(images);
 
-        if(!recipeID.isEmpty()) {
+                                recipe.setCreatedTimestamp(new Date());
 
-            Intent intent = new Intent(getContext(), Opskrift.class);
-            intent.putExtra("RecipeID", recipeID);
-            getContext().startActivity(intent);
+                                recipe.setUserID(auth.getCurrentUser().getUid());
+                                recipe.setImageUriList(null);
+
+                                System.out.println(recipe);
+
+                                RecipeDAO recipeDAO = new RecipeDAO();
+
+                                String recipeID = recipeDAO.insert(recipe);
+                                if(!recipeID.isEmpty()) {
+
+                                    ((CreateRecipeStepOne) fragments.get(0).getFragment()).clearData();
+                                    ((CreateRecipeStepTwo) fragments.get(1).getFragment()).clearData();
+                                    ((CreateRecipeStepThree) fragments.get(2).getFragment()).clearData();
+                                    ((createRecipeStepFour) fragments.get(3).getFragment()).clearData();
+                                    stepperLayout.setCurrentStepPosition(0);
+
+                                    //TODO: Success dialog
+                                    Intent intent = new Intent(getContext(), Opskrift.class);
+                                    intent.putExtra("RecipeID", recipeID);
+                                    getContext().startActivity(intent);
+                                    progressDialog.dismiss();
+
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }
-
     }
+
+
 
     @Nullable
     @Override

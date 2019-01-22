@@ -111,6 +111,17 @@ public class CreateRecipeStepOne extends Fragment implements Step, RadioGroup.On
         return recipeDTO;
     }
 
+    public void clearData(){
+        title.setText("");
+        description.setText("");
+        price.setText("");
+        radioGroup.check(R.id.create_recipe_radio_free);
+        type.setSelection(0);
+        category.setSelection(0);
+        subcategory.setSelection(0);
+        difficulty.setSelection(0);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

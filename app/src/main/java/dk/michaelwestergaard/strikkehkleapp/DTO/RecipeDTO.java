@@ -1,5 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp.DTO;
 
+import android.net.Uri;
+
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class RecipeDTO {
     private RecipeInformationDTO recipeInformationDTO;
     private List<RecipeInstructionDTO> recipeInstructionDTO;
     private List<String> imageList;
+    private List<Uri> imageUriList;
 
     public RecipeDTO(){}
 
@@ -162,6 +165,14 @@ public class RecipeDTO {
 
     public void decreaseSavedAmount() {
         this.savedAmount--;
+    }
+
+    public List<Uri> getImageUriList() {
+        return imageUriList;
+    }
+
+    public void setImageUriList(List<Uri> imageURIList) {
+        this.imageUriList = imageURIList;
     }
 
     @Override

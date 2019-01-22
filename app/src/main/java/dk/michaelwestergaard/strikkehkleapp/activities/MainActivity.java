@@ -53,7 +53,7 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         drawerBtn.setOnClickListener(this);
 
         viewPager = findViewById(R.id.mainViewPager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(10);
         viewPager.setVisibility(View.VISIBLE);
         bottomNavigationView = findViewById(R.id.bottom_menu);
         bottomNavigationView.setItemIconTintList(null);
