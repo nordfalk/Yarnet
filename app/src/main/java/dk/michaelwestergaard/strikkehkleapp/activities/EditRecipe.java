@@ -168,7 +168,6 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     public void onCompleted(View completeButton) {
         progressDialog.show();
 
-        Toast.makeText(this, "Ændringer gemt!", Toast.LENGTH_SHORT).show();
         ((EditRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((EditRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((EditRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
@@ -183,50 +182,74 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
         }
 
         final int[] count = {0};
+        final List<Uri> recipeUriList;
 
-        final List<Uri> recipeUriList = recipe.getImageUriList();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        if(recipe.getImageUriList().size() != 0) {
+            recipeUriList = recipe.getImageUriList();
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-        for(Uri uriImage : recipeUriList){
-            UUID picRandomID = UUID.randomUUID();
-            final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
-            ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+            for(Uri uriImage : recipeUriList){
+                UUID picRandomID = UUID.randomUUID();
+                final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
+                ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            images.add(uri.toString());
-                            count[0]++;
-                            if(count[0] == recipeUriList.size()){
-                                System.out.println(images);
-                                recipe.setImageList(images);
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                images.add(uri.toString());
+                                count[0]++;
+                                if(count[0] == recipeUriList.size()){
+                                    System.out.println(images);
+                                    recipe.setImageList(images);
 
-                                recipe.setUpdatedTimestamp(new Date());
+                                    recipe.setUpdatedTimestamp(new Date());
 
-                                recipe.setImageUriList(null);
+                                    recipe.setImageUriList(null);
 
-                                System.out.println(recipe);
+                                    System.out.println(recipe);
 
-                                RecipeDAO recipeDAO = new RecipeDAO();
+                                    RecipeDAO recipeDAO = new RecipeDAO();
 
-                                boolean updated = false;
-                                updated = recipeDAO.update(recipe);
+                                    boolean updated = false;
+                                    updated = recipeDAO.update(recipe);
 
-                                if(updated) {
-                                    Intent intent = new Intent(getApplicationContext(), Opskrift.class);
-                                    intent.putExtra("RecipeID", recipe.getRecipeID());
-                                    startActivity(intent);
-                                    progressDialog.dismiss();
+                                    if(updated) {
+                                        Intent intent = new Intent(getApplicationContext(), Opskrift.class);
+                                        intent.putExtra("RecipeID", recipe.getRecipeID());
+                                        startActivity(intent);
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Ændringer gemt!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
-                        }
-                    });
-                }
-            });
-        }
+                        });
+                    }
+                });
+            }
+        } else {
+            System.out.println(images);
+            recipe.setImageList(images);
+            recipe.setImageUriList(null);
 
+            recipe.setUpdatedTimestamp(new Date());
+
+            System.out.println(recipe);
+            RecipeDAO recipeDAO = new RecipeDAO();
+
+            boolean updated = false;
+            updated = recipeDAO.update(recipe);
+
+            if(updated) {
+                Intent intent = new Intent(getApplicationContext(), Opskrift.class);
+                intent.putExtra("RecipeID", recipe.getRecipeID());
+                startActivity(intent);
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Ændringer gemt!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        finish();
     }
 
     @Nullable
