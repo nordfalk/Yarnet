@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -23,6 +25,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.UserDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
@@ -44,6 +47,16 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
     UserDTO user;
     UserDAO userDAO = new UserDAO();
     Uri newImage;
+
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    "(?=.*[0-9])" +
+                    "(?=.*[a-z])" +
+                    "(?=.*[A-Z])" +
+                    "(?=.*[a-zA-Z])" +
+                    "(?=\\S+$)" +
+                    ".{8,16}" +
+                    "$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +99,30 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
 
         backBtn.setVisibility(View.VISIBLE);
     }
+
+    private boolean mailReq() {
+        String emailInput = mail.getText().toString().trim();
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            mail.setError("E-mailadressen er ugyldig");
+            return false;
+        } else {
+            mail.setError(null);
+            return true;
+        }
+    }
+    private boolean passReq() {
+        String passInput = kode.getText().toString().trim();
+
+        if (!PASSWORD_PATTERN.matcher(passInput).matches()) {
+            kode.setError("Adgangskode lever ikke op til kravene. Prøv igen");
+            return false;
+        } else {
+            kode.setError(null);
+            return true;
+        }
+    }
+
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -95,18 +132,22 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
         }
 
         if(view == gemEdits){
+
             if(!user.getEmail().equals(mail.getText().toString())){
-                FirebaseAuth.getInstance().getCurrentUser().updateEmail(mail.getText().toString());
+                if(mailReq())
+                    FirebaseAuth.getInstance().getCurrentUser().updateEmail(mail.getText().toString());
             }
             user.setFirst_name(navn.getText().toString());
             user.setLast_name(efternavn.getText().toString());
             user.setEmail(mail.getText().toString());
             if(kode.getText().equals("") && gentagKode.getText().equals("")){
                 if(kode.getText().equals(gentagKode.getText())){
-                    FirebaseAuth.getInstance().getCurrentUser().updatePassword(kode.getText().toString());
+                    if(passReq())
+                        FirebaseAuth.getInstance().getCurrentUser().updatePassword(kode.getText().toString());
                 }
             }
             userDAO.update(user);
+            Toast.makeText(this,"Ændringerne blev gemt", Toast.LENGTH_LONG).show();
         } else if (view == billedeKnap) {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
