@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,7 +209,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     købContainer.setVisibility(View.GONE);
                     priceTextView.setVisibility(View.GONE);
                 } else {
-                    priceTextView.setText("Pris: " + recipe.getPrice() + " DKK");
+                    priceTextView.setText("Pris: " + new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
                     købContainer.setVisibility(View.VISIBLE);
                 }
 
@@ -308,15 +309,18 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 List<String> savedRecipes = new ArrayList<String>();
                 savedRecipes.add(recipe.getRecipeID());
                 userBrowsing.setSavedRecipes(savedRecipes);
+                favoriteCount.setText((recipe.getSavedAmount()+1)+"");
                 recipe.increaseSavedAmount();
                 favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
             } else {
                 if(userBrowsing.getSavedRecipes().contains(recipe.getRecipeID())){
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite_border));
+                    favoriteCount.setText((recipe.getSavedAmount()-1)+"");
                     recipe.decreaseSavedAmount();
                     userBrowsing.getSavedRecipes().remove(recipe.getRecipeID());
                 } else {
                     favoriteBtn.setImageDrawable(getDrawable(R.drawable.ic_baseline_favorite));
+                    favoriteCount.setText((recipe.getSavedAmount()+1)+"");
                     recipe.increaseSavedAmount();
                     userBrowsing.getSavedRecipes().add(recipe.getRecipeID());
                 }

@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
@@ -92,7 +93,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             if(recipe.getPrice() == 0){
                 listPrice.setText("Gratis");
             } else {
-                listPrice.setText(recipe.getPrice() + "DKK");
+                listPrice.setText(new DecimalFormat("0.#").format(recipe.getPrice()) + " kr");
             }
 
             if(recipe.getImageList() != null){
