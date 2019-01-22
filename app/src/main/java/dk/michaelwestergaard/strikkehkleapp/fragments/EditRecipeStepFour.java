@@ -3,6 +3,7 @@ package dk.michaelwestergaard.strikkehkleapp.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.stepstone.stepper.Step;
@@ -22,13 +25,14 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 import static android.app.Activity.RESULT_OK;
 
-public class createRecipeStepFour extends Fragment implements Step, View.OnClickListener {
+public class EditRecipeStepFour extends Fragment implements Step, View.OnClickListener {
 
     private static final int RESULT_LOAD_IMAGE = 4;
     LayoutInflater inflater;
@@ -38,13 +42,23 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
     Button removeBtn, addPic;
     View viewLoadPic, imageListView;
     List<Uri> imageList = new ArrayList<Uri>();
+    List<String> imageURLs = new ArrayList<>();
     private StorageReference storageReference;
     private FirebaseStorage storage;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle arguments = this.getArguments();
+            imageURLs = arguments.getStringArrayList("imageURLs");
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_recipe_step_four, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_recipe_step_four, container, false);
 
         addPic          = view.findViewById(R.id.addPic);
         picContainer    = view.findViewById(R.id.picContainer);
@@ -60,6 +74,39 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        for(String imageURL : imageURLs) {
+            View viewOnClick;
+            Button delete2;
+
+            if (picContainer.getChildCount() < 4) {
+
+                viewOnClick = inflater.inflate(R.layout.recipe_add_pic, null);
+
+                viewLoadPic = viewOnClick;
+
+                ImageView picture1 = viewLoadPic.findViewById(R.id.pic4);
+
+                Glide.with(getActivity()).load(imageURL).apply(new RequestOptions().fitCenter()).into(picture1);
+
+                picContainer.addView(viewLoadPic, picContainer.getChildCount());
+
+                //TODO: Skal have fixet nedenstående udkommenteret kode, så URI bliver gemt, og getData fungere ordentligt
+/*
+                uri = result.getUri();
+                picture1.setImageURI(uri);
+                imageList.add(uri);
+*/
+                delete2 = viewOnClick.findViewById(R.id.create_recipe_instruction_delete_btn);
+
+                delete2.setOnClickListener(this);
+
+                if (picContainer.getChildCount() == 4) {
+
+                    addPic.setVisibility(View.GONE);
+                }
+            }
+        }
 
         return view;
     }
@@ -103,7 +150,7 @@ public class createRecipeStepFour extends Fragment implements Step, View.OnClick
         }
     }
 
-     public RecipeDTO getData(RecipeDTO recipeDTO){
+    public RecipeDTO getData(RecipeDTO recipeDTO){
 
         recipeDTO.setImageUriList(imageList);
 
