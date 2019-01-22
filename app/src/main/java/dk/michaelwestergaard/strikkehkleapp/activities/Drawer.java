@@ -87,7 +87,6 @@ public class Drawer extends AppCompatActivity implements View.OnClickListener, N
 
                 case R.id.nav_favoritter:
                     Intent intent2 = new Intent(this, Favourites.class);
-                    Favourites.FavouritesSingleton.getInstance().setRecipes(favouriteRecipes);
                     startActivity(intent2);
                     break;
 

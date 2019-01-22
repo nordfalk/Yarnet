@@ -89,7 +89,7 @@
                         android:paddingTop="4dp"
                         android:paddingRight="4dp"
                         android:paddingBottom="4dp"
-                        android:src="@drawable/saveWhite"
+                        android:src="@drawable/save_white"
                         app:layout_constraintEnd_toStartOf="@+id/recipe_favorite_btn"
                         app:layout_constraintTop_toTopOf="parent" />
 
