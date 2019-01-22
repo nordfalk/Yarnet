@@ -43,6 +43,7 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
     View viewLoadPic, imageListView;
     List<Uri> imageList = new ArrayList<Uri>();
     List<String> imageURLs = new ArrayList<>();
+    List<View> imageViews = new ArrayList<>();
     private StorageReference storageReference;
     private FirebaseStorage storage;
 
@@ -77,13 +78,15 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
 
         for(String imageURL : imageURLs) {
             View viewOnClick;
-            Button delete2;
+            Button deleteBtn;
 
             if (picContainer.getChildCount() < 4) {
 
-                viewOnClick = inflater.inflate(R.layout.recipe_add_pic, null);
+                viewOnClick = inflater.inflate(R.layout.recipe_edit_pic, null);
 
                 viewLoadPic = viewOnClick;
+
+                imageViews.add(viewLoadPic);
 
                 ImageView picture1 = viewLoadPic.findViewById(R.id.pic4);
 
@@ -97,9 +100,9 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
                 picture1.setImageURI(uri);
                 imageList.add(uri);
 */
-                delete2 = viewOnClick.findViewById(R.id.create_recipe_instruction_delete_btn);
+                deleteBtn = viewOnClick.findViewById(R.id.edit_recipe_instruction_delete_btn);
 
-                delete2.setOnClickListener(this);
+                deleteBtn.setOnClickListener(this);
 
                 if (picContainer.getChildCount() == 4) {
 
@@ -147,12 +150,23 @@ public class EditRecipeStepFour extends Fragment implements Step, View.OnClickLi
             pic.setImageURI(null);
             addPic.setVisibility(View.VISIBLE);
 
+        } else if (view.getId() == R.id.edit_recipe_instruction_delete_btn) {
+            for(int i = 0; i < imageViews.size(); i++) {
+                if(imageViews.get(i) == view.getParent()) {
+                    picContainer.removeView((View) view.getParent());
+                    imageViews.remove(i);
+                    imageURLs.remove(i);
+                    pic.setImageURI(null);
+                    addPic.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
     public RecipeDTO getData(RecipeDTO recipeDTO){
 
         recipeDTO.setImageUriList(imageList);
+        recipeDTO.setImageList(imageURLs);
 
         return recipeDTO;
     }

@@ -1,5 +1,6 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,12 +14,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -27,6 +31,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
@@ -57,6 +62,9 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     private List<EditRecipeAdapterStepperInfo> fragments;
     private Context myContext = this;
 
+    private AlertDialog.Builder builder;
+    private AlertDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +86,11 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
         stepperLayout.setListener(this);
         stepperLayout.setNextButtonVerificationFailed(true);
         stepperLayout.setCompleteButtonVerificationFailed(true);
+        stepperLayout.setOffscreenPageLimit(5);
+
+        builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.loading_dialog);
 
         recipeID = getIntent().getStringExtra("recipeID");
 
@@ -141,6 +154,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 fragments.add(new EditRecipeAdapterStepperInfo(stepFourFrag, "Billeder"));
 
                 stepperLayout.setAdapter(new EditRecipeAdapter(getSupportFragmentManager(), myContext, fragments));
+                progressDialog = builder.create();
             }
 
             @Override
@@ -152,26 +166,65 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
     @Override
     public void onCompleted(View completeButton) {
+        progressDialog.show();
 
-        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Ændringer gemt!", Toast.LENGTH_SHORT).show();
         ((EditRecipeStepOne) fragments.get(0).getFragment()).getData(recipe);
         ((EditRecipeStepTwo) fragments.get(1).getFragment()).getData(recipe);
         ((EditRecipeStepThree) fragments.get(2).getFragment()).getData(recipe);
         ((EditRecipeStepFour) fragments.get(3).getFragment()).getData(recipe);
 
-        recipe.setUpdatedTimestamp(new Date());
+        final List<String> images;
 
-        System.out.println(recipe);
+        if(recipe.getImageList() != null) {
+            images = recipe.getImageList();
+        } else {
+            images = new ArrayList<String>();
+        }
 
-        RecipeDAO recipeDAO = new RecipeDAO();
+        final int[] count = {0};
 
-        boolean updated = false;
-        updated = recipeDAO.update(recipe);
+        final List<Uri> recipeUriList = recipe.getImageUriList();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-        if(updated) {
-            Intent intent = new Intent(this, Opskrift.class);
-            intent.putExtra("RecipeID", recipe.getRecipeID());
-            startActivity(intent);
+        for(Uri uriImage : recipeUriList){
+            UUID picRandomID = UUID.randomUUID();
+            final StorageReference ref = storageReference.child("recipeImages/" + picRandomID);
+            ref.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            images.add(uri.toString());
+                            count[0]++;
+                            if(count[0] == recipeUriList.size()){
+                                System.out.println(images);
+                                recipe.setImageList(images);
+
+                                recipe.setUpdatedTimestamp(new Date());
+
+                                recipe.setImageUriList(null);
+
+                                System.out.println(recipe);
+
+                                RecipeDAO recipeDAO = new RecipeDAO();
+
+                                boolean updated = false;
+                                updated = recipeDAO.update(recipe);
+
+                                if(updated) {
+                                    Intent intent = new Intent(getApplicationContext(), Opskrift.class);
+                                    intent.putExtra("RecipeID", recipe.getRecipeID());
+                                    startActivity(intent);
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }
 
     }
