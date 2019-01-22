@@ -55,12 +55,12 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     private UserDAO userDAO = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
 
-    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt;
+    private TextView title, creator, categoriTextView, priceTextView, favoriteCount, stepsCount, difficulty, editTxt, deleteTxt;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button købKnap;
     public boolean bought;
-    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg;
+    private ImageView backgroundPicture, favoriteBtn, saveBtn, creatorImage, editImg, deleteImg;
     private CardView købContainer;
     private ImageView backBtn;
     private ImageView drawerBtn;
@@ -90,9 +90,13 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
 
         editTxt = findViewById(R.id.editTxt);
         editImg = findViewById(R.id.editImg);
+        deleteTxt = findViewById(R.id.deleteTxt);
+        deleteImg = findViewById(R.id.deleteImg);
 
         editTxt.setVisibility(View.GONE);
         editImg.setVisibility(View.GONE);
+        deleteTxt.setVisibility(View.GONE);
+        deleteImg.setVisibility(View.GONE);
 
         recipeID = getIntent().getStringExtra("RecipeID");
 
@@ -123,6 +127,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
         backgroundPicture.setOnClickListener(this);
         editTxt.setOnClickListener(this);
         editImg.setOnClickListener(this);
+        deleteTxt.setOnClickListener(this);
+        deleteImg.setOnClickListener(this);
 
         showRecipe();
     }
@@ -243,6 +249,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                 if(userBrowsing.getUserID().equals(recipe.getUserID())) {
                     editTxt.setVisibility(View.VISIBLE);
                     editImg.setVisibility(View.VISIBLE);
+                    deleteTxt.setVisibility(View.VISIBLE);
+                    deleteImg.setVisibility(View.VISIBLE);
                 }
 
                 favoriteCount.setText(String.valueOf(recipe.getFavouritedAmount()));
@@ -384,6 +392,8 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
             Intent intent = new Intent(this, EditRecipe.class);
             intent.putExtra("recipeID", recipeID);
             startActivity(intent);
+        } else if(v == deleteTxt || v == deleteImg){
+
         }
     }
 
