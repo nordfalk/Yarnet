@@ -38,7 +38,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Opret Opskrift"
+                        android:text="Opret opskrift"
                         android:textAlignment="center"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -49,7 +49,7 @@
                     <RelativeLayout
                         android:id="@+id/relativeLayout"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:layout_height="42dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
@@ -122,12 +122,12 @@
                         android:elevation="3dp"
                         android:ems="10"
                         android:fontFamily="@font/roboto"
-                        android:hint="Opskriftens titel..."
                         android:inputType="textCapSentences"
-                        android:padding="10dp"
+                        android:padding="12dp"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
                         android:textSize="14sp"
+                        android:hint="Opskriftens titel..."
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +160,7 @@
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="2500"
                         android:maxLines="5"
-                        android:padding="10dp"
+                        android:padding="12dp"
                         android:singleLine="false"
                         android:textAllCaps="false"
                         android:textSize="14sp"
@@ -181,7 +181,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/create_recipe_description" />
 
                     <RelativeLayout
-                        android:id="@+id/relativeLayoutCategory"
+                        android:id="@+id/relativeLayoutCategoryItemm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -221,7 +221,7 @@
                         android:layout_marginTop="16dp"
                         android:text="Underkategori:"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayoutCategory"
+                        app:layout_constraintStart_toEndOf="@+id/relativeLayoutCategoryItemm"
                         app:layout_constraintTop_toBottomOf="@+id/create_recipe_description" />
 
                     <RelativeLayout
@@ -229,14 +229,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/relativeLayoutCategory"
-                        app:layout_constraintTop_toBottomOf="@+id/create_recipe_description">
+                        app:layout_constraintStart_toEndOf="@+id/relativeLayoutCategoryItemm"
+                        app:layout_constraintTop_toBottomOf="@+id/headlinerSubCategoryTxt">
 
                         <Spinner
                             android:id="@+id/create_recipe_spinner_subcategory"
@@ -266,7 +266,7 @@
                         android:text="Sværhedsgrad:"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutCategory" />
+                        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutCategoryItemm" />
 
                     <RelativeLayout
                         android:id="@+id/difficultyContainer"
@@ -278,7 +278,7 @@
                         android:background="@drawable/input_field_new"
                         android:elevation="3dp"
                         app:layout_constraintBottom_toTopOf="@+id/create_recipe_price_selection"
-                        app:layout_constraintEnd_toEndOf="@+id/relativeLayoutCategory"
+                        app:layout_constraintEnd_toEndOf="@+id/relativeLayoutCategoryItemm"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/headlineDifficultyTxt">
 
@@ -325,7 +325,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:buttonTint="@color/colorPrimary"
+                            android:buttonTint="@color/colorToolbar"
                             android:text="Gratis"
                             android:textAlignment="viewStart" />
 
@@ -335,7 +335,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:buttonTint="@color/colorPrimary"
+                            android:buttonTint="@color/colorToolbar"
                             android:text="Ikke Gratis" />
 
                     </RadioGroup>

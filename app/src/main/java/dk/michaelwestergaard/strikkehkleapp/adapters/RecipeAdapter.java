@@ -74,6 +74,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         private RecipeDTO recipe;
         public TextView titleView;
         public ImageView imageView;
+        public ImageView imageHeartCount;
         public TextView favouriteCount1;
         public TextView listPrice;
 
@@ -81,6 +82,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             super(itemView);
             titleView = itemView.findViewById(R.id.item_title);
             imageView = itemView.findViewById(R.id.item_image);
+            imageHeartCount = itemView.findViewById(R.id.imageHeartCount);
             favouriteCount1 = itemView.findViewById(R.id.favoriteCount1);
             listPrice = itemView.findViewById(R.id.listPrice);
             itemView.setOnClickListener(this);

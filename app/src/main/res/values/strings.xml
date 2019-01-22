@@ -33,7 +33,7 @@
     </string-array>
 
     <string-array name="create_recipe_types">
-        <item>Strikke Opskrift</item>
-        <item>Hækle Opskrift</item>
+        <item>Strikkeopskrift</item>
+        <item>Hækleopskrift</item>
     </string-array>
 </resources>
