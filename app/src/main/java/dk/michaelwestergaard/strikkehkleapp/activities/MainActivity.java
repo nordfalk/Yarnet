@@ -50,7 +50,7 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
+        final View headerView = navigationView.getHeaderView(0);
 
         drawer = findViewById(R.id.drawer_layout);
         editProfileBtn2 = headerView.findViewById(R.id.editProfileBtn2);
@@ -74,12 +74,12 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
 
                 String userAvatar = MainSingleton.getInstance().getUser().getAvatar();
 
-                ((TextView)findViewById(R.id.drawer_profile_name)).setText("Hej, " + user.getFirst_name());
+                ((TextView) headerView.findViewById(R.id.drawer_profile_name)).setText("Hej, " + user.getFirst_name());
 
                 if(userAvatar.contains("https")) {
                     RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
                     Glide.with(MainActivity.this).load(userAvatar).apply(requestOptions).into(drawerBtn);
-                    ImageView drawerHeaderImage = findViewById(R.id.drawer_image);
+                    ImageView drawerHeaderImage = headerView.findViewById(R.id.drawer_image);
                     Glide.with(MainActivity.this).load(userAvatar).apply(requestOptions).into(drawerHeaderImage);
                 }
 
@@ -90,7 +90,7 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
                         if(user.getAvatar().contains("https")) {
                             RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
                             Glide.with(MainActivity.this).load(user.getAvatar()).apply(requestOptions).into(drawerBtn);
-                            ImageView drawerHeaderImage = findViewById(R.id.drawer_image);
+                            ImageView drawerHeaderImage = headerView.findViewById(R.id.drawer_image);
                             Glide.with(MainActivity.this).load(user.getAvatar()).apply(requestOptions).into(drawerHeaderImage);
                         }
                     }
