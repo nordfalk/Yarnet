@@ -4,12 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,7 +28,6 @@ import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,6 +94,10 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
 
         recipeID = getIntent().getStringExtra("recipeID");
 
+        builder = new AlertDialog.Builder(myContext);
+        builder.setCancelable(false);
+        builder.setView(R.layout.loading_dialog);
+        progressDialog = builder.create();
         recipeDAO.getReference().child(recipeID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -155,7 +158,6 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 fragments.add(new EditRecipeAdapterStepperInfo(stepFourFrag, "Billeder"));
 
                 stepperLayout.setAdapter(new EditRecipeAdapter(getSupportFragmentManager(), myContext, fragments));
-                progressDialog = builder.create();
             }
 
             @Override
@@ -220,7 +222,9 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                                         Intent intent = new Intent(getApplicationContext(), Opskrift.class);
                                         intent.putExtra("RecipeID", recipe.getRecipeID());
                                         startActivity(intent);
+
                                         progressDialog.dismiss();
+                                        finish();
                                         Toast.makeText(getApplicationContext(), "Ændringer gemt!", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -246,11 +250,13 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                 Intent intent = new Intent(getApplicationContext(), Opskrift.class);
                 intent.putExtra("RecipeID", recipe.getRecipeID());
                 startActivity(intent);
+
                 progressDialog.dismiss();
+                finish();
                 Toast.makeText(getApplicationContext(), "Ændringer gemt!", Toast.LENGTH_SHORT).show();
+
             }
         }
-        finish();
     }
 
     @Nullable
