@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +45,7 @@ import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.activities.EditRecipe;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeImageSliderAdapter;
 import dk.michaelwestergaard.strikkehkleapp.fragments.fragment_recipe_feedback;
+import io.fabric.sdk.android.Fabric;
 
 
 public class Opskrift extends AppCompatActivity implements View.OnClickListener {
@@ -77,6 +80,11 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opskrift);
+
+        boolean EMULATOR = Build.PRODUCT.contains("sdk") || Build.MODEL.contains("Emulator");
+        if (!EMULATOR) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         drawerBtn = findViewById(R.id.drawerBtn);
         backBtn = findViewById(R.id.backButton);

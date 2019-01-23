@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +46,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepFour;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepOne;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepThree;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepTwo;
+import io.fabric.sdk.android.Fabric;
 
 public class EditRecipe extends AppCompatActivity implements StepperLayout.StepperListener, BlockingStep {
 
@@ -69,6 +72,11 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recipe);
+
+        boolean EMULATOR = Build.PRODUCT.contains("sdk") || Build.MODEL.contains("Emulator");
+        if (!EMULATOR) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         drawerBtn = findViewById(R.id.drawerBtn);
         backBtn = findViewById(R.id.backButton);

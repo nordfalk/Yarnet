@@ -2,6 +2,7 @@ package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.CreateRecipeStepOne;
 import dk.michaelwestergaard.strikkehkleapp.fragments.DiscoverFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.ListFragment;
 import dk.michaelwestergaard.strikkehkleapp.fragments.MyCollection;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends Drawer implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnFragmentInteractionListener, CreateRecipe.OnFragmentInteractionListener, CreateRecipeStepOne.OnFragmentInteractionListener {
 
@@ -46,6 +49,12 @@ public class MainActivity extends Drawer implements NavigationView.OnNavigationI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        boolean EMULATOR = Build.PRODUCT.contains("sdk") || Build.MODEL.contains("Emulator");
+        if (!EMULATOR) {
+            Fabric.with(this, new Crashlytics());
+        }
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);

@@ -1,5 +1,7 @@
 package dk.michaelwestergaard.strikkehkleapp;
 
+import com.crashlytics.android.Crashlytics;
+
 import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 
 public class MainSingleton {
@@ -23,6 +25,9 @@ public class MainSingleton {
 
     public void setUser(UserDTO user) {
         this.user = user;
+        Crashlytics.setUserIdentifier(user.getUserID());
+        Crashlytics.setUserEmail(user.getEmail());
+        Crashlytics.setUserName(user.getFirst_name() + " " + user.getLast_name());
     }
 
     public String getSearchValue() {

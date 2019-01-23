@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -185,6 +186,8 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                                 ((DiscoverSubFragment)((TopViewPagerAdapter) viewPager.getAdapter()).getmFragmentList().get(position)).viewPager.setCurrentItem(0);
                         } catch(NullPointerException e) {
                             e.printStackTrace();
+                            FirebaseCrash.logcat(Log.ERROR, "NullPointer", "NPE caught");
+                            FirebaseCrash.report(e);
                         }
                     }
 

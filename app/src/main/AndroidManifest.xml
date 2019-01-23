@@ -60,6 +60,9 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="e21fe8b4425c7b30d0a7ab6e7a27fb15d6699e19" />
     </application>
 
 </manifest>
