@@ -210,7 +210,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     public void onClick(DialogInterface dialog, int which) {
                         String emailInput = emailText.getText().toString().trim();
 
-                        boolean verified;
+                        boolean verified = false;
                         if (emailInput.isEmpty()) {
                             emailText.setError("Feltet må ikke være tomt");
                             verified = false;
@@ -224,6 +224,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
                         if(verified) {
                             FirebaseAuth.getInstance().sendPasswordResetEmail(emailText.getText().toString());
+                            Toast.makeText(getApplicationContext(), "Email sendt til: \"" + emailText.getText().toString() + "\"", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
