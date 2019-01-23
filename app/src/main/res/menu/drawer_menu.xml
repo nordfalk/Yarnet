@@ -19,5 +19,9 @@
             android:icon="@drawable/hrtt"
             android:title="Favoritter" />
 
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="Log ud" />
     </group>
 </menu>

@@ -23,10 +23,6 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
 
-    Button logout;
-    private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseAuth auth;
-
     ImageView avatar;
     TextView name;
     Button btn;
@@ -53,9 +49,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         btn = findViewById(R.id.editProfileBtn);
         btn.setOnClickListener(this);
 
-
-        auth = FirebaseAuth.getInstance();
-
         avatar = findViewById(R.id.avatar);
         name = findViewById(R.id.profileName);
 
@@ -65,32 +58,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
             Glide.with(Profile.this).load(user.getAvatar()).apply(requestOptions).into(avatar);
         }
-
-        logout = findViewById(R.id.logout);
-        logout.setOnClickListener(this);
-
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    Intent intent = new Intent(Profile.this, LogInActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        };
-
-        auth.addAuthStateListener(authListener);
     }
 
     @Override
     public void onClick(View view) {
-        if(view == logout){
-            auth.signOut();
-            LoginManager.getInstance().logOut();
-        } else if (view == btn) {
+        if (view == btn) {
             Intent intent = new Intent(Profile.this, EditPage.class);
             startActivity(intent);
         }
