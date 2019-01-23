@@ -413,6 +413,7 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                     if(deleted) {
                         Toast.makeText(getApplicationContext(), "Opskrift slettet!", Toast.LENGTH_SHORT).show();
                     }
+                    finish();
                 }
             });
             alertBuilderDelete.setNegativeButton("Annuller", new DialogInterface.OnClickListener() {
