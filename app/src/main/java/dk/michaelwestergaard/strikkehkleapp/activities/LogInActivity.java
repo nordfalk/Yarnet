@@ -1,13 +1,16 @@
 package dk.michaelwestergaard.strikkehkleapp.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -36,11 +39,12 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth auth;
 
+    private TextView passWordReset;
     private EditText inputEmail, inputPassword;
 
 
-    AlertDialog.Builder builder;
-    AlertDialog progressDialog;
+    private AlertDialog.Builder builder, resetPasswordBuilder;
+    private AlertDialog progressDialog, resetPasswordDialog;
     private CallbackManager mCallbackManager;
 
     UserDAO userDAO = new UserDAO();
@@ -56,6 +60,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LogInActivity.this, MainActivity.class));
             finish();
         }
+
+        passWordReset = findViewById(R.id.passwordReset);
+        passWordReset.setOnClickListener(this);
 
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_password);
@@ -187,6 +194,50 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                 Intent signupIntent = new Intent(this, SignUpActivity.class);
                 startActivity(signupIntent);
                 break;
+
+            case R.id.passwordReset:
+                resetPasswordBuilder = new AlertDialog.Builder(this);
+                resetPasswordBuilder.setTitle("Glemt adgangskode?");
+
+                View dialogView = this.getLayoutInflater().inflate(R.layout.reset_password_prompt, null);
+
+                final EditText emailText = dialogView.findViewById(R.id.promptEdit);
+
+                resetPasswordBuilder.setView(dialogView);
+
+                resetPasswordBuilder.setPositiveButton("Nulstil", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String emailInput = emailText.getText().toString().trim();
+
+                        boolean verified;
+                        if (emailInput.isEmpty()) {
+                            emailText.setError("Feltet må ikke være tomt");
+                            verified = false;
+                        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                            emailText.setError("E-mailadressen er ugyldig");
+                            verified = false;
+                        } else {
+                            emailText.setError(null);
+                            verified = true;
+                        }
+
+                        if(verified) {
+                            FirebaseAuth.getInstance().sendPasswordResetEmail(emailText.getText().toString());
+                        }
+                    }
+                });
+                resetPasswordBuilder.setNegativeButton("Annuller", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                resetPasswordDialog = resetPasswordBuilder.create();
+                resetPasswordBuilder.show();
+                break;
+
             default:
                 break;
         }
