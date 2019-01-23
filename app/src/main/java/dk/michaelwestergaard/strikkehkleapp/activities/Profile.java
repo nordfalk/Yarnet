@@ -111,7 +111,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
                         myRecipes = sortRecipes("my", recipes, actualUser);
 
-                        RecipeAdapter adapter = new RecipeAdapter(recipes);
+                        RecipeAdapter adapter = new RecipeAdapter(myRecipes);
                         recyclerView.setAdapter(adapter);
 
                         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(myContext, 3);
@@ -135,23 +135,19 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         List<RecipeDTO> recipesToShow = new ArrayList<RecipeDTO>();
 
         switch (sortStyle) {
-            case "saved":
-                if (user != null) {
-                    List<String> savedRecipeIDs = user.getSavedRecipes();
-
-                    if (savedRecipeIDs != null) {
-
-                        for (RecipeDTO recipe : recipes) {
-                            for (String savedRecipeID : savedRecipeIDs) {
-                                if (recipe.getRecipeID().equals(savedRecipeID)) {
-                                    recipesToShow.add(recipe);
-                                }
-                            }
-                        }
+            case "my":
+                if(user != null) {
+                    for(RecipeDTO recipe : recipes){
+                        if(recipe.getUserID().equals(user.getUserID()))
+                            recipesToShow.add(recipe);
                     }
                 } else {
                     System.out.println("Error sorting recipes: User not found!");
                 }
+                break;
+
+            default:
+                System.out.print("Error sorting recipes: Unknown sortStyle!");
                 break;
         }
         return recipesToShow;
