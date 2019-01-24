@@ -180,7 +180,7 @@ public class DiscoverStartFragment extends Fragment {
                                 }
                                 break;
 
-                            case "LOW":
+                            case "EASY":
                                 if(recipeDifficulty.equals("EASY")) {
                                     recipesNewest.add(recipe);
                                     if (recipe.getPrice() == 0) {

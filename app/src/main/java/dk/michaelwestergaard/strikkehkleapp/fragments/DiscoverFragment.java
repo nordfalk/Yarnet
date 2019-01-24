@@ -94,7 +94,7 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                                         }
                                         break;
 
-                                    case "LOW":
+                                    case "EASY":
                                         if(recipeDifficulty.equals("EASY")) {
                                             recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
 

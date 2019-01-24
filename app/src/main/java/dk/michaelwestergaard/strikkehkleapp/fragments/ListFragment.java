@@ -85,7 +85,7 @@ public class ListFragment extends Fragment {
                                 }
                                 break;
 
-                            case "LOW":
+                            case "EASY":
                                 if(recipeDifficulty.equals("EASY")) {
                                     recipes.add(snapshot.getValue(RecipeDTO.class));
                                 }
