@@ -31,6 +31,7 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.CategoryDAO;
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.CategoryDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
@@ -67,11 +68,15 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
                 recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            String recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+                        UserDTO user = MainSingleton.getInstance().getUser();
 
-                            if(recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
-                                suggestions.add(new Suggestion(recipeTitle));
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            if(snapshot.getValue(RecipeDTO.class).getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
+                                String recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+
+                                if (recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
+                                    suggestions.add(new Suggestion(recipeTitle));
+                                }
                             }
                         }
 

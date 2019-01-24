@@ -29,6 +29,8 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
@@ -148,16 +150,19 @@ public class DiscoverStartFragment extends Fragment {
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserDTO user = MainSingleton.getInstance().getUser();
                 recipesNewest.clear();
                 recipesBought.clear();
                 recipesFree.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     RecipeDTO recipe = snapshot.getValue(RecipeDTO.class);
-                    recipesNewest.add(recipe);
-                    if (recipe.getPrice() == 0) {
-                        recipesFree.add(recipe);
-                    } else {
-                        recipesBought.add(recipe);
+                    if(recipe.getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
+                        recipesNewest.add(recipe);
+                        if (recipe.getPrice() == 0) {
+                            recipesFree.add(recipe);
+                        } else {
+                            recipesBought.add(recipe);
+                        }
                     }
                 }
                 sortNewest(recipesNewest);

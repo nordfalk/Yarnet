@@ -21,6 +21,7 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
 import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
@@ -66,9 +67,12 @@ public class ListFragment extends Fragment {
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserDTO user = MainSingleton.getInstance().getUser();
                 recipes.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                    if(snapshot.getValue(RecipeDTO.class).getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
+                        recipes.add(snapshot.getValue(RecipeDTO.class));
+                    }
                 }
 
                 if(searchValue == null) {
