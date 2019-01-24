@@ -42,7 +42,7 @@ public class fragment_recipe_information extends Fragment implements AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        Opskrift opskrift = new Opskrift();
+        ShowRecipe showRecipe = new ShowRecipe();
 
         View view = inflater.inflate(R.layout.fragment_recipe_information, container, false);
 

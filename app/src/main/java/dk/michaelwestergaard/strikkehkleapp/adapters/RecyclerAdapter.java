@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecipeViewHolder> {
@@ -59,7 +59,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recipe
                 @Override
                 public void onClick(View view) {
                     System.out.println("Clicked " + recipeID);
-                    Intent intent = new Intent (view.getContext(), Opskrift.class);
+                    Intent intent = new Intent (view.getContext(), ShowRecipe.class);
                     intent.putExtra("RecipeID", recipeID);
                     view.getContext().startActivity(intent);
                 }

@@ -40,10 +40,10 @@ public class fragment_recipe_instruction extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Opskrift opskrift = new Opskrift();
+        ShowRecipe showRecipe = new ShowRecipe();
         View view = inflater.inflate(R.layout.fragment_recipe_instruction, container, false);
 
-        if(opskrift.bought = true){
+        if(showRecipe.bought = true){
             instructionRecycleView = view.findViewById(R.id.recipeInstructionList);
 
             InstructionAdapter instructionAdapter = new InstructionAdapter(recipeID, recipeInstructionDTO);

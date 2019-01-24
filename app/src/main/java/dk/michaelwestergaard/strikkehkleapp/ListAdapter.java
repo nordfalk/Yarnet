@@ -47,7 +47,7 @@ public class ListAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View view) {
             System.out.println("Clicked " + textView.getText().toString());
-            Intent intent = new Intent (view.getContext(), Opskrift.class);
+            Intent intent = new Intent (view.getContext(), ShowRecipe.class);
             intent.putExtra("Title", textView.getText().toString());
             view.getContext().startActivity(intent);
         }

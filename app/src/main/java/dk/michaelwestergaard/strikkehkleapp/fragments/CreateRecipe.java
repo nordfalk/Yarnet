@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
 import dk.michaelwestergaard.strikkehkleapp.adapters.CreateRecipeAdapter;
 
@@ -158,7 +158,7 @@ public class CreateRecipe extends Fragment implements StepperLayout.StepperListe
                                     stepperLayout.setCurrentStepPosition(0);
 
                                     //TODO: Success dialog
-                                    Intent intent = new Intent(getContext(), Opskrift.class);
+                                    Intent intent = new Intent(getContext(), ShowRecipe.class);
                                     intent.putExtra("RecipeID", recipeID);
                                     getContext().startActivity(intent);
                                     progressDialog.dismiss();

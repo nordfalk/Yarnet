@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,9 +29,8 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
-import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
 import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
@@ -208,7 +206,7 @@ public class DiscoverStartFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent (view.getContext(), Opskrift.class);
+                    Intent intent = new Intent (view.getContext(), ShowRecipe.class);
                     intent.putExtra("RecipeID", recipeID);
                     view.getContext().startActivity(intent);
                 }

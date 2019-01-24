@@ -12,7 +12,7 @@ public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListe
 
     RadioGroup radioGroup;
     Button annulere,fortsæt;
-    Opskrift opskrift;
+    ShowRecipe showRecipe;
     ImageView backBtn;
     ImageView drawerBtn;
 
@@ -44,7 +44,7 @@ public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v==annulere){
-            Intent tilbage = new Intent(this, Opskrift.class);
+            Intent tilbage = new Intent(this, ShowRecipe.class);
             startActivity(tilbage);
             finish();
         }
