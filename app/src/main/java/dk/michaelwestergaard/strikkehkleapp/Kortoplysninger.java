@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class Kortoplysninger extends AppCompatActivity implements View.OnClickListener {
 
-    Button godkendKnap,tilbageKnap;
+    Button approveButton,backButton;
 
     Opskrift opskrift;
 
@@ -17,23 +17,23 @@ public class Kortoplysninger extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kortoplysninger);
 
-        godkendKnap=findViewById(R.id.godkendKnap);
-        tilbageKnap=findViewById(R.id.kortTilbageKnap);
+        approveButton=findViewById(R.id.godkendKnap);
+        backButton=findViewById(R.id.kortTilbageKnap);
 
-        godkendKnap.setOnClickListener(this);
-        tilbageKnap.setOnClickListener(this);
+        approveButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v==godkendKnap){
+        if(v==approveButton){
             Intent godkend = new Intent(this, Opskrift.class);
             godkend.putExtra("TEST","1");
             opskrift.bought = true;
             startActivity(godkend);
             finish();
         }
-        else if(v==tilbageKnap){
+        else if(v==backButton){
             Intent tilbage = new Intent(this, OpskriftKoeb.class);
             startActivity(tilbage);
             finish();
