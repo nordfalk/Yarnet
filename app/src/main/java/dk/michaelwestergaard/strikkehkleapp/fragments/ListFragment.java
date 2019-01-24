@@ -69,9 +69,28 @@ public class ListFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserDTO user = MainSingleton.getInstance().getUser();
                 recipes.clear();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     if(snapshot.getValue(RecipeDTO.class).getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
-                        recipes.add(snapshot.getValue(RecipeDTO.class));
+                        String recipeDifficulty = snapshot.getValue(RecipeDTO.class).getRecipeDifficulty().toString();
+
+                        switch (user.getDifficulty()) {
+                            case "HARD":
+                                recipes.add(snapshot.getValue(RecipeDTO.class));
+                                break;
+
+                            case "MEDIUM":
+                                if(recipeDifficulty.equals("MEDIUM") || recipeDifficulty.equals("EASY")) {
+                                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                                }
+                                break;
+
+                            case "LOW":
+                                if(recipeDifficulty.equals("EASY")) {
+                                    recipes.add(snapshot.getValue(RecipeDTO.class));
+                                }
+                                break;
+                        }
                     }
                 }
 

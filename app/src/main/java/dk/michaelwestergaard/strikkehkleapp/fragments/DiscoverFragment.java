@@ -72,10 +72,37 @@ public class DiscoverFragment extends Fragment implements ListFragment.OnFragmen
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                             if(snapshot.getValue(RecipeDTO.class).getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
-                                String recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+                                String recipeDifficulty = snapshot.getValue(RecipeDTO.class).getRecipeDifficulty().toString();
+                                String recipeTitle;
 
-                                if (recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
-                                    suggestions.add(new Suggestion(recipeTitle));
+                                switch (user.getDifficulty()) {
+                                    case "HARD":
+                                        recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+
+                                        if (recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
+                                            suggestions.add(new Suggestion(recipeTitle));
+                                        }
+                                        break;
+
+                                    case "MEDIUM":
+                                        if(recipeDifficulty.equals("MEDIUM") || recipeDifficulty.equals("EASY")) {
+                                            recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+
+                                            if (recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
+                                                suggestions.add(new Suggestion(recipeTitle));
+                                            }
+                                        }
+                                        break;
+
+                                    case "LOW":
+                                        if(recipeDifficulty.equals("EASY")) {
+                                            recipeTitle = snapshot.getValue(RecipeDTO.class).getTitle();
+
+                                            if (recipeTitle.toLowerCase().contains(newQuery.toLowerCase())) {
+                                                suggestions.add(new Suggestion(recipeTitle));
+                                            }
+                                        }
+                                        break;
                                 }
                             }
                         }

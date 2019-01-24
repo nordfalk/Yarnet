@@ -157,11 +157,39 @@ public class DiscoverStartFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     RecipeDTO recipe = snapshot.getValue(RecipeDTO.class);
                     if(recipe.getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
-                        recipesNewest.add(recipe);
-                        if (recipe.getPrice() == 0) {
-                            recipesFree.add(recipe);
-                        } else {
-                            recipesBought.add(recipe);
+                        String recipeDifficulty = recipe.getRecipeDifficulty().toString();
+
+                        switch (user.getDifficulty()) {
+                            case "HARD":
+                                recipesNewest.add(recipe);
+                                if (recipe.getPrice() == 0) {
+                                    recipesFree.add(recipe);
+                                } else {
+                                    recipesBought.add(recipe);
+                                }
+                                break;
+
+                            case "MEDIUM":
+                                if(recipeDifficulty.equals("MEDIUM") || recipeDifficulty.equals("EASY")) {
+                                    recipesNewest.add(recipe);
+                                    if (recipe.getPrice() == 0) {
+                                        recipesFree.add(recipe);
+                                    } else {
+                                        recipesBought.add(recipe);
+                                    }
+                                }
+                                break;
+
+                            case "LOW":
+                                if(recipeDifficulty.equals("EASY")) {
+                                    recipesNewest.add(recipe);
+                                    if (recipe.getPrice() == 0) {
+                                        recipesFree.add(recipe);
+                                    } else {
+                                        recipesBought.add(recipe);
+                                    }
+                                }
+                                break;
                         }
                     }
                 }
