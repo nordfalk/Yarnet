@@ -8,10 +8,9 @@
     tools:context=".fragment_recipe_information">
 
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -142,5 +141,5 @@
 
 
 
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </android.support.constraint.ConstraintLayout>
