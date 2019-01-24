@@ -10,7 +10,7 @@ public class Kortoplysninger extends AppCompatActivity implements View.OnClickLi
 
     Button approveButton,backButton;
 
-    Opskrift opskrift;
+    ShowRecipe showRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class Kortoplysninger extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v==approveButton){
-            Intent godkend = new Intent(this, Opskrift.class);
+            Intent godkend = new Intent(this, ShowRecipe.class);
             godkend.putExtra("TEST","1");
-            opskrift.bought = true;
+            showRecipe.bought = true;
             startActivity(godkend);
             finish();
         }

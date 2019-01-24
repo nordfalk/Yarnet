@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,9 +29,10 @@ import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
+import dk.michaelwestergaard.strikkehkleapp.DTO.UserDTO;
+import dk.michaelwestergaard.strikkehkleapp.MainSingleton;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
-import dk.michaelwestergaard.strikkehkleapp.activities.MainActivity;
 import dk.michaelwestergaard.strikkehkleapp.activities.WatchMore;
 import dk.michaelwestergaard.strikkehkleapp.adapters.RecipeAdapter;
 
@@ -150,16 +150,47 @@ public class DiscoverStartFragment extends Fragment {
         recipeDAO.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserDTO user = MainSingleton.getInstance().getUser();
                 recipesNewest.clear();
                 recipesBought.clear();
                 recipesFree.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     RecipeDTO recipe = snapshot.getValue(RecipeDTO.class);
-                    recipesNewest.add(recipe);
-                    if (recipe.getPrice() == 0) {
-                        recipesFree.add(recipe);
-                    } else {
-                        recipesBought.add(recipe);
+                    if(recipe.getRecipeType().toString().equals(user.getType()) || user.getType().equals("BOTH")) {
+                        String recipeDifficulty = recipe.getRecipeDifficulty().toString();
+
+                        switch (user.getDifficulty()) {
+                            case "HARD":
+                                recipesNewest.add(recipe);
+                                if (recipe.getPrice() == 0) {
+                                    recipesFree.add(recipe);
+                                } else {
+                                    recipesBought.add(recipe);
+                                }
+                                break;
+
+                            case "MEDIUM":
+                                if(recipeDifficulty.equals("MEDIUM") || recipeDifficulty.equals("EASY")) {
+                                    recipesNewest.add(recipe);
+                                    if (recipe.getPrice() == 0) {
+                                        recipesFree.add(recipe);
+                                    } else {
+                                        recipesBought.add(recipe);
+                                    }
+                                }
+                                break;
+
+                            case "EASY":
+                                if(recipeDifficulty.equals("EASY")) {
+                                    recipesNewest.add(recipe);
+                                    if (recipe.getPrice() == 0) {
+                                        recipesFree.add(recipe);
+                                    } else {
+                                        recipesBought.add(recipe);
+                                    }
+                                }
+                                break;
+                        }
                     }
                 }
                 sortNewest(recipesNewest);
@@ -208,7 +239,7 @@ public class DiscoverStartFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent (view.getContext(), Opskrift.class);
+                    Intent intent = new Intent (view.getContext(), ShowRecipe.class);
                     intent.putExtra("RecipeID", recipeID);
                     view.getContext().startActivity(intent);
                 }

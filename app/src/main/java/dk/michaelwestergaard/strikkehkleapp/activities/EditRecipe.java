@@ -39,8 +39,8 @@ import dk.michaelwestergaard.strikkehkleapp.DAO.RecipeDAO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInformationDTO;
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeInstructionDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
 import dk.michaelwestergaard.strikkehkleapp.R;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.adapters.EditRecipeAdapter;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepFour;
 import dk.michaelwestergaard.strikkehkleapp.fragments.EditRecipeStepOne;
@@ -227,7 +227,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
                                     updated = recipeDAO.update(recipe);
 
                                     if(updated) {
-                                        Intent intent = new Intent(getApplicationContext(), Opskrift.class);
+                                        Intent intent = new Intent(getApplicationContext(), ShowRecipe.class);
                                         intent.putExtra("RecipeID", recipe.getRecipeID());
                                         startActivity(intent);
 
@@ -255,7 +255,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
             updated = recipeDAO.update(recipe);
 
             if(updated) {
-                Intent intent = new Intent(getApplicationContext(), Opskrift.class);
+                Intent intent = new Intent(getApplicationContext(), ShowRecipe.class);
                 intent.putExtra("RecipeID", recipe.getRecipeID());
                 startActivity(intent);
 
@@ -358,7 +358,7 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
     public void onBackPressed() {
         if(stepperLayout != null) {
             if (stepperLayout.getCurrentStepPosition() == 0) {
-                Intent intent = new Intent(this, Opskrift.class);
+                Intent intent = new Intent(this, ShowRecipe.class);
                 intent.putExtra("RecipeID", recipeID);
                 startActivity(intent);
                 finish();

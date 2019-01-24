@@ -48,7 +48,7 @@ import dk.michaelwestergaard.strikkehkleapp.fragments.fragment_recipe_feedback;
 import io.fabric.sdk.android.Fabric;
 
 
-public class Opskrift extends AppCompatActivity implements View.OnClickListener {
+public class ShowRecipe extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth auth= FirebaseAuth.getInstance();
 
@@ -158,11 +158,11 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
+                                Glide.with(ShowRecipe.this).load(uri.toString()).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                             }
                         });
                     } else {
-                        Glide.with(Opskrift.this).load(firstImage).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
+                        Glide.with(ShowRecipe.this).load(firstImage).apply(RequestOptions.fitCenterTransform()).into(backgroundPicture);
                     }
 
                     int count = 0;
@@ -209,13 +209,13 @@ public class Opskrift extends AppCompatActivity implements View.OnClickListener 
                         if(createdByUser.getAvatar() != null){
                             String avatar = createdByUser.getAvatar();
                             if(avatar.contains("http") || avatar.contains("https")){
-                                Glide.with(Opskrift.this).load(avatar).into(creatorImage);
+                                Glide.with(ShowRecipe.this).load(avatar).into(creatorImage);
                             } else {
                                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("users/" + avatar);
                                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Glide.with(Opskrift.this).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(creatorImage);
+                                        Glide.with(ShowRecipe.this).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(creatorImage);
                                     }
                                 });
                             }

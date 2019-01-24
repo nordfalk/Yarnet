@@ -14,9 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.EditRecipe"></activity>
-        <activity android:name=".fragments.createRecipeStepFour" />
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".Opskrift" />
+        <activity android:name=".ShowRecipe" />
         <activity android:name=".createWalkthrough" />
         <activity android:name=".activities.Profile" />
         <activity android:name=".activities.WatchMore" />

@@ -11,8 +11,8 @@ import android.widget.RadioGroup;
 public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListener {
 
     RadioGroup radioGroup;
+    ShowRecipe showRecipe;
     Button cancelB,continueB;
-    Opskrift opskrift;
     ImageView backBtn;
     ImageView drawerBtn;
 
@@ -44,7 +44,7 @@ public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v==cancelB){
-            Intent tilbage = new Intent(this, Opskrift.class);
+            Intent tilbage = new Intent(this, ShowRecipe.class);
             startActivity(tilbage);
             finish();
         }

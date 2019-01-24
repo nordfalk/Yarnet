@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import dk.michaelwestergaard.strikkehkleapp.DTO.RecipeDTO;
-import dk.michaelwestergaard.strikkehkleapp.Opskrift;
+import dk.michaelwestergaard.strikkehkleapp.ShowRecipe;
 import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
@@ -120,7 +120,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), Opskrift.class);
+            Intent intent = new Intent(v.getContext(), ShowRecipe.class);
             intent.putExtra("RecipeID", recipe.getRecipeID());
             v.getContext().startActivity(intent);
         }
