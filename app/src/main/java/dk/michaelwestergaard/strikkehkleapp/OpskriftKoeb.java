@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListener {
 
     RadioGroup radioGroup;
-    Button annulere,fortsæt;
+    Button cancelB,continueB;
     Opskrift opskrift;
     ImageView backBtn;
     ImageView drawerBtn;
@@ -34,21 +34,21 @@ public class OpskriftKoeb extends AppCompatActivity implements View.OnClickListe
         drawerBtn.setVisibility(View.GONE);
 
         radioGroup = findViewById(R.id.radioGroup);
-        annulere = findViewById(R.id.AnnulereKnap);
-        fortsæt = findViewById(R.id.FortsætKnap);
+        cancelB = findViewById(R.id.AnnulereKnap);
+        continueB = findViewById(R.id.FortsætKnap);
 
-        annulere.setOnClickListener(this);
-        fortsæt.setOnClickListener(this);
+        cancelB.setOnClickListener(this);
+        continueB.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v==annulere){
+        if(v==cancelB){
             Intent tilbage = new Intent(this, Opskrift.class);
             startActivity(tilbage);
             finish();
         }
-        else if(v==fortsæt){
+        else if(v==continueB){
             Intent tilbage = new Intent(this, Kortoplysninger.class);
             startActivity(tilbage);
             finish();

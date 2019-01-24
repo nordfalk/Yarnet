@@ -34,13 +34,13 @@ import dk.michaelwestergaard.strikkehkleapp.R;
 
 public class EditPage extends AppCompatActivity implements View.OnClickListener {
 
-    EditText navn;
-    EditText efternavn;
+    EditText name;
+    EditText lastName;
     EditText mail;
-    EditText kode;
-    EditText gentagKode;
-    Button gemEdits;
-    TextView billedeKnap;
+    EditText code;
+    EditText repeatCode;
+    Button saveEdits;
+    TextView imageButton;
     ImageView backBtn;
     ImageView drawerBtn, profileImage;
 
@@ -77,25 +77,25 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
         backBtn.setVisibility(View.VISIBLE);
         drawerBtn.setVisibility(View.GONE);
 
-        billedeKnap = findViewById(R.id.billedeKnap);
+        imageButton = findViewById(R.id.billedeKnap);
         profileImage = findViewById(R.id.profile_image);
-        navn = findViewById(R.id.navn);
-        efternavn = findViewById(R.id.efternavn);
+        name = findViewById(R.id.navn);
+        lastName = findViewById(R.id.efternavn);
         mail = findViewById(R.id.mail);
-        kode = findViewById(R.id.kode);
-        gentagKode = findViewById(R.id.gentagKode);
-        gemEdits = findViewById(R.id.gemEdits);
+        code = findViewById(R.id.kode);
+        repeatCode = findViewById(R.id.gentagKode);
+        saveEdits = findViewById(R.id.gemEdits);
 
-        navn.setText(user.getFirst_name());
-        efternavn.setText(user.getLast_name());
+        name.setText(user.getFirst_name());
+        lastName.setText(user.getLast_name());
         mail.setText(user.getEmail());
         if(user.getAvatar().contains("https")) {
             RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(50));
             Glide.with(EditPage.this).load(user.getAvatar()).apply(requestOptions).into(profileImage);
         }
 
-        gemEdits.setOnClickListener(this);
-        billedeKnap.setOnClickListener(this);
+        saveEdits.setOnClickListener(this);
+        imageButton.setOnClickListener(this);
 
         backBtn.setVisibility(View.VISIBLE);
     }
@@ -112,13 +112,13 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
         }
     }
     private boolean passReq() {
-        String passInput = kode.getText().toString().trim();
+        String passInput = code.getText().toString().trim();
 
         if (!PASSWORD_PATTERN.matcher(passInput).matches()) {
-            kode.setError("Adgangskode lever ikke op til kravene. Prøv igen");
+            code.setError("Adgangskode lever ikke op til kravene. Prøv igen");
             return false;
         } else {
-            kode.setError(null);
+            code.setError(null);
             return true;
         }
     }
@@ -131,24 +131,24 @@ public class EditPage extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
 
-        if(view == gemEdits){
+        if(view == saveEdits){
 
             if(!user.getEmail().equals(mail.getText().toString())){
                 if(mailReq())
                     FirebaseAuth.getInstance().getCurrentUser().updateEmail(mail.getText().toString());
             }
-            user.setFirst_name(navn.getText().toString());
-            user.setLast_name(efternavn.getText().toString());
+            user.setFirst_name(name.getText().toString());
+            user.setLast_name(lastName.getText().toString());
             user.setEmail(mail.getText().toString());
-            if(kode.getText().equals("") && gentagKode.getText().equals("")){
-                if(kode.getText().equals(gentagKode.getText())){
+            if(code.getText().equals("") && repeatCode.getText().equals("")){
+                if(code.getText().equals(repeatCode.getText())){
                     if(passReq())
-                        FirebaseAuth.getInstance().getCurrentUser().updatePassword(kode.getText().toString());
+                        FirebaseAuth.getInstance().getCurrentUser().updatePassword(code.getText().toString());
                 }
             }
             userDAO.update(user);
             Toast.makeText(this,"Ændringerne blev gemt", Toast.LENGTH_LONG).show();
-        } else if (view == billedeKnap) {
+        } else if (view == imageButton) {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
