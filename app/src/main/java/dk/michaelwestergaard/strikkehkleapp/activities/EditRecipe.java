@@ -110,8 +110,13 @@ public class EditRecipe extends AppCompatActivity implements StepperLayout.Stepp
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 recipe = dataSnapshot.getValue(RecipeDTO.class);
-                recipeInformation = recipe.getRecipeInformationDTO();
-                recipeInstructions = (ArrayList) recipe.getRecipeInstructionDTO();
+
+                if(recipe.getRecipeInformationDTO() != null)
+                    recipeInformation = recipe.getRecipeInformationDTO();
+
+                if(recipe.getRecipeInstructionDTO() != null)
+                    recipeInstructions = (ArrayList) recipe.getRecipeInstructionDTO();
+
                 imageUrls.clear();
 
                 if(recipe.getImageList() != null) {
